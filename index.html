@@ -35,7 +35,7 @@
   body{ font-family:'NexonLv1Gothic',"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
     color:var(--ink); background:var(--bg); height:100%; display:flex; flex-direction:column; -webkit-font-smoothing:antialiased; }
   button,input,textarea{ font-family:inherit; }
-  header.top{ display:flex; align-items:center; gap:11px; padding:11px 18px; flex:0 0 auto;
+  header.top{ position:sticky; top:0; z-index:80; display:flex; align-items:center; gap:11px; padding:11px 18px; flex:0 0 auto;
     background:linear-gradient(90deg,#ffffff,#fff8ee); border-bottom:1px solid var(--line); }
   header.top .logo{ width:36px; height:36px; flex:0 0 auto; }
   header.top .title-block{ min-width:0; }
@@ -82,19 +82,29 @@
   .task .t,.ctask-name{ display:flex; align-items:center; gap:8px; }
   .task-title-text{ min-width:0; }
   .task .round-badge,.ctask-name .round-badge{ margin-left:auto; flex:0 0 auto; }
-  .order-title-main{ display:flex; align-items:center; gap:7px; min-width:0; }
+  .order-title-main{ display:flex; align-items:center; gap:7px; min-width:0; flex:0 0 auto; white-space:nowrap; }
   .mini-btn{ border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:5px 10px; font-size:11.5px; font-weight:800; color:var(--ink); cursor:pointer; }
   .mini-btn:hover{ border-color:#f6c9ad; background:var(--peach); color:var(--coral-deep); }
+  .mini-btn.on{ border-color:#f0a985; background:#fff0e7; color:var(--coral-deep); box-shadow:inset 0 0 0 1px #ffd7c1; }
+  .order-actions{ display:flex; align-items:center; justify-content:flex-end; gap:6px; flex-wrap:wrap; }
+  .top-edit-btn{ flex:0 0 auto; min-height:40px; padding:8px 14px; border:1.5px solid #f0b28d; border-radius:13px; background:#fff7f0; color:var(--coral-deep); font-size:12.5px; font-weight:900; cursor:pointer; box-shadow:0 2px 8px rgba(55,38,24,.05); }
+  .top-edit-btn:hover{ background:#fff0e7; border-color:#e99c71; }
+  .top-edit-btn.on{ background:var(--coral-deep); border-color:var(--coral-deep); color:#fff; box-shadow:0 4px 12px rgba(214,105,68,.22); }
 
   .task-group{ margin:15px 0 18px; }
   .task-group:first-child{ margin-top:0; }
   .task-group-title{ display:flex; align-items:center; gap:8px; margin:8px 0 9px; color:var(--coral-deep); font-size:12px; font-weight:900; }
   .task-group-title::after{ content:""; flex:1 1 auto; height:1px; background:#f2d9c8; }
+  .task-group-time{ display:flex; flex-wrap:wrap; gap:4px; margin:-2px 0 9px; }
   .task{ border:1.5px solid var(--line); border-radius:14px; padding:12px 13px; margin-bottom:10px; cursor:pointer; transition:.12s; background:#fffdfa; }
   .task:hover{ border-color:#f3d8c4; }
   .task.sel{ border-color:#f6c9ad; background:var(--peach); box-shadow:0 1px 0 #f7e2d2; }
   .task .t{ font-size:14.5px; font-weight:800; }
-  .task .d{ font-size:12px; color:var(--muted); margin-top:3px; line-height:1.4; }
+  .task .d{ font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4; }
+  .task-time-inline,.task-time-chip{ display:inline-flex; align-items:center; justify-content:center; border:1px solid #f0c8a9; border-radius:999px; background:#fff8ef; color:#c85f39; font-size:10.5px; font-weight:900; line-height:1.15; white-space:nowrap; }
+  .task-time-inline{ flex:0 0 auto; padding:3px 7px; }
+  .task-time-row{ display:flex; flex-wrap:wrap; gap:4px; margin-top:7px; }
+  .task-time-chip{ padding:3px 6px; }
 
   .mat-helper{ margin:0 0 10px; color:var(--muted); font-size:14px; font-weight:400; }
   .mat-group-title{ margin:14px 0 8px; color:var(--ink-soft,#7b6b62); font-size:12px; font-weight:900; }
@@ -138,8 +148,12 @@
   .photo-panel{ position:absolute; right:112px; top:12px; z-index:6; width:min(360px,calc(100% - 150px)); overflow:hidden;
     border:1.5px solid var(--line); border-radius:14px; background:rgba(255,255,255,.96); box-shadow:0 8px 22px rgba(60,40,20,.14); }
   .photo-panel[hidden], .photo-panel [hidden]{ display:none; }
-  .photo-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 10px; border-bottom:1px solid var(--line); font-size:12.5px; font-weight:800; }
+  .photo-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 10px; border-bottom:1px solid var(--line); font-size:12.5px; font-weight:800; cursor:grab; user-select:none; touch-action:none; }
+  .photo-panel.dragging .photo-head{ cursor:grabbing; }
   .photo-head button{ width:26px; height:26px; border:1px solid var(--line); border-radius:9px; background:#fff; color:var(--ink); cursor:pointer; }
+  .photo-step-tabs{ display:flex; align-items:center; gap:6px; padding:7px 9px; overflow-x:auto; border-bottom:1px solid var(--line); background:#fffaf5; scrollbar-width:thin; }
+  .photo-step-tabs button{ flex:0 0 auto; min-width:42px; padding:5px 9px; border:1px solid #efcdb8; border-radius:999px; background:#fff; color:var(--muted); font-size:11.5px; font-weight:800; cursor:pointer; }
+  .photo-step-tabs button.on{ border-color:var(--orange); background:var(--peach); color:var(--orange-deep); }
   .photo-panel img{ display:block; width:100%; max-height:360px; object-fit:contain; background:#fffdfa; }
   .photo-nav{ display:flex; align-items:center; justify-content:center; gap:9px; padding:8px 10px; border-top:1px solid var(--line); background:#fffdfa; }
   .photo-nav button{ min-width:30px; height:28px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); font-size:15px; font-weight:900; cursor:pointer; }
@@ -198,7 +212,28 @@
   .order-panel li{ margin:5px 0; padding:4px 6px; border-radius:9px; cursor:pointer; transition:.15s; }
   .order-panel li:hover{ background:#fff6ef; color:var(--ink); }
   .order-panel li.active{ background:var(--peach); color:var(--ink-soft,#6b6b78); font-weight:400; box-shadow:inset 0 0 0 1px #f6dcc9; }
-  .order-em{ color:var(--coral-deep); font-weight:400; }
+  .order-panel ol.content-editing{ padding-left:0; }
+  .order-panel li.content-edit-row{ margin:7px 0; padding:0; cursor:default; }
+  .order-panel li.content-edit-row:hover{ background:transparent; }
+  .content-edit-line{ display:flex; align-items:flex-start; gap:6px; }
+  .content-edit-text{ width:100%; min-height:58px; padding:8px 9px; border:1.5px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); font:inherit; font-size:12.5px; line-height:1.45; resize:vertical; outline:none; }
+  .content-edit-text:focus{ border-color:#f0b28d; box-shadow:0 0 0 2px #fff0e7; }
+  .content-bulk-wrap{ list-style:none; margin:0; padding:0; }
+  .content-bulk-editor{ display:block; width:100%; min-height:480px; padding:12px 13px; border:1.5px solid #efb99a; border-radius:12px; background:#fff; color:var(--ink); font:inherit; font-size:12.5px; line-height:1.6; resize:vertical; outline:none; white-space:pre-wrap; }
+  .content-bulk-editor:focus{ border-color:#e98e60; box-shadow:0 0 0 3px #fff0e7; }
+  .content-bulk-help{ margin:8px 2px 0; color:var(--muted); font-size:11px; line-height:1.45; }
+  .check-bulk-editor{ min-height:560px; }
+  .full-order-bulk-editor{ min-height:460px; font-size:13px; }
+  .content-edit-delete{ flex:0 0 30px; width:30px; height:30px; border:1.5px solid #f0c8ce; border-radius:9px; background:#fff7f8; color:var(--red); font-size:18px; line-height:1; cursor:pointer; }
+  .content-edit-delete:hover{ background:#ffe9ed; border-color:#e89baa; }
+  .content-edit-tools{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .content-edit-add,.content-edit-reset{ border:1.5px solid var(--line); border-radius:10px; padding:7px 10px; background:#fff; color:var(--ink); font-size:11.5px; font-weight:800; cursor:pointer; }
+  .content-edit-add{ border-color:#b9dec8; background:#f3fbf6; color:#34734e; }
+  .content-edit-reset{ border-color:#f0c8ce; background:#fff7f8; color:var(--red); }
+  .content-edit-save-note{ font-size:11px; color:var(--muted); }
+  .order-em,.order-strong{ display:inline; color:var(--coral-deep); font-weight:inherit; background:transparent; border-radius:0; padding:0; }
+  .order-shape,.order-shape-line{ color:var(--leaf); font-weight:900; }
+  .order-shape .order-em,.order-shape-line .order-em,.order-em .order-shape{ color:var(--coral-deep); }
   .seltitle{ display:flex; align-items:center; justify-content:space-between; margin-top:20px; }
   .seltitle h3{ font-size:15px; font-weight:800; margin:0; }
   .control-note{ margin:-2px 0 6px; font-size:11px; line-height:1.35; color:var(--muted); font-weight:400; }
@@ -234,35 +269,144 @@
   .chk input{ width:18px; height:18px; margin-top:1px; accent-color:var(--mint-deep); flex:0 0 auto; }
   .chk span{ font-size:12.5px; line-height:1.45; } .chk.on{ background:#eef9f1; border-color:#cdeede; }
   .chk .check-help{ color:var(--coral-deep); text-decoration:underline; text-underline-offset:3px; cursor:help; }
+  .chk.content-check-edit{ display:block; padding:9px; cursor:default; background:#fffdfa; }
+  .chk.content-check-edit .content-edit-text{ min-height:54px; }
+  .check-edit-tools{ display:flex; align-items:center; gap:7px; margin:2px 0 12px; }
+  .required-checks{ margin:0 0 14px; padding:12px; border:1.5px solid #efb48f; border-radius:14px; background:#fff8f1; }
+  .required-checks h3{ margin:0 0 9px; color:var(--coral-deep); font-size:13.5px; font-weight:900; }
+  .required-check-card{ padding:9px 10px; border:1px solid #f3d7c4; border-radius:11px; background:#fff; }
+  .required-check-card + .required-check-card{ margin-top:7px; }
+  .required-check-card strong{ display:block; margin-bottom:4px; color:var(--ink); font-size:12.5px; }
+  .required-check-card p{ margin:0; color:var(--ink-soft,#6b6b78); font-size:12px; line-height:1.55; white-space:pre-line; }
+  .check-edit-label{ display:block; margin:0 0 7px 2px; color:var(--coral-deep); font-size:12.5px; font-weight:900; }
+  .check-edit-label:not(:first-child){ margin-top:14px; }
+  .required-bulk-editor{ min-height:330px; }
   textarea{ width:100%; min-height:110px; border:1.5px solid var(--line); border-radius:12px; padding:11px; font:inherit; font-size:13px; resize:vertical; outline:none; background:#fffdfa; }
   textarea:focus{ border-color:#f6c9ad; }
   .toast{ position:fixed; left:50%; top:14px; transform:translate(-50%,-16px); background:#fff; color:var(--ink);
     border:2px solid var(--yellow); padding:9px 15px; border-radius:12px; font-weight:800; font-size:13px;
     box-shadow:0 6px 18px rgba(0,0,0,.12); opacity:0; transition:.22s; z-index:60; pointer-events:none; }
   .toast.show{ opacity:1; transform:translate(-50%,0); }
-  .full-order-modal{ position:fixed; inset:0; z-index:70; display:grid; place-items:center; padding:22px; background:rgba(34,28,25,.32); }
+  .full-order-modal{ position:fixed; inset:0; z-index:70; display:grid; place-items:center; padding:10px; background:rgba(34,28,25,.32); }
   .full-order-modal[hidden]{ display:none; }
-  .full-order-box{ width:min(760px,96vw); max-height:86vh; display:flex; flex-direction:column; overflow:hidden;
+  .full-order-box{ width:min(1180px,calc(100vw - 20px)); height:min(900px,calc(100vh - 20px)); max-height:none; display:flex; flex-direction:column; overflow:hidden;
     border:1.5px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 18px 46px rgba(34,28,25,.22); }
   .full-order-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); }
   .full-order-head strong{ font-size:16px; font-weight:900; }
   .full-order-head button{ width:30px; height:30px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); cursor:pointer; }
-  .full-order-body{ overflow:auto; padding:14px 18px 18px; }
+  .full-order-body{ flex:1 1 auto; min-height:0; overflow:auto; padding:14px 18px 18px; }
   .full-order-body ol{ margin:0; padding-left:22px; font-size:13px; line-height:1.65; color:var(--ink); }
   .full-order-body li{ margin:8px 0; }
-  .full-order-note{ margin:0 0 12px; padding:10px 12px; border-radius:12px; background:var(--peach); color:var(--coral-deep); font-size:13px; font-weight:800; line-height:1.45; }
+  .full-order-note{ margin:0 0 12px; padding:10px 12px; border-radius:12px; background:var(--peach); color:var(--coral-deep); font-size:13px; font-weight:800; line-height:1.45; white-space:pre-line; }
   .full-order-hint{ margin:7px 0 2px; color:#6b5b54; font-size:12.5px; line-height:1.55; }
   .full-order-hint summary{ display:inline-block; cursor:pointer; color:var(--coral-deep); text-decoration:underline; text-underline-offset:3px; font-weight:700; list-style:none; }
   .full-order-hint summary::-webkit-details-marker{ display:none; }
   .full-order-hint .hint-body{ margin-top:7px; padding:8px 10px; border-left:3px solid #f2b49a; border-radius:8px; background:#fff8f3; }
   .full-order-hint p{ margin:3px 0; }
+  .full-order-step-photos{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:8px; margin-top:9px; }
+  .full-order-step-photo{ margin:0; padding:7px; border:1px solid var(--line); border-radius:10px; background:#fff; }
+  .full-order-step-photo img{ display:block; width:100%; max-height:320px; object-fit:contain; border-radius:7px; }
+  .full-order-step-photo figcaption{ margin-top:5px; color:var(--muted); font-size:11px; line-height:1.35; text-align:center; }
+  .full-order-editor-intro{ margin:0 0 12px; padding:9px 11px; border-radius:11px; background:#f3fbf6; color:#3d6f50; font-size:12px; line-height:1.45; }
+  .full-order-edit-label{ display:block; margin:0 0 12px; color:var(--coral-deep); font-size:12px; font-weight:900; }
+  .full-order-edit-label textarea{ min-height:110px; margin-top:6px; background:#fffdfa; }
+  .full-order-edit-label textarea.full-order-bulk-editor{ min-height:clamp(320px,52vh,620px); }
+  .full-order-edit-list{ margin:0; padding-left:24px; }
+  .full-order-edit-list > li{ margin:8px 0; }
+  .full-order-edit-list .content-edit-text{ min-height:82px; font-size:13px; }
+  .full-order-hint-preserved{ margin:4px 36px 0 0; color:var(--muted); font-size:11px; }
   .growth-guide{ display:grid; gap:10px; justify-items:center; }
   .growth-guide svg{ width:min(100%,560px); height:auto; border:1px solid var(--line); border-radius:14px; background:#fffdfa; }
-  @media (max-width:1100px){ .stack{ flex-direction:column; } body{ height:auto; } .col{ height:auto; } .left,.right{ width:100%; flex:none; } .center{ order:-1; min-height:62vh; } .mat-zone{ margin:0 12px 12px; } .photo-panel{ left:12px; right:12px; width:auto; } }
-  @media (max-width:760px){ header.top{ flex-wrap:wrap; align-items:flex-start; } .exam-schedule{ width:100%; margin-left:47px; } .exam-schedule summary{ min-width:0; width:100%; } .exam-schedule-panel{ left:0; right:auto; } }
+  @media (max-width:1100px){
+    .stack{ flex-direction:column; }
+    body{ height:auto; }
+    .col{ height:auto; overflow:visible; }
+    .center{ order:1; min-height:0; }
+    .left{ width:100%; flex:none; order:2; }
+    .right{ width:100%; flex:none; order:3; }
+    .stage-wrap{ flex:0 0 auto; min-height:420px; height:58vh; padding:6px 12px 12px; }
+    .stage-card{ height:100%; min-height:420px; }
+    .mat-zone{ margin:0 12px 12px; }
+    .photo-panel{ left:12px; right:12px; width:auto; }
+  }
+  @media (max-width:760px){
+    header.top{ flex-wrap:wrap; align-items:flex-start; }
+    header.top h1{ font-size:17px; line-height:1.25; }
+    header.top p{ font-size:12px; line-height:1.35; }
+    .exam-schedule{ width:100%; margin-left:47px; }
+    .top-edit-btn{ margin-left:47px; }
+    .exam-schedule summary{ min-width:0; width:100%; }
+    .exam-schedule-panel{ left:0; right:auto; }
+    .chead{ padding:10px 12px; gap:8px; }
+    .timer-time{ min-width:76px; font-size:24px; }
+    .ctools{ width:100%; margin-left:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; }
+    .tbtn{ padding:8px 6px; font-size:12.5px; white-space:nowrap; }
+    .stage-wrap{ height:52vh; min-height:360px; }
+    .stage-card{ min-height:360px; border-radius:16px; }
+    .hint{ font-size:11.5px; padding:7px 10px; bottom:8px; }
+    .legend{ max-width:calc(100% - 24px); }
+    .viewbtns{ right:8px; top:8px; gap:6px; }
+    .viewbtns button{ padding:7px 9px; font-size:12px; }
+    .mat-zone{ padding:11px 10px 12px; }
+    #matList{ gap:12px; }
+    .mat-zone .mat{ width:96px; min-height:102px; }
+  }
+
+
+  /* 필기·사진 전용 모드: 3D 배치 기능은 숨기고 학습 자료에 집중합니다. */
+  body.notes-only .ctools,
+  body.notes-only #stage3d,
+  body.notes-only .flower-tools,
+  body.notes-only .hint,
+  body.notes-only .legend,
+  body.notes-only .mat-zone,
+  body.notes-only .right > .seltitle,
+  body.notes-only .right > .slider-row,
+  body.notes-only .right > .control-subtitle,
+  body.notes-only .right > .twobtn,
+  body.notes-only .viewbtns button:not(#btnPhoto){ display:none!important; }
+  body.notes-only .left{ width:360px; flex-basis:360px; }
+  body.notes-only .right{ width:400px; flex-basis:400px; }
+  body.notes-only .center{ background:#fffaf5; }
+  body.notes-only .chead{ padding-bottom:8px; }
+  body.notes-only .stage-wrap{ padding:6px 14px 14px; }
+  body.notes-only .stage-card{
+    min-height:420px;
+    background:linear-gradient(145deg,#fffdfa,#f7f1e7);
+    overflow:hidden;
+  }
+  body.notes-only .stage-card::before{
+    content:'과제를 선택하면 완성 사진과 단계별 사진을 화살표로 모두 볼 수 있습니다.';
+    position:absolute; left:50%; top:50%; width:min(82%,520px); transform:translate(-50%,-50%);
+    color:var(--muted); font-size:14px; line-height:1.65; text-align:center;
+  }
+  body.notes-only .viewbtns{ right:14px; top:14px; z-index:9; }
+  body.notes-only .photo-panel{
+    left:12px!important; right:12px!important; top:12px!important; bottom:12px!important;
+    width:auto!important; height:auto; max-width:none; transform:none!important;
+    flex-direction:column; background:#fff; box-shadow:0 8px 24px rgba(60,40,20,.12);
+  }
+  body.notes-only .photo-panel:not([hidden]){ display:flex; }
+  body.notes-only .photo-head{ flex:0 0 auto; cursor:default; padding:10px 12px; font-size:13px; }
+  body.notes-only .photo-step-tabs{ flex:0 0 auto; }
+  body.notes-only .photo-panel img{ flex:1 1 auto; min-height:0; max-height:none; object-fit:contain; }
+  body.notes-only .photo-nav{ flex:0 0 auto; }
+  body.notes-only .right > h2.sec:first-of-type{ margin-top:18px; }
+  body.notes-only #memo{ min-height:170px; }
+  @media (max-width:1100px){
+    body.notes-only .left, body.notes-only .right{ width:100%; flex-basis:auto; }
+    body.notes-only .stage-wrap{ height:68vh; min-height:480px; }
+    body.notes-only .stage-card{ min-height:480px; }
+  }
+  @media (max-width:760px){
+    body.notes-only .stage-wrap{ height:66vh; min-height:420px; }
+    body.notes-only .stage-card{ min-height:420px; }
+    body.notes-only .photo-panel{ left:7px!important; right:7px!important; top:7px!important; bottom:7px!important; }
+  }
+
 </style>
 </head>
-<body>
+<body class="notes-only">
   <header class="top">
     <svg class="logo" viewBox="0 0 80 80" aria-hidden="true">
       <circle cx="40" cy="40" r="38" fill="#fff3e0"/>
@@ -274,7 +418,7 @@
     </svg>
     <div class="title-block">
       <h1>화훼장식기능사 실기 시험 대비 연습장</h1>
-      <p>드래그로 돌려가며 플로랄폼 위에 꽃을 꽂아 실기 구성을 연습하세요</p>
+      <p>필기 내용과 단계별 참고사진을 한곳에서 확인하고 직접 정리하세요</p>
     </div>
     <details class="exam-schedule" id="examSchedule">
       <summary aria-label="화훼장식기능사 실기 시험 일정 펼치기">
@@ -285,6 +429,7 @@
       </summary>
       <div class="exam-schedule-panel" id="examScheduleList"></div>
     </details>
+    <button class="top-edit-btn" id="contentEditTopBtn" type="button" aria-pressed="false" title="작업순서·전체 설명·체크포인트 문구를 직접 수정합니다">문구 수정</button>
   </header>
   <div class="stack">
   <aside class="col left">
@@ -293,7 +438,10 @@
     <section class="order-panel">
       <h2 class="sec">
         <span class="order-title-main">작업 순서 <span class="badge green" id="orderTaskBadge">수평형</span></span>
-        <button class="mini-btn" id="fullOrderBtn" type="button">전체 설명</button>
+        <span class="order-actions">
+          <button class="mini-btn" id="fullOrderBtn" type="button">전체 설명</button>
+          <button class="mini-btn" id="contentEditBtn" type="button" aria-pressed="false">수정모드</button>
+        </span>
       </h2>
       <ol id="orderList"></ol>
     </section>
@@ -337,10 +485,11 @@
         <div class="viewbtns">
           <button id="btnReset" type="button">시점 초기화</button>
           <button id="btnSpin" type="button">자동 회전</button>
-          <button id="btnPhoto" type="button">사진 참고</button>
+          <button id="btnPhoto" type="button">사진 다시 열기</button>
         </div>
         <div class="photo-panel" id="photoPanel" hidden>
           <div class="photo-head"><span id="photoTitle">사진 참고</span><button id="photoClose" type="button" aria-label="닫기">×</button></div>
+          <div class="photo-step-tabs" id="photoStepTabs" aria-label="단계별 참고 사진" hidden></div>
           <img id="photoRef" alt="연습 과제 참고 사진" hidden>
           <div class="photo-nav" id="photoNav" hidden><button id="photoPrev" type="button" aria-label="이전 사진">‹</button><span id="photoCount">1/1</span><button id="photoNext" type="button" aria-label="다음 사진">›</button></div>
           <div class="photo-empty" id="photoEmpty">이 과제의 참고 사진 경로를 TASKS의 photo 값에 넣어주세요.</div>
@@ -386,6 +535,7 @@
     <div class="control-subtitle has-action" id="rowRotateTitle"><span>회전</span><button id="btnFlip" class="flip-mini" type="button" disabled>좌우반전</button></div>
     <div class="slider-row rotate-child" id="rowA"><div class="slider-head"><div class="l">좌우 회전</div><label class="angle-input"><input type="number" id="selADeg" min="-90" max="90" step="1" value="0" aria-label="좌우 회전 각도 직접 입력"><span>˚</span></label></div><input type="range" id="selA" min="0" max="100" value="50"></div>
     <div class="slider-row rotate-child" id="rowPitch"><div class="slider-head"><div class="l">앞뒤 회전</div><label class="angle-input"><input type="number" id="selPitchDeg" min="-90" max="90" step="1" value="0" aria-label="앞뒤 회전 각도 직접 입력"><span>˚</span></label></div><input type="range" id="selPitch" min="0" max="100" value="50"></div>
+    <div class="slider-row rotate-child" id="rowSpin"><div class="slider-head"><div class="l">세로축 회전</div><label class="angle-input"><input type="number" id="selSpinDeg" min="0" max="360" step="1" value="0" aria-label="세로축 회전 각도 직접 입력"><span>˚</span></label></div><input type="range" id="selSpin" min="0" max="100" value="0"></div>
     <div class="slider-row" id="rowOrbit"><div class="l">각도</div><input type="range" id="selOrbit" min="0" max="100" value="50"></div>
     <div class="slider-row" id="rowCut"><div class="slider-head cut-head"><div class="l cut-label">가위<span>(지우개)</span></div><div class="control-note cut-inline-note">위아래로 문지르면 줄기 길이 조절</div></div><input type="range" id="selCut" min="0" max="100" value="0"></div>
     <div class="twobtn"><button id="btnSelReset" disabled>초기화</button><button id="btnDup" disabled>복제</button><button id="btnDel" class="danger" disabled>삭제</button></div>
@@ -419,7 +569,6 @@
 
 
 </script>
-  <script src="./assets/vendor/GLTFLoader-r128.js?v=20260807-models"></script>
   <script>
 
 ( function () {
@@ -1472,7 +1621,7 @@
 </script>
   <script>
   /* =====================================================================
-     화훼장식기능사 실기 시험 대비 연습장 — 3D 장면 + 전체 기능 패널
+     화훼장식기능사 실기 시험 대비 연습장 — 필기 + 단계별 참고사진
      · 3D 장면(화분/폼/꽃)은 Three.js. 드래그로 자유 회전.
      · 꽃은 주어진 카탈로그(2D 그림)를 골라 가이드 면에 꽂음.
        (실사 사진 교체: 아래 MATERIALS[i].photo 에 사진 URL만 넣으면
@@ -1480,21 +1629,26 @@
      ===================================================================== */
   const $=id=>document.getElementById(id);
   let toastT=null; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1700); }
-  const _mem={}; const LS={ get(k){ try{return localStorage.getItem(k);}catch(e){return (k in _mem)?_mem[k]:null;} }, set(k,v){ try{localStorage.setItem(k,v);}catch(e){_mem[k]=v;} } };
+  const _mem={}; const LS={
+    get(k){ try{return localStorage.getItem(k);}catch(e){return (k in _mem)?_mem[k]:null;} },
+    set(k,v){ try{localStorage.setItem(k,v);}catch(e){_mem[k]=v;} },
+    remove(k){ try{localStorage.removeItem(k);}catch(e){delete _mem[k];} }
+  };
 
   /* ---------- 데이터 ---------- */
   const ASSET_VERSION='20260812-user-glbs';
   const asset=name=>'./assets/'+name+'?v='+ASSET_VERSION;
-  const refAsset=name=>asset('reference/'+name);
+  const REFERENCE_IMAGES={"top-grid-9cells-20260904.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNjIwIiB2aWV3Qm94PSIwIDAgOTAwIDYyMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJUb3AgdmlldyAzIGJ5IDMgZmxvcmFsIGZvYW0gZ3JpZCB3aXRoIEEgQiBDIEQgYW5kIGZvY2FsIHBvaW50Ij4KICA8cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjYyMCIgZmlsbD0iI2ZiZmFmNyIvPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5MCAxMDUpIj4KICAgIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MjAiIGhlaWdodD0iMzMwIiByeD0iMjIiIGZpbGw9IiNmZmZkZjgiIHN0cm9rZT0iIzI1MzAzMyIgc3Ryb2tlLXdpZHRoPSI4Ii8+CiAgICA8cGF0aCBkPSJNMTczLjMzIDB2MzMwTTM0Ni42NyAwdjMzME0wIDExMGg1MjBNMCAyMjBoNTIwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTMwMzMiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8ZyBmaWxsPSIjZjZlZmU0IiBzdHJva2U9IiMzYTQ2NDkiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWRhc2hhcnJheT0iMTQgMTQiPgogICAgICA8cGF0aCBkPSJNMCAwYy02MiAzMi04NiA4Ni04MiAxNjUgNCA3OCAzMiAxMzAgODIgMTY1IiBmaWxsPSJub25lIi8+CiAgICAgIDxwYXRoIGQ9Ik01MjAgMGM2MiAzMiA4NiA4NiA4MiAxNjUtNCA3OC0zMiAxMzAtODIgMTY1IiBmaWxsPSJub25lIi8+CiAgICAgIDxwYXRoIGQ9Ik0xMTUgMzMwYzM2IDYyIDk4IDg2IDE0NSA4NCA0NiAyIDEwOS0yMiAxNDUtODQiIGZpbGw9Im5vbmUiLz4KICAgIDwvZz4KICAgIDxnIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+CiAgICAgIDx0ZXh0IHg9IjI2MCIgeT0iODQiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IiMyNTMwMzMiPkE8L3RleHQ+CiAgICAgIDx0ZXh0IHg9Ii0xMTIiIHk9IjE4MyIgZm9udC1zaXplPSI0OCIgZmlsbD0iIzI1MzAzMyI+QjwvdGV4dD4KICAgICAgPHRleHQgeD0iNjMyIiB5PSIxODMiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IiMyNTMwMzMiPkM8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjI2MCIgeT0iNDM4IiBmb250LXNpemU9IjQ4IiBmaWxsPSIjMjUzMDMzIj5EPC90ZXh0PgogICAgPC9nPgogICAgPGcgZmlsbD0iIzJmMzQzNyI+CiAgICAgIDxjaXJjbGUgY3g9IjI2MCIgY3k9Ijk2IiByPSIxNCIvPgogICAgICA8Y2lyY2xlIGN4PSItNDIiIGN5PSIxNjUiIHI9IjE0Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjU2MiIgY3k9IjE2NSIgcj0iMTQiLz4KICAgICAgPGNpcmNsZSBjeD0iMjYwIiBjeT0iMzcwIiByPSIxNCIvPgogICAgPC9nPgogICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjYwIDE4OCkiIGZpbGw9IiNkYjNkNGEiIHN0cm9rZT0iI2E1MWUyYyIgc3Ryb2tlLXdpZHRoPSI0Ij4KICAgICAgPHBhdGggZD0iTTAtNDdsMTIgMzAgMzMtNi0yMSAyNyAyMSAyNy0zMy02TDAgNTVsLTEyLTMwLTMzIDYgMjEtMjctMjEtMjcgMzMgNnoiLz4KICAgIDwvZz4KICAgIDx0ZXh0IHg9IjI2MCIgeT0iMTk4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzQiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPkZQPC90ZXh0PgogIDwvZz4KPC9zdmc+Cg==","oriental-slant-kenzan-top-diagram-20260906.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MjAgNTIwIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+CiAgPHRpdGxlIGlkPSJ0aXRsZSI+6rK97IKs7ZiVIOy5qOu0iSDsnITsl5DshJwg67O4IOychOy5mDwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPu2ZlOq4sOyZgCDsuajrtInsnYQg7JyE7JeQ7IScIOuCtOugpOuLpOuzuCDrj4TtlbQuIDHso7zsp4DripQgOOyLnCDsm5AsIDLso7zsp4DripQgMTLsi5wg64Sk66qoLCAz7KO87KeA64qUIDXsi5wg7IS466qo66GcIO2RnOyLnO2VnOuLpC48L2Rlc2M+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5iZ3tmaWxsOiNmZmZkZmF9CiAgICAgIC5ib3dse2ZpbGw6I2Y0ZjdmMDtzdHJva2U6IzQ1NjE0ZDtzdHJva2Utd2lkdGg6OH0KICAgICAgLndhdGVye2ZpbGw6I2RmZWVlNztzdHJva2U6IzkwYjhhNDtzdHJva2Utd2lkdGg6Mn0KICAgICAgLmF4aXN7c3Ryb2tlOiM5MWEzOTU7c3Ryb2tlLXdpZHRoOjM7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWRhc2hhcnJheToxMCAxMn0KICAgICAgLmd1aWRle2ZpbGw6bm9uZTtzdHJva2U6I2Q2YjQ4ZjtzdHJva2Utd2lkdGg6NDtzdHJva2UtbGluZWNhcDpyb3VuZH0KICAgICAgLmtlbnphbntmaWxsOiMzNTRlNDI7c3Ryb2tlOiMyMDM4MmU7c3Ryb2tlLXdpZHRoOjR9CiAgICAgIC5waW57ZmlsbDojN2Q5Mzg3fQogICAgICAubWFya3tmaWxsOiNmZmY7c3Ryb2tlOiNlMDUyNTI7c3Ryb2tlLXdpZHRoOjd9CiAgICAgIC5tYXJrMntzdHJva2U6IzNmODNjY30KICAgICAgLm1hcmsze3N0cm9rZTojZTBhNzJmfQogICAgICAubGFiZWx7Zm9udC1mYW1pbHk6QXJpYWwsIk1hbGd1biBHb3RoaWMiLHNhbnMtc2VyaWY7Zm9udC1zaXplOjI3cHg7Zm9udC13ZWlnaHQ6ODAwO2ZpbGw6IzI2M2QzMX0KICAgICAgLnNtYWxse2ZvbnQtc2l6ZToyMnB4O2ZvbnQtd2VpZ2h0OjcwMDtmaWxsOiM1ZDZiNjF9CiAgICAgIC5ub3Rle2ZvbnQtc2l6ZToyNHB4O2ZvbnQtd2VpZ2h0OjgwMDtmaWxsOiNlZjZhNTV9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmciIHdpZHRoPSI3MjAiIGhlaWdodD0iNTIwIiByeD0iMzAiLz4KICA8Y2lyY2xlIGNsYXNzPSJ3YXRlciIgY3g9IjM2MCIgY3k9IjI1MCIgcj0iMTkwIi8+CiAgPGNpcmNsZSBjbGFzcz0iYm93bCIgY3g9IjM2MCIgY3k9IjI1MCIgcj0iMjA1Ii8+CiAgPGxpbmUgY2xhc3M9ImF4aXMiIHgxPSIzNjAiIHkxPSI0MiIgeDI9IjM2MCIgeTI9IjQ1OCIvPgogIDxsaW5lIGNsYXNzPSJheGlzIiB4MT0iMTUyIiB5MT0iMjUwIiB4Mj0iNTY4IiB5Mj0iMjUwIi8+CiAgPGxpbmUgY2xhc3M9ImF4aXMiIHgxPSIyMTUiIHkxPSIxMDUiIHgyPSI1MDUiIHkyPSIzOTUiLz4KICA8bGluZSBjbGFzcz0iYXhpcyIgeDE9IjUwNSIgeTE9IjEwNSIgeDI9IjIxNSIgeTI9IjM5NSIvPgogIDxyZWN0IGNsYXNzPSJrZW56YW4iIHg9IjMyMiIgeT0iMjEyIiB3aWR0aD0iNzYiIGhlaWdodD0iNzYiIHJ4PSIxMiIvPgogIDxnIG9wYWNpdHk9Ii42Ij4KICAgIDxjaXJjbGUgY2xhc3M9InBpbiIgY3g9IjMzOCIgY3k9IjIyOCIgcj0iNCIvPjxjaXJjbGUgY2xhc3M9InBpbiIgY3g9IjM2MCIgY3k9IjIyOCIgcj0iNCIvPjxjaXJjbGUgY2xhc3M9InBpbiIgY3g9IjM4MiIgY3k9IjIyOCIgcj0iNCIvPgogICAgPGNpcmNsZSBjbGFzcz0icGluIiBjeD0iMzM4IiBjeT0iMjUwIiByPSI0Ii8+PGNpcmNsZSBjbGFzcz0icGluIiBjeD0iMzYwIiBjeT0iMjUwIiByPSI0Ii8+PGNpcmNsZSBjbGFzcz0icGluIiBjeD0iMzgyIiBjeT0iMjUwIiByPSI0Ii8+CiAgICA8Y2lyY2xlIGNsYXNzPSJwaW4iIGN4PSIzMzgiIGN5PSIyNzIiIHI9IjQiLz48Y2lyY2xlIGNsYXNzPSJwaW4iIGN4PSIzNjAiIGN5PSIyNzIiIHI9IjQiLz48Y2lyY2xlIGNsYXNzPSJwaW4iIGN4PSIzODIiIGN5PSIyNzIiIHI9IjQiLz4KICA8L2c+CiAgPHBhdGggY2xhc3M9Imd1aWRlIiBkPSJNMzYwIDI1MCBDMzQ3IDE5OCAzNDggMTUzIDM2MCAxMDYiLz4KICA8cGF0aCBjbGFzcz0iZ3VpZGUiIGQ9Ik0zNjAgMjUwIEMzMDMgMjc3IDI1MyAzMjQgMjA1IDM4MyIvPgogIDxwYXRoIGNsYXNzPSJndWlkZSIgZD0iTTM2MCAyNTAgQzQwNCAzMDAgNDM2IDM1NSA0NjAgNDE0Ii8+CiAgPHBhdGggY2xhc3M9Imd1aWRlIiBkPSJNMjA1IDM4MyBDMjc3IDQzMCAzNzggNDQ5IDQ2MCA0MTQiLz4KICA8Y2lyY2xlIGNsYXNzPSJtYXJrIiBjeD0iMjA0IiBjeT0iMzgyIiByPSIyNSIvPgogIDxyZWN0IGNsYXNzPSJtYXJrIG1hcmsyIiB4PSIzMzMiIHk9Ijc4IiB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSI4Ii8+CiAgPHBhdGggY2xhc3M9Im1hcmsgbWFyazMiIGQ9Ik00NjAgMzgyIEw0OTQgNDQwIEw0MjUgNDQwIFoiLz4KICA8dGV4dCBjbGFzcz0ibGFiZWwiIHg9IjgyIiB5PSIzOTIiPjHso7zsp4A8L3RleHQ+CiAgPHRleHQgY2xhc3M9InNtYWxsIiB4PSI5MiIgeT0iNDIzIj447IucPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJsYWJlbCIgeD0iMzk3IiB5PSI5NCI+MuyjvOyngDwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic21hbGwiIHg9IjM5OSIgeT0iMTI0Ij4xMuyLnDwvdGV4dD4KICA8dGV4dCBjbGFzcz0ibGFiZWwiIHg9IjUwMCIgeT0iNDEzIj4z7KO87KeAPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzbWFsbCIgeD0iNTA1IiB5PSI0NDQiPjXsi5w8L3RleHQ+CiAgPHRleHQgY2xhc3M9Im5vdGUiIHg9IjE3MCIgeT0iNDg2Ij7qsr3sgqztmJU6IDHso7zsp4AgOOyLnCDCtyAy7KO87KeAIDEy7IucIMK3IDPso7zsp4AgNeyLnDwvdGV4dD4KPC9zdmc+Cg==","oriental-upright-kenzan-top-diagram-20260906.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MjAgNTIwIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+CiAgPHRpdGxlIGlkPSJ0aXRsZSI+7KeB66a97ZiVIOy5qOu0iSDsnITsl5DshJwg67O4IOychOy5mDwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPu2ZlOq4sOyZgCDsuajrtInsnYQg7JyE7JeQ7IScIOuCtOugpOuLpOuzuCDrj4TtlbQuIDHso7zsp4DripQgMTLsi5wg7JuQLCAy7KO87KeA64qUIDjsi5wg64Sk66qoLCAz7KO87KeA64qUIDXsi5wg7IS466qo66GcIO2RnOyLnO2VmOqzoCAy7KO87KeA7JmAIDPso7zsp4DripQg7KGw6riIIOuyjOugpCDslYjsqr0g6rO16rCE7J2EIOunjOuToOuLpC48L2Rlc2M+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5iZ3tmaWxsOiNmZmZkZmF9CiAgICAgIC5ib3dse2ZpbGw6I2Y0ZjdmMDtzdHJva2U6IzQ1NjE0ZDtzdHJva2Utd2lkdGg6OH0KICAgICAgLndhdGVye2ZpbGw6I2RmZWVlNztzdHJva2U6IzkwYjhhNDtzdHJva2Utd2lkdGg6Mn0KICAgICAgLmF4aXN7c3Ryb2tlOiM5MWEzOTU7c3Ryb2tlLXdpZHRoOjM7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWRhc2hhcnJheToxMCAxMn0KICAgICAgLmd1aWRle2ZpbGw6bm9uZTtzdHJva2U6I2Q2YjQ4ZjtzdHJva2Utd2lkdGg6NDtzdHJva2UtbGluZWNhcDpyb3VuZH0KICAgICAgLmtlbnphbntmaWxsOiMzNTRlNDI7c3Ryb2tlOiMyMDM4MmU7c3Ryb2tlLXdpZHRoOjR9CiAgICAgIC5waW57ZmlsbDojN2Q5Mzg3fQogICAgICAubWFya3tmaWxsOiNmZmY7c3Ryb2tlOiNlMDUyNTI7c3Ryb2tlLXdpZHRoOjd9CiAgICAgIC5tYXJrMntzdHJva2U6IzNmODNjY30KICAgICAgLm1hcmsze3N0cm9rZTojZTBhNzJmfQogICAgICAubGFiZWx7Zm9udC1mYW1pbHk6QXJpYWwsIk1hbGd1biBHb3RoaWMiLHNhbnMtc2VyaWY7Zm9udC1zaXplOjI3cHg7Zm9udC13ZWlnaHQ6ODAwO2ZpbGw6IzI2M2QzMX0KICAgICAgLnNtYWxse2ZvbnQtc2l6ZToyMnB4O2ZvbnQtd2VpZ2h0OjcwMDtmaWxsOiM1ZDZiNjF9CiAgICAgIC5ub3Rle2ZvbnQtc2l6ZToyNHB4O2ZvbnQtd2VpZ2h0OjgwMDtmaWxsOiNlZjZhNTV9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmciIHdpZHRoPSI3MjAiIGhlaWdodD0iNTIwIiByeD0iMzAiLz4KICA8Y2lyY2xlIGNsYXNzPSJ3YXRlciIgY3g9IjM2MCIgY3k9IjI1MCIgcj0iMTkwIi8+CiAgPGNpcmNsZSBjbGFzcz0iYm93bCIgY3g9IjM2MCIgY3k9IjI1MCIgcj0iMjA1Ii8+CiAgPGxpbmUgY2xhc3M9ImF4aXMiIHgxPSIzNjAiIHkxPSI0MiIgeDI9IjM2MCIgeTI9IjQ1OCIvPgogIDxsaW5lIGNsYXNzPSJheGlzIiB4MT0iMTUyIiB5MT0iMjUwIiB4Mj0iNTY4IiB5Mj0iMjUwIi8+CiAgPGxpbmUgY2xhc3M9ImF4aXMiIHgxPSIyMTUiIHkxPSIxMDUiIHgyPSI1MDUiIHkyPSIzOTUiLz4KICA8bGluZSBjbGFzcz0iYXhpcyIgeDE9IjUwNSIgeTE9IjEwNSIgeDI9IjIxNSIgeTI9IjM5NSIvPgogIDxyZWN0IGNsYXNzPSJrZW56YW4iIHg9IjMyMiIgeT0iMjEyIiB3aWR0aD0iNzYiIGhlaWdodD0iNzYiIHJ4PSIxMiIvPgogIDxnIG9wYWNpdHk9Ii42Ij4KICAgIDxjaXJjbGUgY2xhc3M9InBpbiIgY3g9IjMzOCIgY3k9IjIyOCIgcj0iNCIvPjxjaXJjbGUgY2xhc3M9InBpbiIgY3g9IjM2MCIgY3k9IjIyOCIgcj0iNCIvPjxjaXJjbGUgY2xhc3M9InBpbiIgY3g9IjM4MiIgY3k9IjIyOCIgcj0iNCIvPgogICAgPGNpcmNsZSBjbGFzcz0icGluIiBjeD0iMzM4IiBjeT0iMjUwIiByPSI0Ii8+PGNpcmNsZSBjbGFzcz0icGluIiBjeD0iMzYwIiBjeT0iMjUwIiByPSI0Ii8+PGNpcmNsZSBjbGFzcz0icGluIiBjeD0iMzgyIiBjeT0iMjUwIiByPSI0Ii8+CiAgICA8Y2lyY2xlIGNsYXNzPSJwaW4iIGN4PSIzMzgiIGN5PSIyNzIiIHI9IjQiLz48Y2lyY2xlIGNsYXNzPSJwaW4iIGN4PSIzNjAiIGN5PSIyNzIiIHI9IjQiLz48Y2lyY2xlIGNsYXNzPSJwaW4iIGN4PSIzODIiIGN5PSIyNzIiIHI9IjQiLz4KICA8L2c+CiAgPHBhdGggY2xhc3M9Imd1aWRlIiBkPSJNMzYwIDI1MCBDMzQ3IDE5OCAzNDggMTUzIDM2MCAxMDYiLz4KICA8cGF0aCBjbGFzcz0iZ3VpZGUiIGQ9Ik0zNjAgMjUwIEMzMDMgMjc3IDI1MyAzMjQgMjA1IDM4MyIvPgogIDxwYXRoIGNsYXNzPSJndWlkZSIgZD0iTTM2MCAyNTAgQzQwNCAzMDAgNDM2IDM1NSA0NjAgNDE0Ii8+CiAgPHBhdGggY2xhc3M9Imd1aWRlIiBkPSJNMjA1IDM4MyBDMjc3IDQzMCAzNzggNDQ5IDQ2MCA0MTQiLz4KICA8Y2lyY2xlIGNsYXNzPSJtYXJrIiBjeD0iMzYwIiBjeT0iMTA1IiByPSIyNSIvPgogIDxyZWN0IGNsYXNzPSJtYXJrIG1hcmsyIiB4PSIxNzciIHk9IjM1NSIgd2lkdGg9IjU0IiBoZWlnaHQ9IjU0IiByeD0iOCIgdHJhbnNmb3JtPSJyb3RhdGUoLTE0IDIwNCAzODIpIi8+CiAgPHBhdGggY2xhc3M9Im1hcmsgbWFyazMiIGQ9Ik00NjAgMzgyIEw0OTQgNDQwIEw0MjUgNDQwIFoiLz4KICA8dGV4dCBjbGFzcz0ibGFiZWwiIHg9IjM5MiIgeT0iOTQiPjHso7zsp4A8L3RleHQ+CiAgPHRleHQgY2xhc3M9InNtYWxsIiB4PSIzOTAiIHk9IjEyNCI+MTLsi5w8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImxhYmVsIiB4PSI4NiIgeT0iMzkyIj4y7KO87KeAPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzbWFsbCIgeD0iOTUiIHk9IjQyMyI+OOyLnDwvdGV4dD4KICA8dGV4dCBjbGFzcz0ibGFiZWwiIHg9IjUwMCIgeT0iNDEzIj4z7KO87KeAPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJzbWFsbCIgeD0iNTA1IiB5PSI0NDQiPjXsi5w8L3RleHQ+CiAgPHRleHQgY2xhc3M9Im5vdGUiIHg9IjIwNiIgeT0iNDg2Ij4y7KO87KeA7JmAIDPso7zsp4DripQg7KGw6riIIOuyjOugpCDslYjsqr0g6rO16rCEIOunjOuTpOq4sDwvdGV4dD4KPC9zdmc+Cg=="};
+  const refAsset=name=>REFERENCE_IMAGES[name]||asset('reference/'+name);
   const MIN_MATERIAL_USE=7;
   const MATERIALS=[
     {key:'malchae', name:'말채', role:'구조 소재', group:'structure', color:'#b8d86a', target:10, size:2.45, aspect:0.12, anchor:0.055, modelType:'malchae'},
-    {key:'rose', name:'하젤장미', role:'초점화', group:'flower', color:'#e0506a', target:10, size:2.15, aspect:0.2765, anchor:0.055, photo:asset('stem-rose.png')},
-    {key:'gerbera', name:'캡거베라', role:'포컬', group:'flower', color:'#e8669d', target:10, size:2.05, aspect:0.2968, anchor:0.055, photo:asset('stem-gerbera.png'), model:asset('models/rose/Pink Gerbera Flower.glb'), modelSource:'Pink Gerbera Flower', modelUniformScale:0.9, modelYaw:Math.PI},
-    {key:'stat', name:'리시안셔스', role:'필러', group:'flower', color:'#9a6fd0', target:10, size:2.05, aspect:0.4000, anchor:0.055, photo:asset('stem-stat.png'), model:asset('models/rose/Lavender Flower Stem.glb'), modelSource:'Lavender Flower Stem', modelUniformScale:0.9},
-    {key:'mum', name:'크림소국', role:'매스', group:'flower', color:'#f3c046', target:10, size:1.95, aspect:0.3083, anchor:0.055, photo:asset('stem-mum.png')},
-    {key:'line', name:'루스커스', role:'그린 소재', group:'green', color:'#4f9d5b', target:10, size:2.22, aspect:0.4667, anchor:0.055, photo:asset('stem-ruscus.png')},
-    {key:'cypress', name:'편백', role:'그린 소재', group:'green', color:'#4f9d5b', target:10, size:2.1, aspect:0.4667, anchor:0.055, photo:asset('stem-top.png')},
+    {key:'rose', name:'하젤장미', role:'초점화', group:'flower', color:'#e0506a', target:10, size:2.15, aspect:0.2765, anchor:0.055},
+    {key:'gerbera', name:'캡거베라', role:'포컬', group:'flower', color:'#e8669d', target:10, size:2.05, aspect:0.2968, anchor:0.055},
+    {key:'stat', name:'리시안셔스', role:'필러', group:'flower', color:'#9a6fd0', target:10, size:2.05, aspect:0.4000, anchor:0.055},
+    {key:'mum', name:'크림소국', role:'매스', group:'flower', color:'#f3c046', target:10, size:1.95, aspect:0.3083, anchor:0.055},
+    {key:'line', name:'루스커스', role:'그린 소재', group:'green', color:'#4f9d5b', target:10, size:2.22, aspect:0.4667, anchor:0.055},
+    {key:'cypress', name:'편백', role:'그린 소재', group:'green', color:'#4f9d5b', target:10, size:2.1, aspect:0.4667, anchor:0.055},
   ];
   const MAT=Object.fromEntries(MATERIALS.map(m=>[m.key,m]));
   const MALCHAE_MATERIAL_TASKS=new Set(['bouquetDome','bouquetCone']);
@@ -1522,7 +1676,88 @@
     '스프레이 장미의 생장점 줄기를 커팅하였는가?',
     '대칭되는 꽃들은 양쪽 키가 비슷한가?',
     '루스커스는 긴 아이를 구매하고, 휘어 있다면 시험 전 손으로 미리 마사지해 들고 갔는가?',
-    '하나의 생장점을 향하게 꽂았는가?'
+    '하나의 생장점을 향하게 꽂았는가?',
+    '줄기를 사선 커팅할 때 제3과제 나무와 제1·2과제 절화의 잘린 단면이 나와 정면을 향하게 했는가?'
+  ];
+  const WESTERN_FACE_ANGLE_NOTE='모든 꽃을 무조건 일자로 꽂지 말고 위에서 아래로 내려갈수록 조금씩 얼굴이 앞을 향하게 낮추어, 측면에서 보았을 때 얼굴 각도가 앞으로 둥글게 떨어지게 합니다.';
+  const WESTERN_PREP=[
+    WESTERN_FACE_ANGLE_NOTE,
+    '서양형 가산점: 포컬 장미 얼굴을 1로 볼 때, 쉐도우 장미가 바로 아래에서 약 0.5만 보이도록 겹쳐 두 꽃이 한 개 반처럼 보이는가?'
+  ];
+  const COLOR_COMMON_PREP=[
+    '제1·2·3과제의 전체 색상은 비슷해도 각 과제의 장미 색은 서로 다르게 준비했는가?'
+  ];
+  const MATERIAL_BUYING_PREP=[
+    '거베라는 수술에 비해 잎(꽃잎)이 너무 큰 것보다 잎이 좀 작은 것을 구매했는가?',
+    '일반 거베라는 피치파스타 정도를 크기 마지노선으로 보았는가?',
+    '필러는 70%라는 비율 자체보다 사용했는지 안 했는지만 본다는 메모를 기억했는가?',
+    '핑크 장미는 가시가 적고 오렌지 장미는 가시가 많다는 구매 특성을 확인했는가?'
+  ];
+  const EXAM1_PREP=[
+    '제1과제 그린 말채 색 조합: 코랄·핑크·피치·핫핑크 거베라와 핑크 빅토리아 장미를 조합했는가?',
+    '핑크 빅토리아 장미는 가시가 적고 수급이 원활하지만 큰 얼굴이 많으므로 다리가 너무 두껍지 않은지 확인했는가?',
+    '미니장미는 피치 컬러 햇살 또는 핫핑크색의 동글동글한 에그타르트 같은 꽃을 고르고, 닭발이 길지 않고 짧은 것을 골랐는가?',
+    '일방형에는 거베라가 좋다는 소재 메모를 확인했는가?',
+    '적말채에는 레드 크리스마스처럼 아예 빨간 꽃도 잘 어울린다는 색 조합을 확인했는가?',
+    '시간 운영 메모: 코사지 10분, 구조물 20분, 꽃 넣기 10분, 묶기 10분을 확인했는가?',
+    '기존 제1과제 조합인 핫핑크 거베라 + 흰색·연분홍 장미 + 핑크 햇살 미니장미를 쓸 때, 장미를 핑크로 바꾸거나 거베라를 더 연하게 바꿔 전체 색이 튀지 않게 했는가?'
+  ];
+  const EXAM2_PREP=[
+    '제2과제 색 조합 ① 진한 피치·오렌지 거베라 + 오렌지 장미 + 크림·연노랑 미니소국 + 핑크 리시안셔스(그린 리시안셔스도 구할 수 있으면 가능)를 준비했는가?',
+    '제2과제 색 조합 ② 연핑크 거베라 + 연보라 장미 + 연보라 리시안셔스를 준비했는가?',
+    '제2과제 색 조합 ③ 그림거베라 + 피치팡팡 또는 오렌지아즈아 소국 조합을 확인했는가?',
+    '소국은 포드 형태가 아니라 많이 달리고 줄기가 얇으며 얼굴이 작은 것을 고르는 메모를 확인했는가? 작은 얼굴이 정말 맞는지는 다시 확인할 것.',
+    '시험에서 10분 남았다는 안내가 나오면 제2과제의 백 처리를 바로 시작하는가?',
+    '방사형은 뒤방사가 아니라, 사람이 보는 기준으로 앞으로 쏟아지면서 뒤로 꽂히는 앞방사인가?',
+    '기존 제2과제 조합인 살구색 거베라 + 주황색 장미 + 분홍색 리시안셔스 + 흰색 소국은 흰색 소국을 크림 소국으로 바꿔 전체적으로 튀지 않게 했는가?'
+  ];
+  const EXAM3_PREP=[
+    '제3과제 색 조합 ① 레드 절화 + 초록 프로기 퐁퐁 소국을 쓰고 소국을 아래에 깔아주는 구성을 확인했는가?',
+    '제3과제 색 조합 ② 노란 카네이션 + 오렌지 소국을 확인했는가?',
+    '제3과제 색 조합 ③ 오렌지 카네이션 + 너무 밝지 않은 노란 소국을 확인했는가?',
+    '제3과제 색 조합 ④ 오렌지 카네이션 + 브라운 오렌지 소국(피치팡팡 같은 계열)을 확인했는가?',
+    '제3과제 색 조합 ⑤ 오렌지 카네이션 + 와인 소국을 확인했는가?',
+    '제3과제 색 조합 ⑥ 핫핑크 카네이션 + 와인 소국을 확인했는가?',
+    '동양형 공통 순서가 1·2·3주지 → 종지 → 1·2·3주지 장미 → 포컬 아래 왼쪽 쉐도우 1개 → 장미 보조 → 소국·신종 셀렘 순서인가?',
+    '1주지 보조장미는 뒤쪽, 2주지 보조장미는 오른쪽 앞에 두고 포컬·1주지 보조장미·2주지 보조장미의 길이를 같게 잡았는가?',
+    '주지 하단은 셀렘으로 가리고 남은 침봉은 돈나무를 잘라 가렸는가?',
+    '주지를 침봉에 꽂을 때 줄기 하단을 검지로 꾹 눌러 고정했는가?',
+    '주지를 침봉에 꽂거나 뺄 때 가위로 침봉 반대편을 눌러 움직이지 않게 했는가?',
+    '동양형 주지들이 괄호처럼 밖에서 안으로 포옹하며 감싸는 오목한 형태인가?',
+    '3주지를 일자로만 꽂지 않고 살짝 왼쪽으로 돌려 ) 형태로 감싸게 했는가?',
+    '모든 소재를 안으로 돌려 선적으로 사용했으며 잎 뒷면이 보여도 괜찮다는 점을 적용했는가?',
+    '정면에서 평면인 삼지창 소재도 옆으로 돌려 선적으로 쓰고, 뿌리를 가리도록 비틀어 면이 평평하지 않게 했는가?',
+    '정면을 보는 삼지창 주지가 V자가 되지 않도록 옆으로 틀었는가?',
+    '주지 선을 연결했을 때 왼쪽에 비대칭 삼각형 여백이 남는가?',
+    '1·2·3주지를 침봉 외곽에 아슬아슬하게 꽂지 않고 안쪽에 안정적으로 꽂았는가?',
+    '모든 주지의 배나 가슴이 앞으로 튀어나오지 않는가?',
+    '종지는 여백 안이 아니라 바깥·밑·뒤에 무성하지 않게 두었는가?',
+    '주지 무게만으로 충분하면 종지를 생략하고, 흉터를 가릴 때는 1/4 길이의 짧은 종지를 앞에 사용했는가?',
+    '3주지 안쪽에 아주 작고 짧고 얇은 종지를 넣을 때 아래 바닥에 꽂아 계단식으로 만들지 않았는가?',
+    '나무 가지가 겹칠 때 한쪽 나무의 이파리를 터서 선을 정리했는가?',
+    '나무는 깨끗한 오목한 ( 형태이며 볼록한 배밀이 형태가 아닌가?',
+    '바깥쪽의 볼록한 반복은 허용하되 반대쪽 안쪽의 오목한 여백은 건드리지 않았는가?',
+    '줄기가 같은 라인에서 V자가 되지 않도록 옆이나 뒤로 틀어 다른 각도를 써서 입체적으로 만들었는가?',
+    '1주지의 울룩불룩한 부분을 ㄱ자 배밀이처럼 내밀지 않았고, 경사형에서는 배가 보이지 않는가? 아래로 내린 ㄱ 형태는 허용했는가?',
+    '3주지가 화기에 닿지 않고 닿을 듯 말 듯 떠 있는가?',
+    '주지 사이에 서로 다른 키와 높낮이를 주었는가?',
+    '뒤로 5~10˚는 활쏘기하듯 ) 곡선의 끝과 끝을 연결한 선의 각도라는 점을 적용했는가?',
+    '1주지 장미 세트, 2주지 장미 세트, 포컬+쉐도우 세트가 각각 서로 붙어 있는가?',
+    '1주지 보조장미가 1주지 장미의 바로 뒤에 있고, 모든 장미가 주지가 감싸 만든 스노우볼과 침봉 안쪽에 담겨 있는가?',
+    '침봉에 꽂히는 줄기 하단부터 맨 위 꽃 머리까지 전부 주지 삼각형 안에 있으며, 머리가 밖으로 나가지 않도록 꽃을 돌려 각도를 맞췄는가?',
+    '왼쪽 장미 세트가 떨어져 있어도 가운데 포컬·쉐도우 세트는 붙여 놓았는가?',
+    '포컬이 화기 중앙, 침봉 앞쪽 1/3 지점, 전체 높이의 1/3보다 아래에 있는가?',
+    '포컬 길이는 수반 지름의 최대 길이부터 시작해 1cm씩 잘라 조정했는가?',
+    '포컬+쉐도우를 붙여 1·2주지를 연결한 일자선의 중앙 안쪽에 두고 앞으로 45˚ 쓰러뜨렸는가?',
+    '포컬과 쉐도우가 얼굴 하나 차이이며, 쉐도우가 왼쪽에서 아주 살짝 앞·가운데로 나온 (( 곡선인가?',
+    '다른 꽃이 앞으로 쓰러지거나 포컬보다 앞으로 튀어나오지 않고 꽃줄기가 X자로 교차하지 않는가?',
+    '3주지 근처 왼쪽 소국이 3주지 장미보다 아래이며 2주지보다 낮고, 3주지→왼쪽 위 포컬 쪽→가운데 오른쪽 순서로 튕겨 올라가는가?',
+    '카네이션 마디를 피해 침봉에 꽂았는가?',
+    '꽃들이 가운데에서 뻗어 나오는 (( 오목 곡선과 V 방사형이며, 평행한 일자나 같은 옆라인이 아닌가?',
+    '셀렘은 주지 삼각형과 안쪽 장미의 외곽에 있고, 소국끼리 모아 보았을 때 큰 삼각형을 이루는가?',
+    '꽃을 계단식으로 꽂지 않고 필요하면 뒤로 보내 흐름을 바꾸며, 각 꽃의 길이·높이·깊이가 서로 다른가?',
+    '주지가 만든 여백을 꽃으로 가리지 않았는가?',
+    '꽃과 잎이 둥글게 이어지는 오목한 ( 곡선이라면 볼록한 반대쪽 잎을 떼어 카네이션 곡선을 강조했는가?'
   ];
   const EXAM_SCHEDULE_SOURCE='https://www.q-net.or.kr/crf021.do?gId=&gSite=Q&id=crf02101&scheType=04';
   const FLORAL_PRACTICAL_SCHEDULE=[
@@ -1531,58 +1766,59 @@
   ];
   const EXAM_LIMIT_MINUTES={'제1과제':50,'제2과제':30,'제3과제':30};
   const TASKS=[
-    {key:'corsage', name:'코사지', exam:'제1과제', desc:'중앙 장미, 스프레이 장미, 루스커스를 와이어링해 착용용 코사지로 묶는 연습', guide:'corsage', vessel:'corsage', photo:'',
+    {key:'corsage', name:'코사지', exam:'제1과제', desc:'중앙 장미, 스프레이 장미, 루스커스를 와이어링해 착용용 코사지로 묶는 연습', guide:'corsage', vessel:'corsage', photo:'', photos:[refAsset('corsage-complete-front-20260904.jpg'),refAsset('corsage-complete-back-20260904.jpg')],
      materials:'얼굴 작은 장미 1송이, 스프레이 장미 2송이, 끝이 얇고 잎이 작은 루스커스 1대, 루스커스 큰 잎 2장, 24번·26번 와이어, 그린테이프, T핀, 오간디 리본 1m',
-     fullNote:'모양: 중앙에 매스 장미 1송이(피어싱) + 바로 옆 필러 스프레이 장미 2송이(트위스팅) + 장미 뒤 루스커스 1대(트위스팅) + 장미 아래 양옆 루스커스 잎 2장(헤어핀)',
+     fullNote:"핵심 ① 장미는 피어싱 후 철사를 줄기에 트위스팅하지 않고 일자로 내려도 됨 ② 은색 철사가 전혀 보이지 않게 그린테이핑 ③ 지철사로 바인딩 후 검지 한 마디 길이로 재단 ④ 꽃 얼굴은 아래쪽이면서 나를 향하게 조절 ⑤ 리본은 단단히 감싸 묶기",
      legend:[
       {role:'rose', label:'매스(장미)'},
       {role:'sprayRose', label:'필러(스프레이 장미)'},
       {role:'line', label:'그린 소재(루스커스)'}
      ],
      order:[
-      '전처리: 장미 꽃받침과 잎, 스프레이 장미 이파리, 짧게 쓸 루스커스 잎 정리하기',
-      '중앙 장미 뒤 위쪽 루스커스 1대, 장미 옆 스프레이 장미 2송이로 삼각 구도 잡기',
-      '얼굴 밑 바인딩 지점을 엄지로 타이트하게 잡고 짧게 커팅한 뒤 다시 사선 커팅하기',
-      '장미: 24번 와이어를 사선 커팅해 꽃받침 얇은 부분에 피어싱하고, 반 접어 줄기에 3번 감은 뒤 아래로 감기',
-      '루스커스 1대: 26번 와이어를 아래 잎에 걸어 반 접고 줄기에 돌려 감아 내리기',
-      '스프레이 장미 2송이: 26번 와이어를 U자로 반 접어 줄기에 올리고 트위스팅하기',
-      '루스커스 큰 잎 2장: 꼭지를 남기고 뒤집어 중심 하단을 밖에서 안으로 뚫어 헤어핀 와이어링하기',
-      '그린테이프를 와이어 위부터 감아 올린 뒤 사선으로 3번 정도 당기며 아래로 테이핑하기',
-      '꽃 얼굴을 앞쪽 45도와 삼각 구도로 꺾고, 지철사로 바인딩을 타이트하게 묶어 내리기',
-      '절화 아래 와이어를 5cm로 커팅하고, 위로 올렸다 내려오며 테이핑해 밑면까지 감싸기',
-      'T핀 수평선이 바인딩 기준선보다 위로 오게 잡고, 지철사로 측면에서 당겨 고정하기',
-      '그린테이프로 밑면 뒤에서 앞으로 감싼 뒤 위로 올라가 지철사 부분을 꼼꼼히 덮기',
-      '오간디 리본을 X자로 T핀 위에 올리고 앞에서 묶기',
-      '마무리: 와이어와 잎이 꽃을 곡선으로 감싸게 둥글게 만지고, 꽃을 45도 각도로 내려 정리하기'
+      "전처리: 장미 꽃받침과 잎, 스프레이 장미 이파리, 짧게 쓸 루스커스 잎 정리하기",
+      "중앙 장미 뒤 위쪽 루스커스 1대, 장미 옆 스프레이 장미 2송이로 삼각 구도 잡기",
+      "얼굴 밑 바인딩 지점을 엄지로 타이트하게 잡고 짧게 커팅한 뒤 다시 사선 커팅하기",
+      "장미: 24번 와이어를 사선 커팅해 꽃받침 얇은 부분에 피어싱하고, 철사를 줄기에 트위스팅하지 않고 일자로 내려도 됨",
+      "루스커스 1대와 스프레이 장미 2송이는 26번 와이어로 트위스팅하기",
+      "루스커스 큰 잎 2장은 꼭지를 남기고 헤어핀 와이어링하기",
+      "그린테이프로 철사 끝까지 감되 은색이 전혀 보이지 않게 하고, 미니장미 앞의 반 접은 철사 윗부분 둥근 고리까지 덮기",
+      "꽃들이 아래쪽이면서 나를 보도록 고개를 굽혀 삼각 구도로 조절하기",
+      "지철사로 바인딩 포인트를 단단히 묶기",
+      "철사 끝까지 테이핑한 뒤 검지 한 마디 정도 길이로 자르고, 자른 끝을 다시 테이핑하기",
+      "T핀을 바인딩 기준선보다 위에 고정하고 그린테이프로 밑면과 지철사를 꼼꼼히 덮기",
+      "오간디 리본을 X자로 올려 단단하고 딴딴하게 감싸 묶기",
+      "마무리: 와이어와 잎이 꽃을 곡선으로 감싸게 하고 꽃 얼굴을 아래쪽·앞쪽으로 정리하기"
      ],
      fullOrder:[
-      '전처리합니다. 장미의 지저분한 꽃받침과 잎을 제거하고, 스프레이 장미 이파리도 정리합니다. 루스커스는 짧게 쓸 예정이므로 필요한 잎만 남기고 잎을 칩니다.',
-      '장미 뒤에는 위쪽으로 잎 하나가 보일 길이의 루스커스 1대를 대고, 장미 옆에는 스프레이 장미 머리 하나가 올라오게 1송이를 둡니다. 그 옆에는 작은 스프레이 장미를 붙여 장미와 스프레이 장미 2송이가 삼각 구도를 만들게 합니다.',
-      '얼굴 밑 바인딩 지점을 엄지로 타이트하게 잡습니다. 그 상태에서 가위로 짧게 커팅하고 다시 사선 커팅합니다. 삼각 구도를 잡은 뒤 커팅하므로 잘린 줄기의 길이가 모두 달라도 괜찮습니다.',
-      '장미는 24번 와이어만 사용합니다. 와이어 끝을 사선으로 잘라 날카롭게 만든 뒤, 뒤집은 장미 꽃받침의 얇은 부분에 꽂습니다. 정중앙에 오면 와이어를 반으로 접고, 장미 줄기에 와이어를 3번 정도 돌린 뒤 일자로 내려오게 돌돌 감습니다.',
-      '루스커스 1대는 26번 와이어를 사용합니다. 아래 잎에 와이어를 걸어 반으로 접고 줄기에 와이어를 감은 뒤, 돌리며 아래로 말아 내립니다.',
-      '스프레이 장미 2송이는 26번 와이어를 반 접어 U자로 만든 뒤 줄기에 그대로 올립니다. 와이어를 감고 돌려서 줄기를 감싸며 트위스팅합니다.',
-      '루스커스 큰 잎 2장은 꼭지를 남깁니다. 잎을 뒤집어 중심 하단쯤에서 밖에서 안으로 뚫고 중앙까지 26번 와이어를 끌고 옵니다. 엄지와 검지로 잎을 잡아 와이어를 반 접어 내린 뒤, 끝부분을 잡아 겹쳐 돌립니다. 잎과 철사 부분을 살짝 만져주며 형태를 잡습니다.',
-      '그린테이프는 와이어 위 부분에서 시작해 위로 올라갔다가, 사선으로 3번 정도 잡아당기며 길게 아래로 감습니다. 끝까지 길게 내리지 않아도 되지만 와이어가 보이면 한 번 더 테이프를 감싸줍니다.',
-      '꽃 얼굴들을 앞쪽으로 45도 각도에 맞추고 삼각 구도가 되게 꺾습니다. 스프레이 장미는 앞면으로 잡고, 생화와 와이어 줄기의 바인딩 위치를 맞춰 모은 뒤 지철사로 한 바퀴 잡아당기며 타이트하게 돌려 아래로 내려줍니다.',
-      '절화 아래 와이어는 5cm로 커팅합니다. 테이프를 위로 올렸다가 다시 내려와 돌려주며 테이핑하고, 아랫부분을 한 번 돌려 아랫밑면까지 감싸지게 합니다.',
-      'T핀은 수평 일자 부분이 바인딩 기준선보다 위로 오게 잡습니다. 목 대가 세로로 그대로 떨어질 수 있게 위치를 맞추고, 지철사로 한 바퀴 돌린 뒤 측면에서 잡아당기며 돌립니다. 철사 아랫부분이 측면으로 떨어져 목과 와이어 줄기 사이 틈에 오게 합니다.',
-      '그린테이프로 아랫밑면을 뒤에서 앞 방향으로 한 번 감싸고 아래에서 위로 올라갑니다. 지철사 부분을 꼼꼼히 감싸고, 타이트하게 잡아당기며 아래로 감습니다.',
-      '리본은 한쪽을 길게 위로 올려놓고 짧은 쪽을 아래에서 위로 올려 꽁다리를 감싸 올립니다. 바로 접어 내린 뒤 아래에서부터 타이트하게 잡아당기며 돌려 올립니다. 긴 쪽은 T핀 수평 위로, 짧은 쪽은 반대 방향으로 T핀 위에 X자로 올리고 앞에서 리본을 묶습니다.',
-      '마지막으로 와이어와 잎이 꽃을 곡선으로 감쌀 수 있도록 둥글게 만집니다. 잎을 돌려주고 꽃 얼굴은 45도 각도로 내려 착용했을 때 앞면이 또렷하게 보이게 정리합니다.'
+      "전처리합니다. 장미의 지저분한 꽃받침과 잎을 제거하고, 스프레이 장미 이파리도 정리합니다. 루스커스는 짧게 쓸 예정이므로 필요한 잎만 남기고 잎을 칩니다.",
+      "장미 뒤에는 위쪽으로 잎 하나가 보일 길이의 루스커스 1대를 대고, 장미 옆에는 스프레이 장미 머리 하나가 올라오게 1송이를 둡니다. 그 옆에는 작은 스프레이 장미를 붙여 장미와 스프레이 장미 2송이가 삼각 구도를 만들게 합니다.",
+      "얼굴 밑 바인딩 지점을 엄지로 타이트하게 잡습니다. 그 상태에서 가위로 짧게 커팅하고 다시 사선 커팅합니다. 삼각 구도를 잡은 뒤 커팅하므로 잘린 줄기의 길이가 모두 달라도 괜찮습니다.",
+      "장미는 24번 와이어 끝을 사선으로 잘라 꽃받침의 얇은 부분에 피어싱합니다. 최신 기준으로 장미 철사를 줄기에 감아 트위스팅하지 않아도 되며, 반으로 접은 철사를 장미 줄기와 나란히 일자로 그대로 내려도 됩니다.",
+      "루스커스 1대는 26번 와이어를 아래 잎에 걸어 반으로 접고 줄기에 돌려 감아 내립니다. 스프레이 장미 2송이는 26번 와이어를 U자로 반 접어 줄기에 올리고 트위스팅합니다.",
+      "루스커스 큰 잎 2장은 꼭지를 남깁니다. 잎을 뒤집어 중심 하단을 밖에서 안으로 뚫어 중앙까지 26번 와이어를 끌고 온 뒤 반 접어 헤어핀 와이어링합니다.",
+      "그린테이프를 와이어 위에서 시작해 철사 끝까지 단단히 감습니다. 은색 철사가 한 부분도 보이면 안 되며, 특히 미니장미 앞부분에 보이는 반 접은 철사의 위쪽 둥근 고리까지 초록테이프로 완전히 덮습니다.",
+      "꽃 얼굴들은 아래쪽을 향하면서 동시에 나를 보도록 고개를 굽혀 조절합니다. 중앙 장미와 스프레이 장미 2송이가 앞쪽 삼각 구도를 유지하게 합니다.",
+      "생화와 와이어 줄기의 바인딩 위치를 맞춰 모은 뒤 지철사로 바인딩 포인트를 한 바퀴 잡아당겨 단단히 묶고 아래로 내려줍니다.",
+      "철사 끝까지 먼저 테이핑한 다음 검지 한 마디 정도의 길이로 자릅니다. 자른 단면과 끝부분에서 은색 철사가 드러나지 않도록 다시 그린테이프로 마감합니다.",
+      "T핀은 수평 일자 부분이 바인딩 기준선보다 위로 오게 잡고 지철사로 측면에서 당겨 고정합니다. 그린테이프로 밑면을 뒤에서 앞으로 감싸고 지철사 부분까지 꼼꼼히 덮습니다.",
+      "오간디 리본은 긴 쪽과 짧은 쪽을 T핀 위에 X자로 올린 뒤 앞에서 묶습니다. 느슨하지 않게 단단하고 딴딴하게 감싸 고정합니다.",
+      "마지막으로 와이어와 잎이 꽃을 곡선으로 감싸도록 둥글게 만집니다. 착용했을 때 꽃들이 아래쪽이면서 나를 향하도록 얼굴 각도를 다시 확인합니다."
      ],
      checks:[
-      '꽃다발에는 장미 9송이, 코사지에는 얼굴 작은 장미 1송이를 따로 빼두었는가?',
-      '코사지용 루스커스는 끝이 얇고 이파리가 작은 1대를 미리 빼두었는가?',
-      '코사지 하단을 루스커스 큰 잎 2장으로 받쳤는가?',
-      '장미에는 24번 와이어, 장미 외 소재에는 26번 와이어를 사용했는가?',
-      '오간디 리본 1m를 시험장에 가져갈 준비가 되었는가?',
-      '바인딩 위 생화 부분은 약 7cm, 아래 와이어 부분은 약 5cm로 정리되었는가?',
-      '장미, 스프레이 장미 2송이, 루스커스가 삼각 구도를 이루는가?',
-      '꽃 얼굴이 앞쪽 45도로 내려오고, 잎과 와이어가 꽃을 둥글게 감싸는가?'
+      "꽃다발에는 장미 9송이, 코사지에는 얼굴 작은 장미 1송이를 따로 빼두었는가?",
+      "코사지용 루스커스는 끝이 얇고 이파리가 작은 1대를 미리 빼두었는가?",
+      "코사지 하단을 루스커스 큰 잎 2장으로 받쳤는가?",
+      "장미에는 24번 와이어, 장미 외 소재에는 26번 와이어를 사용했는가?",
+      "장미는 피어싱한 철사를 줄기에 트위스팅하지 않고 일자로 내려도 된다는 최신 기준을 적용했는가?",
+      "은색 철사가 전혀 보이지 않으며 미니장미 앞의 반 접은 철사 둥근 고리도 그린테이프로 덮였는가?",
+      "철사 끝까지 먼저 테이핑하고 지철사로 바인딩 포인트를 묶었는가?",
+      "검지 한 마디 정도 길이로 자른 뒤 잘린 끝을 다시 테이핑했는가?",
+      "오간디 리본 1m를 준비하고 리본을 단단하고 딴딴하게 감싸 묶었는가?",
+      "장미, 스프레이 장미 2송이, 루스커스가 삼각 구도를 이루는가?",
+      "꽃 얼굴이 아래쪽이면서 나를 향하고 잎과 와이어가 꽃을 둥글게 감싸는가?"
      ]},
-    {key:'bouquetDome', name:'반구형 꽃다발', exam:'제1과제', desc:'둥근 구조물을 먼저 만들고, 완성된 반구형 구조물에 꽃을 끼워 넣는 꽃다발 연습', guide:'bouquetDome', vessel:'bouquetDome', photo:'',
-     fullNote:'핵심 ① 손잡이 중심축 고정 ② 반구형 구조물의 둥근 외곽 ③ 구조물 구멍에 꽃 끼우기 ④ 어느 방향에서 보아도 한쪽으로 무너지지 않는 균형',
+    {key:'bouquetDome', name:'반구형 꽃다발', exam:'제1과제', desc:'둥근 구조물을 먼저 만들고, 완성된 반구형 구조물에 꽃을 끼워 넣는 꽃다발 연습', guide:'bouquetDome', vessel:'bouquetDome', photo:refAsset('bouquet-dome-flower-complete-02-20260904.jpg'),
+     fullNote:"핵심 ① 바깥 원 지름 33cm·안쪽 여백 8cm·높이 18cm ② 열십자를 살짝 비틀고 중심에서 빗겨 손잡이와 중앙 거베라 자리 확보 ③ 꽃은 구조물 밖으로 나오지 않게 오목하게 돌려 넣기 ④ 꽃 사이마다 루스커스로 목 가리기 ⑤ 위는 봉긋하고 아래는 넣어 ( ) 반구 ⑥ 바인딩 후 줄기 세우기·급수·분무 4회",
      legend:[
       {role:'malchae', label:'구조소재(말채)'},
       {role:'line', label:'그린 소재(루스커스)'},
@@ -1592,36 +1828,80 @@
       {role:'mum', label:'매스(소국)'}
      ],
      order:[
-      '말채를 움직여 손잡이 중심축을 세우고, 구조물이 올라갈 기준 높이와 정면을 정하기',
-      '말채를 둥글게 휘어 하단 링을 만들고, 반구형 구조물의 가장 넓은 외곽 잡기',
-      '말채를 위쪽 중심으로 이어 보조선을 엮어 둥근 반구 구조물 만들기',
-      '말채 구조물의 구멍과 간격이 너무 촘촘하거나 한쪽으로 찌그러지지 않았는지 확인하기',
-      '그린 소재를 낮게 끼워 구조물 하단과 손잡이 윗부분을 자연스럽게 정리하기',
-      '중심 꽃을 반구의 앞쪽 중앙에 먼저 끼워 꽃다발의 초점을 잡기',
-      '장미와 거베라를 구조물 표면에 삼각 구도로 나누어 끼우기',
-      '리시안셔스와 소국으로 빈 구멍을 채우되, 반구 윤곽이 무너지지 않게 높이를 맞추기',
-      '편백과 그린 소재를 짧게 넣어 구조물 안쪽 빈틈을 정리하고 손잡이를 마무리하기'
+      "전처리: 미니장미 겉잎을 떼고, 거베라 위로 튀어나오는 철사는 미리 자르며, 말채 끝은 줄기 기준 일자로 맞추기",
+      "루스커스 17대 중 원추형용 7대는 한 뼘 길이로 남기고, 나머지 10대는 잎을 조금만 남겨 아래쪽 사용용으로 짧게 훑기",
+      "기존 재단 참고치 확인: 안쪽 원 80cm, 바깥 원 110cm, 십자 35cm 2개, 손잡이·보조선 40cm 2개, 꾸밈선 60cm 3개",
+      "길이를 외워 먼저 자르지 말고 바깥 원을 지름 33cm로 먼저 만든 뒤 손가락으로 8cm를 가늠해 안쪽 원 만들기. 안쪽 원 지름은 따로 계산하지 않기",
+      "열십자는 정중앙에서 살짝 빗겨 한쪽 공간을 크게 하고 살짝 비틀어, 손잡이가 정중앙에 오고 거베라가 중앙에 놓일 자리를 만들기",
+      "손잡이·열십자·대각선 보조선은 얇은 말채를 써 꽃 허리가 꺾이지 않게 하고, 가로 십자에서 최고점까지 높이 18cm 맞추기",
+      "꾸밈선끼리 X자로 만나는 부분은 위쪽을 묶고, 구조물 구멍과 둥근 외곽이 한쪽으로 찌그러지지 않았는지 확인하기",
+      "손잡이와 거베라를 함께 잡고, 거베라 사방을 루스커스로 감싸 구조물 안에서 흔들리지 않게 고정하기",
+      "바인딩 포인트 가까이를 잡되 소재를 펼치며 작업하고, 바깥 원으로 갈 때는 바인딩을 잡은 손을 살짝 아래로 내리기",
+      "각 꽃 종류를 7송이 기준으로 안쪽 원 3송이·바깥 원 4송이로 나누어 넣기",
+      "12시·6시 세로 한 줄에는 장미를 한 송이씩, 3시·9시 가로 한 줄에는 미니장미를 넣거나 그 반대로 하여 장미류 열십자 만들기",
+      "미니장미 → 장미 → 거베라 → 미니장미가 서로 어긋나는 흐름으로 채우기",
+      "꽃을 넣은 바로 옆에 다시 꽃을 붙이지 말고 사이마다 루스커스를 넣으며, 꽃줄기와 목이 훤히 보이면 그린으로 가리기",
+      "꽃이 구조물보다 밖으로 튀어나오지 않게 하고, 튀어나오면 얼굴을 무조건 나에게 향하지 말고 오목한 ( 모양이 되도록 돌려 안으로 넣기",
+      "꽃이 계속 튕겨 나오면 바인딩을 잡은 손을 조금 아래로 내리고 줄기를 돌린 뒤, 그 위에 올라와야 할 꽃의 아래쪽으로 줄기를 넣기",
+      "반구형 위쪽은 더 올려 봉긋하게, 아래쪽은 안으로 넣어 ( ) 형태로 둥글게 만들고 꽃이 손잡이 맨 위 말채 끝보다 2cm 올라오게 하기",
+      "모두 잡은 뒤 구조물을 한 번 위로 올리고, 안쪽 꽃과 루스커스 아래로 빠진 소재를 위로 쑥쑥 끌어올리기",
+      "바인딩 포인트에 마끈을 5번 탄탄히 감아 세웠을 때 흘러내리지 않게 묶기",
+      "마끈 아래 한 뼘 또는 두 줌 지점을 너무 꽉 잡지 말고 눈 가까이에서 보며 일자로 자르기",
+      "꽃이 아래를 향하게 뒤집어 외곽 줄기는 건드리지 않고 가운데 안쪽 줄기만 1cm 짧게 자르기",
+      "책상에 세워 닿지 않는 줄기는 아래로 내려 모두 바닥에 닿게 하고, 서지 않거나 외곽 가장자리가 뜨면 가운데를 조금 더 자르기",
+      "돌려가며 가위 중간 부분까지 넣어 깊은 각도의 사선으로 줄기 끝을 자르기. 필요하면 뒤집어서 커팅하기",
+      "완성 꽃다발을 세우고 물을 부은 뒤 분무기로 물을 4번 뿌리기"
      ],
      fullOrder:[
-      '말채를 움직여 손잡이 중심축을 먼저 세웁니다. 구조물이 올라갈 높이와 정면을 정하고, 손잡이 아래쪽이 벌어지지 않도록 중심을 잡습니다.',
-      '말채를 둥글게 휘어 반구형 구조물의 하단 링을 만듭니다. 이 링이 찌그러지면 꽃을 끼운 뒤에도 전체 꽃다발이 한쪽으로 눌려 보입니다.',
-      '하단 링에서 위쪽 중심으로 이어지는 보조 말채를 엮어 반구 구조물을 만듭니다. 위로 갈수록 자연스럽게 좁아지고, 각 구멍이 꽃을 끼울 수 있을 만큼 살아 있어야 합니다.',
-      '말채 구조물의 구멍과 간격을 확인합니다. 너무 촘촘하면 꽃이 들어가지 않고, 너무 넓으면 꽃이 흔들리므로 한 손으로 들었을 때 둥근 외곽이 유지되는지 봅니다.',
-      '그린 소재를 낮게 끼워 구조물 하단과 손잡이 윗부분을 정리합니다. 이 단계에서는 구조물의 둥근 외곽을 가리지 않게 짧게 넣습니다.',
-      '중심 꽃을 반구의 앞쪽 중앙에 먼저 끼워 초점을 잡습니다. 꽃 얼굴이 위로만 향하지 않도록 정면에서 보이는 각도를 맞춥니다.',
-      '장미와 거베라를 구조물 표면에 삼각 구도로 나누어 끼웁니다. 같은 소재끼리는 높이와 선상이 자연스럽게 이어지되, 한곳에 뭉치지 않게 배치합니다.',
-      '리시안셔스와 소국으로 빈 구멍을 채웁니다. 반구 윤곽보다 갑자기 높거나 낮게 튀어나오지 않게 하고, 꽃 얼굴이 둥근 면을 따라 자연스럽게 이어지게 합니다.',
-      '편백과 그린 소재를 짧게 넣어 구조물 안쪽 빈틈을 정리합니다. 마지막에는 손잡이 아래 줄기 흐름과 묶임 지점을 정리하고, 사방에서 둥근 실루엣을 확인합니다.'
+      "먼저 미니장미의 지저분한 겉잎을 떼어냅니다. 거베라 얼굴 위로 튀어나오는 철사는 시험 전에 미리 잘라 두고, 말채 끝부분은 가지 끝이 들쭉날쭉하지 않도록 줄기 기준의 일자선으로 정리합니다.",
+      "소재 손질 시간에 루스커스 17대를 나눕니다. 원추형에 사용할 7대는 한 뼘 정도 길이를 남겨 길게 정리하고, 나머지 10대는 잎을 조금만 남긴 채 짧게 훑어 구조물 아래쪽과 꽃 목 가림에 사용합니다.",
+      "예전에 외워 재단하던 참고 길이는 안쪽 원 80cm, 바깥 원 110cm, 십자 35cm 2개, 손잡이와 보조선 40cm 2개, 꾸밈선 60cm 3개였습니다. 이번에는 이 길이부터 외워 자르지 않고 실제 바깥 원을 먼저 만들어 맞춥니다.",
+      "바깥 원을 지름 33cm로 먼저 만듭니다. 그 원에서 손가락으로 8cm 여백을 가늠한 뒤 바로 안쪽 원을 만들어 넣으며, 안쪽 원의 지름은 따로 계산하거나 외우지 않습니다.",
+      "가로·세로 열십자는 완벽하게 정중앙에서 만나게 하지 않습니다. 중심에서 살짝 빗겨 한쪽 공간을 크게 만들고 십자를 약간 비틀면 손잡이를 넣었을 때 정중앙에 오며, 중앙 거베라가 들어갈 공간도 확보됩니다.",
+      "손잡이, 열십자, 대각선으로 덧대는 보조선에는 얇은 말채를 사용합니다. 열십자가 두꺼우면 꽃의 허리가 꺾이므로 얇은 선을 고르고, 가로 십자에서 구조물 최고점까지 높이는 18cm로 맞춥니다.",
+      "꾸밈선끼리 X자로 만나는 지점은 아래쪽이 아니라 위쪽을 묶습니다. 말채 구멍이 꽃을 끼울 만큼 살아 있는지, 바깥 원과 반구 외곽이 한쪽으로 찌그러지지 않았는지 확인합니다.",
+      "손잡이와 중앙 거베라를 함께 잡습니다. 거베라 주변 사방에 루스커스를 넣어 감싸고, 구조물 틈을 이용해 잘 끼워 넣어 중앙 꽃과 손잡이가 흔들리지 않게 합니다.",
+      "바인딩 포인트 가까이를 잡되 소재를 한꺼번에 조이지 말고 펼치면서 작업합니다. 바깥 원 쪽 꽃을 넣을 때는 바인딩을 잡은 손을 살짝 아래로 내려 줄기가 자연스럽게 외곽으로 퍼질 공간을 만듭니다.",
+      "각 꽃 종류를 총 7송이 이상 사용한다는 기준으로 보면 안쪽 원에 3송이, 바깥 원에 4송이를 배치합니다. 안팎 수량과 간격을 먼저 나누면 한쪽으로 몰리지 않습니다.",
+      "12시와 6시의 세로 한 줄에는 장미를 한 송이씩 넣고, 그와 교차하는 3시와 9시의 가로 한 줄에는 미니장미를 넣습니다. 세로와 가로 소재는 서로 바꾸어도 되지만 한 줄씩만 사용해 장미류가 열십자를 만들게 합니다.",
+      "나머지 공간은 미니장미, 장미, 거베라, 미니장미가 서로 어긋나는 모양으로 반복해 채웁니다. 같은 종류가 한곳에 몰리거나 나란히 붙지 않게 합니다.",
+      "꽃을 하나 넣고 바로 옆에 또 꽃을 넣으면 얼굴끼리 달라붙으므로 그 사이에 루스커스를 넣습니다. 꽃의 줄기나 목 부분이 훤히 보이는 곳도 루스커스로 채워 꽃 사이 간격과 목을 가립니다.",
+      "가장 중요한 기준은 모든 꽃이 구조물보다 밖으로 튀어나오지 않는 것입니다. 바깥으로 나온 꽃은 얼굴을 무조건 나에게 보이게 고집하지 말고, 꽃과 줄기를 돌려 오목한 ( 곡선으로 구조물 안에 들어가게 합니다.",
+      "그래도 꽃이 계속 튕겨 나오면 바인딩을 잡은 손을 조금 아래로 내린 뒤 줄기를 돌려 봅니다. 그 꽃보다 위에 올라와야 하는 꽃의 아래쪽으로 줄기를 통과시켜 구조 안에서 지지를 받게 합니다.",
+      "반구형은 위쪽 꽃을 더 올려 봉긋하게 만들고 아래쪽 꽃은 안으로 넣어 전체가 ( )처럼 둥글게 이어지게 합니다. 가장 높은 꽃은 손잡이 맨 위 말채 끝보다 약 2cm 올라오게 합니다.",
+      "모든 소재를 잡은 다음 구조물 전체를 한 번 위로 올립니다. 안쪽 꽃이나 루스커스 밑으로 빠져 숨어 있는 소재가 있으면 위로 쑥쑥 끌어올려 원래 높이와 얼굴이 보이게 합니다.",
+      "세우기 전에 바인딩 포인트에 마끈을 5번 탄탄하게 감아 묶습니다. 충분히 단단해야 꽃다발을 세웠을 때 소재가 아래로 흘러내리지 않습니다.",
+      "마끈 아래 한 뼘 또는 두 줌 정도 위치를 잡되 줄기를 너무 꽉 쥐지 않습니다. 눈 가까이 가져가도 될 정도로 절단선을 자세히 보면서 먼저 일자로 자릅니다.",
+      "꽃이 아래를 향하도록 꽃다발을 뒤집습니다. 외곽 라인은 자르지 않고 가운데 안쪽 줄기만 1cm 짧게 잘라 세웠을 때 바닥에 안정적으로 닿는 받침을 만듭니다.",
+      "책상에 세운 뒤 바닥에 닿지 않는 줄기는 아래로 내려 모두 닿게 합니다. 꽃다발이 서지 않거나 외곽 가장자리가 뜨면 가운데 줄기를 조금 더 잘라 조정합니다.",
+      "꽃다발을 돌려가며 가위 날의 중간 부분까지 줄기를 넣고 깊은 각도로 사선 커팅합니다. 필요하면 다시 뒤집어 커팅해도 됩니다.",
+      "완성한 꽃다발을 세우고 물을 부은 뒤, 분무기로 물을 정확히 4번 뿌려 마무리합니다."
      ],
      checks:[
-      '말채 중심축이 흔들리지 않고 구조물 중심과 맞는가?',
-      '말채 하단 링과 보조선이 둥근 반구형 구조를 만드는가?',
-      '꽃을 끼울 구멍이 살아 있고 간격이 고른가?',
-      '꽃 얼굴들이 둥근 면을 따라 자연스럽게 이어지는가?',
-      '하단과 손잡이 윗부분이 그린 소재로 정리되었는가?'
+      "미니장미 겉잎을 떼고 거베라 위로 튀어나온 철사를 미리 잘랐는가?",
+      "말채 끝부분이 줄기 기준으로 일자인가?",
+      "바깥 원 지름이 33cm이고 안쪽 원과의 여백이 8cm인가?",
+      "안쪽 원 지름을 외우지 않고 바깥 원을 먼저 만든 뒤 8cm를 가늠해 만들었는가?",
+      "가로 십자에서 구조물 최고점까지 높이가 18cm인가?",
+      "열십자가 중심에서 살짝 빗겨나고 비틀어져 손잡이와 중앙 거베라 자리가 확보됐는가?",
+      "손잡이·열십자·대각선 보조선에 얇은 말채를 써 꽃 허리가 꺾이지 않는가?",
+      "꾸밈선끼리 X자로 만나는 부분의 위쪽을 묶었는가?",
+      "루스커스 17대 중 원추형용 7대는 한 뼘으로, 나머지 10대는 아래쪽용으로 짧게 손질했는가?",
+      "손잡이와 중앙 거베라를 함께 잡고 루스커스로 사방을 감쌌는가?",
+      "각 꽃 종류 7송이 기준으로 안쪽 원 3송이·바깥 원 4송이를 배치했는가?",
+      "장미와 미니장미가 세로·가로 한 줄씩 열십자를 이루는가?",
+      "미니장미 → 장미 → 거베라 → 미니장미가 어긋나는 흐름인가?",
+      "꽃 사이와 훤히 보이는 꽃 목을 루스커스로 채웠는가?",
+      "모든 꽃이 구조물 밖으로 튀어나오지 않고, 오목한 ( 모양으로 돌려 안에 들어가 있는가?",
+      "튀어나오는 꽃은 바인딩 손을 낮추고 줄기를 돌려 위 꽃의 아래로 넣었는가?",
+      "위는 봉긋하고 아래는 들어간 ( ) 반구이며 꽃이 손잡이 맨 위 말채보다 2cm 높은가?",
+      "구조물을 위로 한 번 올리고 아래로 빠진 꽃과 루스커스를 다시 끌어올렸는가?",
+      "바인딩 포인트에 마끈을 5번 감고 일자 커팅 후 가운데 안쪽만 1cm 짧게 잘랐는가?",
+      "책상에서 모든 줄기가 닿고, 가운데 추가 커팅과 깊은 사선 커팅으로 안정적으로 서는가?",
+      "세운 뒤 물을 붓고 분무기로 물을 4번 뿌렸는가?"
      ]},
-    {key:'bouquetCone', name:'원추형 꽃다발', exam:'제1과제', desc:'원추형 구조물을 만든 뒤, 구조물의 선을 따라 꽃을 끼워 넣는 꽃다발 연습', guide:'bouquetCone', vessel:'bouquetCone', photo:'',
-     fullNote:'핵심 ① 아래는 넓고 위는 좁은 원추 실루엣 ② 꼭짓점과 중심축 정렬 ③ 구조선 사이에 꽃 끼우기 ④ 원추형이 꽃으로 덮여도 무너지지 않게 유지',
+    {key:'bouquetCone', name:'원추형 꽃다발', exam:'제1과제', desc:'원추형 구조물을 만든 뒤, 구조물의 선을 따라 꽃을 끼워 넣는 꽃다발 연습', guide:'bouquetCone', vessel:'bouquetCone', photo:refAsset('bouquet-cone-flower-complete-01-20260904.jpg'),
+     fullNote:"핵심 ① 완성 높이 60cm 이상·하단 원 지름 20cm ② 말채의 너무 얇은 윗부분 제거 ③ 열십자와 꼭짓점을 중앙에 맞춘 뒤 손잡이·꾸밈선 결속 ④ 위 3송이·아래 10cm 부근 4송이, 거베라와 장미 교차 ⑤ 꽃은 구조물 안쪽 ⑥ 바인딩 후 줄기 세우기·급수·분무 4회",
      legend:[
       {role:'malchae', label:'구조소재(말채)'},
       {role:'line', label:'그린 소재(루스커스)'},
@@ -1631,36 +1911,79 @@
       {role:'mum', label:'매스(소국)'}
      ],
      order:[
-      '말채를 움직여 손잡이 중심축을 세우고, 원추형 구조물의 꼭짓점과 하단 폭을 정하기',
-      '말채를 둥글게 휘어 하단의 큰 원형 링을 만들고 원추형 구조물의 가장 넓은 폭 잡기',
-      '꼭짓점에서 하단 링으로 내려오는 말채 세로 구조선을 연결해 원추 뼈대 만들기',
-      '말채 중간 보강 링을 넣어 꽃을 끼울 수 있는 구멍과 층 만들기',
-      '그린 소재를 구조선 사이에 낮게 끼워 뼈대를 정리하되 원추 실루엣은 남기기',
-      '초점 꽃을 앞쪽 낮은 위치에 끼워 시선이 모이는 지점 만들기',
-      '장미와 거베라를 아래에서 위로 갈수록 짧아지게 끼워 원추형 면 만들기',
-      '리시안셔스와 소국을 층 사이 빈 공간에 넣어 구조물 구멍을 자연스럽게 채우기',
-      '편백과 그린 소재로 속을 정리하고, 꼭짓점과 하단 폭이 원추형으로 보이는지 확인하기'
+      "전처리: 미니장미 겉잎을 떼고 거베라 위 철사를 미리 자르며, 말채 끝은 줄기 기준 일자로 맞추고 너무 얇은 완전 윗부분은 제거하기",
+      "기존 재단 참고치 확인: 하단 원판용 80cm(지름 20cm), 열십자·손잡이 40cm 3개, 기둥 55cm 4개, 휘어 감는 꾸밈선 60cm 2개",
+      "열십자는 중심에서 살짝 빗겨 한쪽을 크게 하고 비틀며, 손잡이·열십자·대각선 보조선에는 얇은 말채 사용하기",
+      "십자 위에 기둥을 묶고 책상에 세워 꼭대기 포인트가 중앙인지 확인한 뒤, 완성 높이 60cm 이상으로 조절하기",
+      "꼭짓점과 기둥을 확정해 묶은 다음 손잡이를 묶고 꾸밈선을 순서대로 묶기",
+      "1차 대각선 꾸밈선은 손잡이가 흔들리지 않게 손잡이와 붙여 묶기",
+      "2차 대각선 꾸밈선은 위쪽 꽃을 받치도록 손잡이보다 위에 묶되, 꽃이 없는 꼭대기까지 너무 높게 올리지 않기",
+      "루스커스 17대 중 원추형용 7대는 한 뼘 길이로 남기고, 나머지 10대는 잎을 조금만 남겨 아래쪽용으로 짧게 훑기",
+      "손잡이와 루스커스를 중앙에 먼저 잡고 구조물에 단단히 끼워 움직이지 않게 한 뒤 장미 한 송이도 함께 잡기",
+      "아래쪽 10cm를 남기고 위쪽에 꽃 3송이, 아래 10cm 부근에 나머지 4송이를 넣어 총 7송이 구성하기",
+      "아래쪽 네 자리는 거베라·장미 / 거베라·장미 / 거베라·장미 / 거베라·장미 흐름으로 교차 배치하기",
+      "꽃을 넣은 바로 옆에는 루스커스를 넣고, 보이는 꽃줄기와 목을 그린으로 가리기",
+      "꽃이 구조물보다 밖으로 튀어나오면 얼굴을 무조건 나에게 향하지 말고 오목한 ( 모양으로 돌려 안에 넣기",
+      "꽃이 계속 튕겨 나오면 바인딩 손을 아래로 내리고 줄기를 돌려 그 위에 올라올 꽃의 아래로 넣기",
+      "모두 잡은 뒤 구조물을 위로 올리고 안쪽 꽃과 루스커스 아래로 빠진 소재를 위로 끌어올리기",
+      "바인딩 포인트에 마끈을 5번 감고, 아래 한 뼘 또는 두 줌 위치를 너무 꽉 잡지 않은 채 일자로 자르기",
+      "뒤집어 가운데 안쪽 줄기만 1cm 짧게 자르고, 책상에서 닿지 않는 줄기를 내려 모두 바닥에 닿게 하기",
+      "서지 않거나 외곽이 뜨면 가운데를 더 자른 뒤, 돌려가며 가위 중간까지 넣어 깊은 사선 커팅하기",
+      "완성 꽃다발을 세우고 물을 부은 뒤 분무기로 물을 4번 뿌리기"
      ],
      fullOrder:[
-      '말채를 움직여 손잡이 중심축을 세우고 원추형 구조물의 꼭짓점과 하단 폭을 정합니다. 중심축이 삐뚤어지면 꽃을 끼웠을 때 원추형이 한쪽으로 기울어 보입니다.',
-      '말채를 둥글게 휘어 하단의 큰 원형 링을 만들고 원추형 구조물의 가장 넓은 폭을 잡습니다. 하단 폭은 너무 좁으면 원추형이 답답하고, 너무 넓으면 꽃다발이 무거워 보입니다.',
-      '꼭짓점에서 하단 링으로 내려오는 말채 세로 구조선을 연결해 원추 뼈대를 만듭니다. 구조선 간격은 꽃을 끼울 수 있을 정도로 열려 있어야 합니다.',
-      '말채 중간 보강 링을 넣어 꽃을 꽂을 층을 만듭니다. 중간 링이 있어야 꽃이 아래로만 처지지 않고 원추형 면을 따라 고정됩니다.',
-      '그린 소재를 구조선 사이에 낮게 끼워 뼈대를 정리합니다. 이때 구조물을 완전히 덮지 말고, 원추 실루엣이 보이도록 짧게 넣습니다.',
-      '초점 꽃을 앞쪽 낮은 위치에 끼워 시선이 모이는 지점을 만듭니다. 너무 위로 올라가면 꼭짓점과 경쟁하므로 낮고 안정적으로 배치합니다.',
-      '장미와 거베라를 아래에서 위로 갈수록 짧아지게 끼웁니다. 꽃 얼굴이 원추형 면을 따라 층층이 이어지고, 같은 소재끼리 선상이 어긋나지 않게 합니다.',
-      '리시안셔스와 소국을 층 사이 빈 공간에 넣어 구조물 구멍을 자연스럽게 채웁니다. 필러가 너무 길게 튀어나오면 원추 윤곽이 흐려집니다.',
-      '편백과 그린 소재로 속을 정리합니다. 마지막에는 꼭짓점, 중간 링, 하단 링이 하나의 원추형으로 보이는지 사방에서 확인합니다.'
+      "미니장미의 겉잎을 떼고 거베라 얼굴 위로 튀어나오는 철사를 시험 전에 미리 자릅니다. 말채 끝은 줄기 기준으로 일자선이 되게 정리하며, 완전 윗부분의 지나치게 얇은 말채는 힘이 없으므로 제거하고 사용하지 않습니다.",
+      "기존에 외워 자르던 참고 길이는 하단 원판용 80cm로 지름 20cm를 만들고, 열십자와 손잡이 40cm 3개, 기둥 55cm 4개, 휘어 감는 꾸밈선 60cm 2개였습니다. 치수만 맹목적으로 자르지 말고 실제 중심과 완성 형태를 보며 조정합니다.",
+      "열십자는 완벽한 정중앙 십자가가 아니라 중심에서 살짝 빗겨 한쪽 공간을 크게 하고 조금 비틉니다. 손잡이, 열십자, 대각선 보조선에는 얇은 말채를 사용해 꽃 허리가 꺾이지 않게 합니다.",
+      "열십자 위에 기둥 네 개를 묶은 뒤 책상에 세워 봅니다. 꼭대기 포인트가 하단 원판의 중앙에 오는지 확인하고, 전체 작품 높이가 60cm 이상이 되도록 기둥 길이와 각도를 맞춥니다.",
+      "꼭대기 중심이 맞는 것을 확인한 뒤 기둥을 확실히 묶습니다. 그다음 손잡이를 묶고 마지막으로 휘어 감는 꾸밈선을 묶어야 중심이 흐트러지지 않습니다.",
+      "첫 번째 대각선 꾸밈선은 현재 손잡이가 흔들리지 않도록 손잡이와 붙여 단단히 묶습니다.",
+      "두 번째 위쪽 대각선 꾸밈선은 손잡이보다 위쪽에 묶어 위에 들어갈 꽃을 받쳐 줍니다. 다만 원추 꼭대기의 꽃이 없는 구간까지 너무 높게 올리면 쓸모가 없으므로 실제 위쪽 꽃 높이에 맞춥니다.",
+      "루스커스 17대 가운데 원추형용 7대는 한 뼘 길이를 남겨 위쪽용으로 준비합니다. 나머지 10대는 잎을 조금만 남긴 채 짧게 훑어 아래쪽과 꽃 목 가림용으로 사용합니다.",
+      "손잡이와 루스커스를 중앙에 먼저 함께 잡습니다. 루스커스를 구조물 틈에 잘 끼워 손잡이가 움직이지 않게 고정하고, 시작 장미 한 송이도 같이 잡아 중심 꽃의 기준을 만듭니다.",
+      "구조물 아래쪽 10cm는 세우기와 줄기 정리를 위해 남깁니다. 위쪽에는 꽃 3송이를 올리고 나머지 4송이는 아래 10cm 부근에 배치해 총 7송이의 높낮이를 만듭니다.",
+      "아래쪽 네 방향은 거베라와 장미가 번갈아 보이도록 거베라·장미 흐름을 반복합니다. 꽃이 한 종류끼리 몰리지 않고 원추 둘레를 돌며 교차하게 합니다.",
+      "꽃 하나를 넣은 바로 옆에 또 꽃을 붙이면 얼굴끼리 달라붙으므로 사이마다 루스커스를 넣습니다. 꽃줄기나 목이 훤히 보이는 곳은 그린으로 채워 목을 가리고 꽃 사이를 분리합니다.",
+      "가장 중요한 것은 꽃이 구조물보다 밖으로 튀어나오지 않는 것입니다. 튀어나온 꽃은 얼굴을 무조건 나에게 향하게 하지 말고 줄기를 돌려 오목한 ( 곡선으로 구조물 안에 들어가게 합니다.",
+      "꽃이 계속 튕겨 나오면 바인딩을 잡은 손을 조금 아래로 내리고 줄기를 돌립니다. 그 꽃보다 위에 올라와야 하는 꽃의 아래쪽으로 줄기를 넣어 구조물과 다른 줄기의 지지를 받게 합니다.",
+      "모든 소재를 잡은 뒤 구조물 전체를 한 번 위로 올립니다. 안쪽 꽃과 루스커스 아래로 빠진 소재가 있으면 위로 쑥쑥 끌어올려 필요한 높이와 얼굴을 되찾습니다.",
+      "바인딩 포인트에 마끈을 5번 탄탄히 감아 묶습니다. 마끈 아래 한 뼘 또는 두 줌 지점을 너무 꽉 잡지 말고 눈 가까이에서 절단선을 보며 먼저 일자로 자릅니다.",
+      "꽃이 아래를 향하도록 뒤집은 뒤 외곽 줄기는 건드리지 않고 가운데 안쪽 줄기만 1cm 짧게 자릅니다. 다시 책상에 세워 닿지 않는 줄기를 아래로 내려 모두 바닥에 닿게 합니다.",
+      "꽃다발이 서지 않거나 외곽 가장자리가 뜨면 가운데 줄기를 조금 더 자릅니다. 돌려가며 가위 날 중간까지 줄기를 넣고 깊은 각도로 사선 커팅하며 필요하면 뒤집어서 자릅니다.",
+      "완성 꽃다발을 세우고 물을 부은 다음 분무기로 물을 정확히 4번 뿌려 마무리합니다."
      ],
-     checks:[
-      '말채 꼭짓점과 손잡이 중심축이 같은 중심에 놓였는가?',
-      '말채 하단 링, 중간 링, 꼭짓점이 원추형으로 자연스럽게 이어지는가?',
-      '말채 구조선 사이에 꽃을 끼울 구멍이 살아 있는가?',
-      '꽃이 아래에서 위로 갈수록 짧아져 원추형 면을 유지하는가?',
-      '그린 소재가 구조물을 정리하되 원추 실루엣을 가리지 않는가?'
+     checksComplete:[
+      "[시험장에 가기 전]\n모든 꽃을 완전히 손질하지 말고, 숱이 많은 소재의 아랫부분만 가볍게 정리하고, 거베라 위로 튀어나오는 철사도 잘라둘 것\n루스커스는 긴 아이를 구매하고, 휘어 있다면 시험 전 손으로 미리 마사지할 것\n필러는 70% 사용하지 않아도 됨",
+      "[재료 구매 시]\n제1·2·3과제의 전체 색상은 비슷해도 각 과제의 장미 색은 서로 다르게 준비하며, 과제 별 전체 색이 튀지 않게 조절할 것\n거베라는 수술에 비해 꽃잎이 좀 작은 것\n핑크 장미는 가시가 적고 오렌지 장미는 가시가 많음",
+      "[색 조합 추천]\n제1과제\n① 그린 말채 + 코랄·핑크·피치·핫핑크 거베라 + 핑크 빅토리아 장미(다리 너무 두껍지 않은지 확인) + 피치·핑크 컬러 햇살 또는 핫핑크색의 동글동글한 에그타르트 미니장미(닭발이 짧은 것)\n② 연핑크 거베라 + 흰색·연분홍 장미 + 핑크 햇살 미니장미\n\n제2과제\n① 진한 피치·오렌지 거베라 + 오렌지 장미 + 크림·연노랑 미니소국 + 핑크·그린 리시안셔스\n② 연핑크 거베라 + 연보라 장미 + 연보라 리시안셔스\n③ 크림 거베라 + 피치팡팡·오렌지아즈마 소국\n④ 살구색 거베라 + 주황색 장미 + 분홍색 리시안셔스 + 크림 소국",
+      "장미 겉잎은 깔끔하게 떼고, 윗면이 살짝 나를 바라보는 쪽을 앞면으로 정했는가?",
+      "꽃을 7송이 이상, 종류별로 수량이 맞게 사용하였는가?",
+      "같은 소재끼리 같은 선상에 위치하지 않게 두었는가?",
+      "카네이션은 마디에 수분을 머금어 잘 부러지므로, 시험에서는 비추 소재임을 기억했는가?",
+      "스프레이 장미의 생장점 줄기를 커팅하였는가?",
+      "절화 줄기를 사선 커팅할 때 잘린 단면이 나와 정면을 향하게 했는가?",
+      "말채 끝이 줄기 기준 일자이며 지나치게 얇은 완전 윗부분을 제거했는가?",
+      "열십자가 중심에서 살짝 빗겨나고 비틀어져 손잡이와 중앙 거베라 자리가 확보됐는가?",
+      "손잡이·열십자·대각선 보조선에 얇은 말채를 써 꽃 허리가 꺾이지 않는가?",
+      "손잡이와 중앙 거베라를 함께 잡고 루스커스로 사방을 감쌌는가?",
+      "하단 원판 지름이 20cm이고 전체 작품 높이가 60cm 이상인가?",
+      "열십자가 살짝 빗겨나고 비틀어졌으며 얇은 말채를 사용했는가?",
+      "십자 위 기둥을 먼저 묶고 책상에서 꼭대기 포인트가 중앙인지 확인했는가?",
+      "기둥 4개 다음 손잡이, 그다음 꾸밈선 순서로 묶었는가?",
+      "1차 꾸밈선은 손잡이에 붙어 흔들림을 잡고, 2차 꾸밈선은 너무 높지 않게 위 꽃을 받치는가?",
+      "원추형용 루스커스 7대를 한 뼘 길이로 준비했는가?",
+      "아래 10cm를 남기고 위 3송이·아래 4송이로 총 7송이를 배치하며, 아랫 부분의 경우 거베라와 장미가 번갈아 교차했는가?",
+      "미니장미 → 장미 → 거베라 → 미니장미가 어긋나는 흐름인가?",
+      "꽃 사이와 훤히 보이는 꽃 목을 루스커스로 채웠는가?",
+      "모든 꽃이 구조물 밖으로 튀어나오지 않고, 오목한 ( 모양으로 돌려 안에 들어가 있는가?",
+      "튀어나오는 꽃은 바인딩 손을 낮추고 줄기를 돌려 위 꽃의 아래로 넣었는가?",
+      "구조물을 위로 한 번 올리고 아래로 빠진 꽃과 루스커스를 다시 끌어올렸는가?",
+      "책상에서 모든 줄기가 닿고, 가운데 추가 커팅과 깊은 사선 커팅으로 안정적으로 서는가?",
+      "세운 뒤 물을 붓고 분무기로 물을 4번 뿌렸는가?"
+
      ]},
-    {key:'invT', name:'T자형', exam:'제2과제', desc:'방사형·일방화·좌우 대칭, 수직선과 수평선이 연결되는 얄쌍한 T자 구성', guide:'invT', photo:'',
-     fullNote:'핵심 ① 1번부터 4번, 7번까지 모든 점들이 서로 연결 ② 좌우 대칭 ③ 날씬함 ④ 수직·수평 두께 비슷',
+    {key:'invT', name:'T자형', exam:'제2과제', desc:'방사형·일방화·좌우 대칭, 수직선과 수평선이 연결되는 얄쌍한 T자 구성', guide:'invT', photo:refAsset('invt-final-20260904-flipped.png'),
+     fullNote:'핵심:\n방사형·일방화·좌우 대칭형\n1번부터 4번·7번까지 연결하고, 수직·수평 두께를 비슷하게 하여 날씬하게 구성\n1번 세로 루스커스: 화기 높이 3배, 뒤로 0~5˚ 눕히기\n양팔 루스커스는 세로 중앙의 맨 처음 꽂는 1번 루스커스에서 가로 선상 그대로 내려온 하단 좌우에 대칭되게 가로로 꽂습니다. 길이는 화기 높이의 2배입니다.\n포컬 거베라: 플로랄폼 중앙·앞쪽 1/3, 20cm, 앞으로 45˚, 전체 높이의 1/3보다 살짝 높게\n2층 모서리 거베라: V자, 전체 높이의 1/3보다 살짝 높게\n화기 모서리 거베라 2송이와 포컬 거베라가 정면에서 삼각형을 이루어야 함\n어깨 장미: 약 15cm, 세로 장미의 1/4, 장미 얼굴 하나 내려올 길이\n1번 세로 장미 앞 세로꽃: 거베라(오른쪽)-장미-필러-거베라-장미\n배꼽 장미는 포컬보다 약간 앞으로\n1층 앞쪽은 루스커스와 소국으로 둥글게 연결\n1·2·3번 장미와 세로·양팔 뒤에 루스커스 보강',
      legend:[
       {role:'rose', label:'하젤장미'},
       {role:'gerbera', label:'캡거베라'},
@@ -1670,44 +1993,44 @@
       {role:'line', label:'그린 소재(루스커스)'}
      ],
      order:[
-      'b에 루스커스를 뒤로 0~5˚로 눕혀 화기 높이의 2.5~3배 길이로 꽂기',
-      'a, c의 하단 좌우에 루스커스 2송이를 1번 길이의 2/3로 꽂기',
-      '1번 루스커스 바로 앞에 살짝 짧은 하젤장미를 살짝 뒤로 눕혀 꽂기',
+      '1번 세로 루스커스를 화기 높이의 3배로 잡고 뒤로 0~5˚ 눕혀 꽂기',
+      '양팔 루스커스는 세로 중앙의 맨 처음 꽂는 1번 루스커스에서 가로 선상 그대로 내려온 하단 좌우에 대칭되게 가로로 꽂습니다. 길이는 화기 높이의 2배입니다.',
+      '1번 루스커스 바로 앞에 살짝 짧은 하젤장미를 뒤로 눕혀 꽂고, 장미 뒤에 루스커스 보강하기',
       '양팔 앞쪽에 하젤장미 2송이를 루스커스보다 짧게 꽂기',
-      '포컬포인트: e에 활짝 핀 캡거베라를 45˚로 꽂기',
-      '화기 하단 양쪽 모서리에 캡거베라 2송이를 대각선으로 꽂기',
-      '어깨: 3·4번 하젤장미의 중앙에 하젤장미를 1송이씩 45˚대각선으로 꽂기',
-      '8번의 앞쪽에 하젤장미를 포컬보다 튀어나오지 않게 눕혀 꽂고, 아래와 양옆 빈 공간에 루스커스 추가',
+      '포컬 거베라를 플로랄폼 중앙·앞쪽 1/3 지점에 20cm로, 앞으로 45˚ 쏠리게 전체 높이의 1/3보다 살짝 높여 꽂기',
+      '화기 하단 양쪽 모서리에 거베라를 대각선으로 꽂아 양팔과 배꼽 장미를 연결하고, 포컬 거베라를 꼭짓점으로 삼는 거베라 삼각형 만들기',
+      '어깨 장미를 약 15cm, 세로 장미의 1/4이자 장미 얼굴 하나 내려올 길이로 45˚ 대각선에 꽂기',
+      '배꼽 장미를 포컬보다 약간 앞으로 입체감 있게 눕혀 꽂고, 아래와 양옆 빈 공간에 루스커스 추가',
       '포컬과 8번 하젤장미 사이에 하젤장미를 얼굴 각도 맞춰 기울여 꽂기',
-      '3번 앞 수직 라인에 얼굴 각도 맞춰 캡거베라+루스커스, 하젤장미+루스커스, 리시안셔스+하젤장미, 캡거베라를 지그재그로 내려오게, 기울여 배치',
-      '양팔에 캡거베라를 좌우 2송이씩 더 꽂아 1층 수평 연결과 2층 면 채우기',
-      '어깨 앞의 빈 공간을 리시안셔스로 채우되 포컬보다 조금 짧게, 7번 어깨와 둥글게 연결',
+      '1번 세로 장미 앞에 거베라(오른쪽)-장미-필러-거베라-장미 순서로 지그재그 세로꽃 배치',
+      '2층 모서리에 거베라를 V자로 꽂되 전체 높이의 1/3보다 살짝 높여 1층 수평선과 연결하기',
+      '세로 양옆의 빈 공간을 필러로 채우되 너무 길거나 뚱뚱하지 않게, 포컬보다 짧게 어깨와 연결',
       '양팔에 리시안셔스와 짧은 루스커스를 추가해 위쪽으로 갈수록 둥글고 짧아지게 층 만들기',
       '어깨와 13번 리시안셔스 사이에 리시안셔스를 한 송이 더 넣어 좌우 대칭으로 연결',
       '3번과 어깨 사이, 지그재그 수직 라인에 크림소국을 일자로 촘촘히 넣어 파이프오르간처럼 연결하기',
-      '6번의 뒤이자 11번 아래에 짧은 루스커스를 채우고, 양팔 앞쪽에 긴 루스커스와 하젤장미를 1송이씩 추가',
-      '앞면, 측면 채우기: 크림소국과 리시안셔스로 지그재그 세로 하단을 채우고, 포컬 옆면과 어깨 아래를 이어주기',
+      '1·2·3번 장미와 세로·양팔 뒤에 루스커스를 먼저 보강하고, 양팔 앞쪽에 긴 루스커스와 하젤장미를 1송이씩 추가',
+      '1층 앞쪽을 둥글게 만들며 사이사이에 루스커스를 넣고 소국은 가볍게 더해 포컬 옆면과 어깨 아래 이어주기',
       '얼굴이 하나인 작은 꽃을 어깨 뒤 위쪽에 길고 가볍게 꽂아 측면을 일자로 연결',
       '꽃 사이사이에 편백을 짧게, 방사형으로 꽂아 속의 면을 채우고 마무리하기'
      ],
      fullOrder:[
-      'b에 루스커스 1송이 꽂기. 길이는 화기 높이(엄지와 검지 한 뼘)의 2.5~3배이며, 다른 꽃들이 앞으로 쏠려 보이지 않도록 뒤로 0~5˚로 눕힙니다. 끝의 모서리를 앞쪽으로 해서 예쁜 부분이 보이게 합니다.',
-      'a, c의 좌우에 루스커스 2송이 꽂기. 길이는 1번 루스커스 길이의 2/3이며, 1번에 거꾸로 대고 비교하면 한 뼘 아래 길이입니다. 1번을 꽂은 가로 선상 그대로 내려온 하단 a, c의 좌우에 꽂고, 휘었다면 휜 방향이 위로 올라오게 맞춥니다. 확인: 이제 1번과 2번으로 루스커스가 ㅗ 모양으로 꽂혀 있어야 합니다.',
-      '세로로 세워진 루스커스(1번) 바로 앞에 하젤장미 1송이를 살짝 뒤로 눕혀 1번보다 조금 짧은 길이로 꽂습니다. 이렇게 눕히는 이유는 1번과 3번을 너무 세우면 앞쪽으로 꽃들이 쏠려 보이기 때문입니다. 머리가 튼실하고 예쁘며 줄기가 곧은 하젤장미를 선택하고, 줄기가 많이 휘었다면 아래는 1번 루스커스 바로 앞에 꽂되 머리만이라도 루스커스 앞쪽에 오게 합니다.',
+      'b에 1번 세로 루스커스 1송이를 화기 높이(엄지와 검지 한 뼘)의 3배 길이로 꽂습니다. 다른 꽃들이 앞으로 쏠려 보이지 않도록 뒤로 0~5˚ 눕히고, 끝의 모서리를 앞쪽으로 해서 예쁜 부분이 보이게 합니다.',
+      '양팔 루스커스는 세로 중앙의 맨 처음 꽂는 1번 루스커스에서 가로 선상 그대로 내려온 하단 좌우에 대칭되게 가로로 꽂습니다. 길이는 화기 높이의 2배입니다. 휘었다면 휜 방향이 위로 올라오게 맞춥니다. 확인: 이제 1번 세로와 양팔 루스커스가 ㅗ 모양으로 꽂혀 있어야 합니다.',
+      '세로로 세워진 루스커스(1번) 바로 앞에 하젤장미 1송이를 살짝 뒤로 눕혀 1번보다 조금 짧은 길이로 꽂습니다. 이렇게 눕히는 이유는 1번과 3번을 너무 세우면 앞쪽으로 꽃들이 쏠려 보이기 때문입니다. 머리가 튼실하고 예쁘며 줄기가 곧은 하젤장미를 선택하고, 줄기가 많이 휘었다면 아래는 1번 루스커스 바로 앞에 꽂되 머리만이라도 루스커스 앞쪽에 오게 합니다. 장미 뒤에는 루스커스를 보강해 선을 받쳐줍니다.',
       '좌우 팔(2번) 앞쪽에 하젤장미 2송이를 루스커스보다 짧게, 3번 하젤장미의 2/3 길이로 꽂습니다. 질 좋고 줄기 두꺼운 하젤장미를 쓰고, 줄기가 얇고 얼굴이 무거우면 처질 것을 감안해 각도를 살짝 올려 꽂습니다.',
-      '포컬포인트: e에 활짝 핀 캡거베라 1송이를 옆면 기준 작업자를 바라보는 45˚로 꽂습니다. 길이는 엄지와 새끼손가락 한 뼘보다 조금 긴 정도로 하되, 실제 길이는 전체 화형에 맞춥니다.',
-      '화기 하단 양쪽 모서리에 캡거베라 1송이씩을 꽂습니다. 화기의 모서리에 대각선으로 두었을 때 머리 하나가 바깥으로 나올 정도 길이로, 포컬(5번)을 꼭짓점으로 삼는 삼각형 구도로 꽂습니다.',
-      'a, c의 외곽, 3·4번 하젤장미(직각)의 정중앙에 하젤장미를 1송이씩 45˚대각선으로 꽂아 어깨를 만듭니다. 길이는 머리 두 송이 정도이며, 앞에서 보이지 않아야 합니다. 뒤쪽에는 루스커스를 짧게 꽂아 받쳐줍니다.',
-      '앞쪽에 하젤장미 1송이를 낮게 눕혀 앞을 보게 꽂습니다. 길이는 7번과 동일하게 머리 두 송이 정도이고, 6번 캡거베라보다 조금 더 길이가 나오되 포컬보다 튀어나오지 않게 합니다. 이 하젤장미를 기준으로 2번까지 선을 그리면 아래에 가로가 긴 둥근 반원이 자연스럽게 그려져야 하며, 어깨(7번) 하젤장미들과 합쳐지면 앞에서 보았을 때 역삼각형으로 보여야 합니다. 하젤장미 아래와 하젤장미+6번 캡거베라 사이의 빈 공간에는 루스커스를 넣어 하단 연결을 만듭니다.',
+      '포컬포인트: 플로랄폼 중앙·앞쪽 1/3 지점인 e에 활짝 핀 캡거베라 1송이를 20cm 길이로 꽂습니다. 옆면 기준 작업자를 바라보며 앞으로 45˚ 쏠리게 하고, 꽃 얼굴은 전체 높이의 1/3보다 살짝 높은 위치에 둡니다.',
+      '화기 하단 양쪽 모서리에 캡거베라 1송이씩을 대각선으로 꽂습니다. 화기의 모서리에 두었을 때 머리 하나가 바깥으로 나올 정도 길이로, 양팔과 배꼽 장미 사이를 자연스럽게 이어주는 존재가 되게 합니다. 포컬(5번)을 꼭짓점으로 삼는 삼각형 구도도 함께 확인합니다.',
+      'a, c의 외곽, 3·4번 하젤장미(직각)의 정중앙에 하젤장미를 1송이씩 45˚ 대각선으로 꽂아 어깨를 만듭니다. 어깨 장미는 약 15cm이자 세로 장미의 1/4 길이로, 줄기에서 장미 얼굴 하나가 내려올 정도 크기로 맞춥니다. 앞에서 과하게 보이지 않게 하고 뒤쪽에는 루스커스를 짧게 꽂아 받쳐줍니다.',
+      '앞쪽에 배꼽 하젤장미 1송이를 낮게 눕혀 앞을 보게 꽂습니다. 포컬보다 약간 앞으로 나오게 하여 입체감을 주되 지나치게 튀어나오지 않게 합니다. 이 하젤장미를 기준으로 2번까지 선을 그리면 아래에 가로가 긴 둥근 반원이 자연스럽게 그려져야 하며, 어깨(7번) 하젤장미들과 합쳐지면 앞에서 보았을 때 역삼각형으로 보여야 합니다. 하젤장미 아래와 하젤장미+6번 캡거베라 사이의 빈 공간에는 루스커스를 넣어 하단 연결을 만듭니다.',
       '포컬과 8번 하젤장미 사이에 하젤장미 1송이를 기울여 꽂습니다. 포컬에서 하젤장미로 떨어지는 흐름이 끊기지 않도록 얼굴 각도를 맞춥니다.',
-      '3번 앞의 수직 라인에 (오)캡거베라+뒤쪽 루스커스, (왼)하젤장미+뒤쪽에 조금 짧은 루스커스, (오)리시안셔스+하젤장미, (왼)캡거베라가 지그재그로 내려오게 배치합니다. 길이는 지그재그로 꽂힌 꽃들보다 머리 하나가 작으면 됩니다. 모든 꽃을 무조건 일자로 꽂지 말고 위에서 아래로 내려갈수록 조금씩 얼굴이 앞을 향하게 낮추어, 측면에서 보았을 때 얼굴 각도가 앞으로 둥글게 떨어져 보이도록 꽂습니다. 오른쪽에 캡거베라가 아니라 리시안셔스를 넣는 이유는 캡거베라끼리 너무 붙어 한쪽으로 쏠리는 것을 막기 위해서입니다. 이미 꽂힌 줄기 때문에 깊이 꽂지 못한다면 길이를 짧게 잘라 맞춥니다. 하젤장미 뒤 루스커스는 캡거베라 뒤 루스커스보다 조금 더 아래에 꽂아 층을 만들면 세로 라인이 얄쌍해 보입니다.',
-      '양팔에 캡거베라를 좌우 2송이씩 더 꽂습니다. 1층은 2번과 6번 사이에 넣어 수평선을 연결하고, 2층은 1층보다 살짝 위에 각도를 올리고 앞쪽을 보도록 꽂아 면을 채웁니다. 두 송이가 너무 붙으면 안 예쁩니다.',
-      '어깨 앞, 하단의 빈 공간을 리시안셔스로 채웁니다. 이 부분이 너무 길면 뚱뚱해지므로 포컬과 앞쪽 꽃들보다 조금 짧게 넣고, 어깨(7번) 하젤장미와 뒤쪽으로 둥글게 연결되도록 길이를 차등하여 플로랄폼 7번과 9번 면적에 대각선으로 꽂습니다.',
+      '1번 세로 장미 앞 수직 라인에 거베라(오른쪽)-장미-필러-거베라-장미 순서로 지그재그 내려오게 배치합니다. 모든 꽃을 무조건 일자로 꽂지 말고 위에서 아래로 내려갈수록 조금씩 얼굴이 앞을 향하게 낮추어, 측면에서 보았을 때 얼굴 각도가 앞으로 둥글게 떨어지게 합니다. 뒤쪽에는 짧은 루스커스를 보강하고, 이미 꽂힌 줄기 때문에 깊이 꽂지 못한다면 길이를 짧게 잘라 맞춥니다.',
+      '양팔의 1층에는 캡거베라를 넣어 수평선을 연결하고, 2층 모서리에는 캡거베라가 V자가 되도록 각도를 올려 꽂습니다. 2층 거베라의 얼굴은 전체 높이의 1/3보다 살짝 높게 두고 앞쪽을 보게 하되, 좌우 두 송이가 너무 붙지 않게 대칭을 맞춥니다.',
+      '어깨 앞과 세로 양옆의 빈 공간을 리시안셔스로 채웁니다. 필러가 너무 길거나 뚱뚱하게 꽂히면 세로선이 퍼지므로 포컬과 앞쪽 꽃들보다 조금 짧게 넣고, 어깨(7번) 하젤장미와 뒤쪽으로 둥글게 연결되도록 길이를 차등하여 대각선으로 꽂습니다.',
       '양팔에 3번 하젤장미보다 조금 위쪽으로 리시안셔스를, 그 위쪽에 짧은 루스커스를 아주 살짝 대각선으로 꽂습니다. 3번 하젤장미~어깨 하젤장미를 기준으로 위쪽으로 올라올수록 J형으로 날씬하게 보이도록 둥글고 짧아지게 층층이 연결합니다. 루스커스도 완전히 일자가 되지 않게 살짝 위쪽을 바라보되 경사가 너무 심하지 않게 꽂아 양쪽 팔을 강조합니다. 스프레이 리시안셔스는 짧은 머리를 위, 긴 머리를 아래에 넣습니다.',
       '7번 어깨 하젤장미와 13번 리시안셔스 사이에 리시안셔스를 1송이 더 넣어 좌우 대칭으로 연결합니다. 어깨 옆에 갑자기 긴 꽃을 넣으면 연결이 끊기므로 어깨보다 낮게 꽂고, 양팔에 둥글게 쌓아 올린 것들과 이어지게 합니다. 1번~4번~7번까지 모든 점들이 서로 연결되어야 합니다. 얼굴이 휘어졌다면 측면으로 넣습니다. 확인: 이제 3, 4, 7번 하젤장미들과 사이 꽃들로 인해 아래쪽이 둥글게 연결되었는지 확인합니다.',
       '크림소국으로 세로를 채웁니다. 3번과 어깨(7번), 3번 지그재그 사이를 연결하되 세로 부분은 두께가 넓어지지 않도록 촘촘하게 붙여서 일자에 가깝게 꽂아야 벌어지지 않고 뚱뚱해지지 않습니다. 파이프오르간 같은 느낌으로 내려오면서 어깨와 연결되게 꽂습니다.',
-      '6번의 뒤이자 11번 아래에 짧은 루스커스를 꽂아 채우고, 양팔의 앞쪽에 긴 루스커스와 하젤장미를 1송이씩 추가해 수평 하단과 수직 외곽을 만듭니다. 완전 일자가 되지 않게 소재를 층층이 씁니다.',
-      '비어 있는 곳에 크림소국과 리시안셔스를 넣어 채웁니다. 지그재그로 꽂은 필러 리시안셔스의 아랫부분과 캡거베라의 좌측, 리시안셔스 주변 양쪽을 채우고, 앞면을 채웠다면 같은 길이와 같은 선상으로 측면에도 리시안셔스를 넣습니다. 포컬을 기준으로 측면까지 둥글게 감싸는 옆면과 1번에서 2번으로 내려오는 옆면을 리시안셔스로 연결합니다. 숱을 친 크림소국을 3번과 지그재그 첫 시작 캡거베라 사이 왼쪽에 세워 넣고, 그 아래에 짧은 크림소국을 수직으로 붙여 1송이 더 꽂습니다. 포컬과 옆면을 연결하는 리시안셔스를 길게 넣어 14번 리시안셔스들과 연결하고, 아래에도 크림소국이나 리시안셔스를 더해 어깨 사이 빈 곳을 메웁니다.',
+      '1·2·3번 장미와 세로·양팔 뒤에는 루스커스를 먼저 잡고 들어가듯 보강합니다. 6번의 뒤이자 11번 아래에도 짧은 루스커스를 채우고, 양팔 앞쪽에는 긴 루스커스와 하젤장미를 1송이씩 추가해 수평 하단과 수직 외곽을 만듭니다. 완전 일자가 되지 않게 소재를 층층이 씁니다.',
+      '1층 앞쪽을 둥글게 만들며 꽃 사이사이에 루스커스를 넣고, 소국은 가볍게 들어가게 합니다. 지그재그 세로 하단과 캡거베라 좌측, 리시안셔스 주변 양쪽을 채우되 무겁게 뭉치지 않게 합니다. 포컬을 기준으로 측면까지 둥글게 감싸는 옆면과 1번에서 2번으로 내려오는 옆면을 연결하고, 포컬 옆면과 어깨 아래의 빈 공간도 자연스럽게 이어줍니다.',
       '얼굴이 하나인 하젤장미처럼 작은 꽃을 어깨 뒤 위쪽에 약간 길고 가볍게 꽂아 측면이 일자로 보이게 합니다. 아랫부분은 방사형으로 맞추고, 어깨 기준으로 위로 머리가 하나씩 쫑쫑 채워지게 합니다.',
       '꽃 사이사이에 편백을 꽃보다 많이 올라오지 않게 방사형으로 짧게 넣어 속의 면을 채우고 가립니다.'
      ],
@@ -1720,10 +2043,23 @@
       '앞면을 채웠는가?',
       '포컬을 기준으로 측면까지 가로 선상으로 둥글게 감싸는 옆면과, 세로 측면에서 아래로 내려오는 옆면을 모두 채웠는가?',
       '루스커스로 뒤편을 점찍듯 하나씩 다 연결해주었는가?',
-      '모든 소재가 아래 중심을 향해서 방사형으로 꽂혔는가?'
+      '모든 소재가 아래 중심을 향해서 방사형으로 꽂혔는가?',
+      '방사형·일방화·좌우 대칭형으로 구성되었는가?',
+      '1번 세로 루스커스가 화기 높이의 3배이고 뒤로 0~5˚ 눕혀졌는가?',
+      '양팔 루스커스는 세로 중앙의 맨 처음 꽂는 1번 루스커스에서 가로 선상 그대로 내려온 하단 좌우에 대칭되게 가로로 꽂습니다. 길이는 화기 높이의 2배입니다.',
+      '포컬 거베라가 플로랄폼 중앙·앞쪽 1/3 지점에 20cm로 꽂혀 앞으로 45˚ 쏠리고, 전체 높이의 1/3보다 살짝 높은가?',
+      '2층 모서리 거베라가 V자를 이루며 전체 높이의 1/3보다 살짝 높은가?',
+      '어깨 장미가 약 15cm, 세로 장미의 1/4이자 장미 얼굴 하나 내려올 길이인가?',
+      '1번 세로 장미 앞 꽃이 거베라(오른쪽)-장미-필러-거베라-장미 순서인가?',
+      '배꼽 장미가 포컬보다 약간 앞으로 나와 입체감이 있는가?',
+      '화기 모서리 거베라가 양팔과 배꼽 장미를 자연스럽게 이어주는가?',
+      '화기 모서리 거베라 2송이와 포컬 거베라가 정면에서 삼각형을 이루는가?',
+      '세로 양옆 필러가 너무 길거나 뚱뚱하지 않은가?',
+      '1층 앞쪽이 루스커스로 둥글게 연결되고 소국은 가볍게 들어갔는가?',
+      '1·2·3번 장미와 세로·양팔 뒤에 루스커스가 보강되었는가?'
      ]},
-    {key:'lshape', name:'L자형', exam:'제2과제', desc:'방사형·일방화·좌우 비대칭, 좌측 기준축으로 세우는 알파벳 L 형태', guide:'lshape', photo:'',
-     fullNote:'기준축은 중앙이 아니라 좌측으로 쏠립니다. 수직선보다 수평선을 조금 더 짧고 가볍게 만들고, 수직 소재가 일렬로 딱딱하게 서지 않도록 자연스럽게 연결합니다.',
+    {key:'lshape', name:'L자형', exam:'제2과제', desc:'방사형·일방화·좌우 비대칭, 좌측 기준축으로 세우는 알파벳 L 형태', guide:'lshape', photo:refAsset('lshape-final-20260904.png'),
+     fullNote:'핵심:\n방사형·일방화·비대칭형\n1. 베이스잡기: 루스커스 꽂기\n2. 뼈대 장미 + 왼팔 거베라 꽂기(어깨 장미는 세로 장미의 1/4 길이)\n3. 포컬: 플로랄폼 왼쪽·앞쪽 1/3 지점, 20cm, 앞으로 45˚\n1층 1번 장미: 화기 너비 3배, 뒤로 0~5˚\n왼팔 거베라: 화기 너비 1배 / 오른팔 장미: 화기 너비 2배 / 오른팔 장미 앞 짧은 거베라\n1번 장미 아래 세로꽃: 거-장-필-거-장 지그재그\n수평·수직 만나는 지점의 어깨선 주의',
      legend:[
       {role:'rose', label:'하젤장미'},
       {role:'gerbera', label:'캡거베라'},
@@ -1733,16 +2069,17 @@
       {role:'line', label:'그린 소재(루스커스)'}
      ],
      order:[
-      '좌측 뒤쪽에 루스커스와 장미를 뒤로 0~5˚로 기울여 화기 높이의 2.5~3배 길이로 꽂기',
+      '작업 큰 순서: 1. 베이스잡기 루스커스 → 2. 뼈대 장미 + 왼팔 거베라(어깨 장미는 세로 장미의 1/4) → 3. 포컬은 플로랄폼 왼쪽·앞쪽 1/3 지점',
+      '1층 1번 장미를 화기 너비의 3배 길이로 잡고 뒤로 0~5˚ 눕혀 꽂기',
       '왼쪽 하단에 루스커스를 화기 밖으로 얼굴 1개 정도 나오는 짧은 길이로, 가로로 꽂기',
       '오른쪽 하단에 루스커스를 역T형보다 약 1cm 짧은 길이로 가로로 꽂고, 위에 짧은 루스커스를 살짝 위를 바라보는 대각선으로 추가하기',
       '루스커스 3송이로 기준축 강조: 짧게-1번-길게-아주 짧게 순서로 꽂기',
-      '포컬포인트: 꼭짓점보다 앞쪽에 꽂고, 거베라 줄기가 두꺼우면 더 앞으로 꽂기',
+      '포컬 거베라: 플로랄폼 왼쪽·앞쪽 1/3 지점에 20cm 길이로, 앞으로 45˚ 눕혀 꽂기',
       '앞면에 장미 꽂기: 포컬 세로 위치 그대로 일자로 내려와, 장미를 꽃 얼굴 2개 길이로 꽂기',
-      '2, 3번 루스커스 양팔 앞·위쪽에 왼쪽은 거베라, 오른쪽은 장미를 가로로 꽂기',
-      '어깨: 1번을 꽂은 가로 라인에서 장미 2송이를 1번과 2, 3번 사이 절반에 45˚로 꽂기',
+      '양팔: 왼팔 거베라는 화기 너비 1배로 화기 밖에 얼굴 1개 나오게, 오른팔 장미는 화기 너비 2배로 꽂고 그 앞에 짧은 거베라 오른판 하나로 연결하기',
+      '어깨선 주의: 수평·수직이 만나는 지점에 어깨 장미를 세로 장미의 1/4 길이로 45˚로 꽂기',
       '거베라 2송이를 화기 모서리에 꽂기: 오른쪽은 9번 모서리에 대각선으로, 왼쪽은 왼쪽 측면으로 꽂기',
-      '중앙 세로 지그재그 시작: 거베라(오른쪽), 장미(왼쪽), 거베라 아래 리시안셔스 3송이를 계단식으로, 맨 아래 거베라 순서로 배치하기',
+      '1번 장미 아래 중앙 세로꽃을 거베라-장미-필러-거베라-장미 순서로 지그재그 배치하기',
       '거베라를 9번의 가장자리에 짧게, 대각선으로 위쪽을 바라보게 꽂기',
       '너무 푹 들어가지 않도록, 포컬 주위로 리시안셔스를 넣고 왼쪽 리시안셔스와 앞쪽 짧은 리시안셔스 사이에 소국 2송이를 꽂기',
       '3번 팔 앞에 장미나 거베라를 가로로 꽂기',
@@ -1753,16 +2090,17 @@
       '편백으로 속을 채우고, 잎이 바깥으로 튀어나왔을 때 시간이 부족하다면 티 나지 않게 위에서 잘라 마무리하기'
      ],
      fullOrder:[
-      '좌측 뒤쪽에 루스커스와 장미를 함께 꽂습니다. 길이는 화기 높이의 2.5~3배이며, 앞으로 쏠려 보이지 않도록 뒤로 0~5˚로 기울입니다. L형은 중앙이 아니라 좌측으로 기준축이 쏠려야 합니다.',
+      'L자형은 방사형·일방화·비대칭형입니다. 큰 작업 순서는 1. 루스커스로 베이스잡기, 2. 뼈대 장미와 왼팔 거베라 꽂기, 3. 포컬을 플로랄폼 왼쪽·앞쪽 1/3 지점에 꽂기입니다.',
+      '1층 1번 장미는 화기 너비의 3배 길이로 잡아 좌측 뒤쪽에 꽂고, 앞으로 쏠려 보이지 않도록 뒤로 0~5˚ 눕힙니다. L형은 중앙이 아니라 좌측으로 기준축이 쏠려야 합니다.',
       'a 하단에 루스커스 1송이를 짧게 꽂습니다. 길이는 화기 밖으로 얼굴 1개 정도 나오는 정도로 잡고, 1번 수직선의 아래쪽 기준점이 되게 합니다.',
       'c 하단에 루스커스 1송이를 가로로 꽂습니다. 길이는 역T형보다 약 1cm 짧게 잡아 수평선이 수직선보다 조금 더 짧고 가볍게 보이도록 합니다. 3번을 강조하기 위해 그 위에 짧은 루스커스를 살짝 위를 바라보는 대각선으로 한 번 더 꽂습니다.',
       '루스커스 3송이로 기준축인 1번을 강조합니다. 1번 기준 왼쪽은 짧게, 오른쪽은 길게와 아주 짧게 꽂아 짧게-1번-길게-아주 짧게 순서가 되게 합니다. 더 짧은 루스커스는 4번 오른쪽 루스커스 바로 옆, b 위치에 꽂습니다. 1번과 2번 사이가 J자로 완만하게 이어져야 하므로 1번 왼쪽 소재를 너무 길게 잡지 않습니다. 위에서는 일자로 보이되 아래는 안쪽 중심점을 향해 방사형으로 살짝 틀어 꽂습니다.',
-      '포컬포인트는 꼭짓점에 딱 맞추지 말고 그보다 앞쪽에 꽂습니다. 4, 5, 7, 8번 면이 만나는 꼭짓점에서 조금 더 C 쪽으로 향한 위치이며, 꼭짓점에 너무 붙이면 4번 한 칸이 좁아집니다. 거베라 줄기가 두꺼우면 더 앞으로 꽂습니다.',
+      '포컬 거베라는 플로랄폼 왼쪽·앞쪽 1/3 지점에 20cm 길이로 꽂고, 앞으로 45˚ 눕힙니다. 꼭짓점에 딱 맞추지 말고 그보다 앞쪽에 두며, 거베라 줄기가 두꺼우면 조금 더 앞으로 꽂습니다.',
       '앞면에 장미를 꽂습니다. 포컬 세로 위치 그대로 일자로 내려와 장미를 꽃 얼굴 2개 길이로 꽂고, 포컬과 장미가 같은 선상으로 내려오는 흐름을 만듭니다.',
-      '2번과 3번 루스커스 양팔 앞·위쪽에 소재를 가로로 꽂습니다. 왼쪽은 장미가 아니라 거베라로, 오른쪽은 장미로 배치해 수평선을 정리하되 L형의 좌우 비대칭 흐름은 유지합니다.',
-      '어깨는 1번을 꽂은 가로 라인에서 장미 2송이로 만듭니다. 1번과 2, 3번 사이의 절반 지점에 45˚로 꽂고, 플로랄폼 위치는 4번과 6번 가장자리입니다. 너무 높게 꽂으면 두꺼워 보이므로 높지 않게 꽂습니다.',
+      '양팔 앞·위쪽에 소재를 가로로 꽂습니다. 왼팔 거베라는 화기 너비 1배로 화기 밖에 얼굴 1개가 나오게 하고, 오른팔 장미는 화기 너비 2배로 꽂습니다. 오른팔 장미 앞에는 짧은 거베라 오른판 하나를 넣어 선을 연결합니다.',
+      '수평선과 수직선이 만나는 지점의 어깨선에 주의합니다. 어깨 장미는 세로 장미 길이의 1/4로 잡아 45˚로 꽂고, 너무 높거나 두껍게 보이지 않게 합니다.',
       '거베라 2송이를 화기 모서리에 꽂습니다. 오른쪽은 얼굴 하나가 나오는 길이로 9번 모서리에 맞춰 대각선으로 꽂습니다. 왼쪽은 6번 장미와 7번 거베라 사이 흐름에 맞춰 왼쪽으로 치우치게 꽂습니다. 앞쪽으로 과하게 나오지 않게 약간 측면에서 뒤쪽으로 빠지게 꽂아 둥근 선상에 위치시킵니다.',
-      '중앙 세로 라인의 지그재그를 시작합니다. 위쪽 거베라는 오른쪽에, 장미는 왼쪽에 꽂고, 거베라 아래에는 긴 리시안셔스-리시안셔스-짧은 리시안셔스 순서로 세로 선상을 맞춰 계단식으로 얼굴이 내려오게 꽂습니다. 맨 아래 거베라는 조금 위로 올려 기존 위치 흐름을 유지합니다.',
+      '1번 장미 아래 중앙 세로 라인은 거베라-장미-필러-거베라-장미 순서로 지그재그 배치합니다. 수직 소재가 일렬로 딱딱하게 서지 않게 좌우를 번갈아 쓰면서도 세로 흐름은 끊기지 않게 합니다.',
       '거베라를 9번의 가장자리에 짧게 꽂습니다. 대각선으로 위쪽을 바라보게 꽂아 9번의 모서리 흐름을 살립니다.',
       '너무 푹 들어가지 않도록 포컬 주위로 리시안셔스를 넣은 후, 왼쪽 리시안셔스와 앞쪽의 짧은 리시안셔스 사이에 소국 2송이를 꽂습니다. 앞쪽에는 짧은 리시안셔스와 얼굴 하나인 짧은 장미도 꽂아 포컬 주변의 빈 공간을 연결합니다.',
       '3번 팔 앞에는 장미나 거베라를 가로로 꽂습니다. 수평선이 끊기지 않게 하되, 앞쪽으로 과하게 튀어나오지 않게 조절합니다.',
@@ -1777,10 +2115,19 @@
       '수직선보다 수평선이 조금 더 짧고 가볍게 제작되었는가?',
       '수직 소재가 일렬로 딱딱하게 배치되지 않고 자연스럽게 연결되었는가?',
       'a와 b 사이의 1번, a 하단 2번, c 하단 3번 기준점이 맞게 잡혔는가?',
-      'd와 e 사이의 포컬포인트가 L형의 중심 흐름을 만들어주는가?'
+      'd와 e 사이의 포컬포인트가 L형의 중심 흐름을 만들어주는가?',
+      '방사형·일방화·비대칭형이 분명한가?',
+      '1층 1번 장미가 화기 너비의 3배이며 뒤로 0~5˚ 눕혀졌는가?',
+      '왼팔 거베라는 화기 너비 1배로 얼굴 1개가 나오고, 오른팔 장미는 화기 너비 2배인가?',
+      '오른팔 장미 앞에 연결용 짧은 거베라 오른판 하나가 있는가?',
+      '1번 장미 아래 세로꽃이 거베라-장미-필러-거베라-장미 순서로 지그재그인가?',
+      '포컬 거베라가 플로랄폼 왼쪽·앞쪽 1/3 지점에서 20cm 길이로 앞으로 45˚ 눕혀졌는가?',
+      '수평·수직이 만나는 어깨선이 뭉치거나 두껍지 않은가?',
+      '어깨 장미가 세로 장미 길이의 1/4인가?'
      ]},
-    {key:'orientalSlant', name:'경사형', exam:'제3과제', desc:'원형 수반과 침봉을 사용해 주지를 비스듬히 뻗게 잡는 동양 꽃꽂이', guide:'oriental', vessel:'kenzan', photo:'',
-     fullNote:'핵심 ① 수반과 침봉 위치 확인 ② 주지의 기울어진 선이 자연스럽게 살아남 ③ 여백 살리기 ④ 꽃은 적게, 가지의 방향성은 분명하게',
+    {key:'orientalSlant', name:'경사형', exam:'제3과제', desc:'침봉의 2주지 12시·1주지 8~9시·3주지 5시 위치를 기준으로 꽃을 앞방사로 모으는 동양 꽃꽂이', guide:'oriental', vessel:'kenzan', photo:refAsset('oriental-slant-20260815-final.jpg'),
+     materials:'절지류, 장미, 카네이션, 소국, 신종 셀렘, 돈나무',
+     fullNote:'핵심 ① 침봉 위치: □2주지 12시·○1주지 8~9시·△3주지 5시 ② 경사형 1주지는 직립형 2주지와 같으며 9시에서 8시 30분 방향으로 비틀고 40~60˚ 중 약 45˚ 권장 ③ 2주지는 1주지의 2/3 ④ 2주지만 뒤로 보내고 나머지는 앞각도를 조절해 )) 흐름 ⑤ 포컬은 중앙·앞쪽 1/3·전체 1/3 아래 ⑥ 포컬+쉐도우는 붙여 (( 곡선 ⑦ 장미는 주지 스노우볼 안 ⑧ 꽃은 침봉 꽂힘점부터 맨 위 머리까지 주지 삼각형 안',
      legend:[
       {role:'line', label:'가지·그린 소재'},
       {role:'rose', label:'장미'},
@@ -1789,34 +2136,67 @@
       {role:'mum', label:'매스(소국)'}
      ],
      order:[
-      '원형 수반에 물을 담고, 침봉을 수반 안쪽 중심보다 살짝 뒤로 놓기',
-      '주지: 긴 가지를 한쪽으로 비스듬히 뻗게 꽂아 경사형의 기준선 잡기',
-      '부지: 주지와 반대되는 낮은 방향으로 가지를 꽂아 여백과 균형 만들기',
-      '종지: 앞쪽 낮은 위치에 짧은 가지를 꽂아 세 방향의 안정감 만들기',
-      '보조 가지를 추가해 주지에서 부지와 종지로 이어지는 선을 자연스럽게 연결하기',
-      '초점 꽃을 침봉 앞쪽 낮은 위치에 꽂아 시선이 모이는 지점 만들기',
-      '보조 꽃은 초점 꽃보다 작고 낮게, 경사진 선을 가리지 않도록 소량 배치하기',
-      '짧은 그린 소재로 침봉 주변을 가리되, 물과 여백이 답답해 보이지 않게 마무리하기'
+      '수반에 물을 채우고 침봉을 수반 안쪽 중심보다 살짝 뒤에 안정적으로 놓기',
+      '경사형 침봉 위치: □2주지는 12시, ○1주지는 8~9시, △3주지는 5시에 모두 외곽이 아닌 안쪽으로 꽂기',
+      '꽂을 때 줄기 하단을 검지로 꾹 누르고, 꽂거나 뺄 때 가위로 침봉 반대편을 눌러 고정하기',
+      '1·2·3주지를 먼저 꽂기: 1주지는 9시에 꽂아 8시 30분 방향으로 비틀고 40~60˚ 중 약 45˚로 기울이며, 2주지는 그 2/3로 뒤쪽 12시 방향에 세우기',
+      '2주지는 12시 위치에서 뒤로 5~10˚ 눕혀 활쏘기 같은 ) 곡선을 만들고, 모든 주지는 밖에서 안으로 포옹하는 오목한 곡선으로 연결하기',
+      '3주지는 5시 안쪽에 꽂아 살짝 왼쪽으로 돌리고 화기에 닿을 듯 말 듯 띄우기',
+      '자른 나무 길이의 2/3를 기준으로 주지 길이를 연결하고 주지 삼각형 만들기',
+      '종지는 여백 안이 아니라 바깥·밑·뒤에 무성하지 않게 선적으로 꽂기. 주지 무게가 충분하면 생략하고, 흉터를 가릴 때는 1/4 길이의 짧은 종지를 앞에 꽂기',
+      '1·2·3주지 장미를 꽂고 자른 장미 길이의 2/3 비율 확인하기',
+      '꽃은 침봉에 꽂히는 줄기 하단과 맨 위 꽃 머리가 모두 주지 삼각형 안에 오도록 돌려 각도를 맞추고, 1주지 장미는 침봉 안쪽으로 더 넣기',
+      '포컬은 화기 중앙·침봉 앞쪽 1/3·전체 높이 1/3 아래에서 1·2주지 연결선의 중앙 안쪽에 두고 앞으로 45˚ 눕히기',
+      '포컬과 쉐도우는 얼굴 하나 차이로 붙여 (( 곡선을 만들고, 쉐도우는 왼쪽에서 아주 살짝 앞·가운데로 나오게 꽂기',
+      '장미 보조: 1주지는 주지 장미 바로 뒤, 2주지는 오른쪽 앞에 꽂고 모든 장미 세트를 주지 스노우볼과 침봉 안쪽에 담기',
+      '경사형은 2주지 나무만 뒤로 보내고 나머지 꽃은 그 뒤로 넘기지 말며 앞각도를 조절해 )) 흐름으로 꽂기',
+      '소국 배치: 왼쪽 위 중간 높이 소국, 그 오른쪽에 2주지 장미를 높게, 더 오른쪽에 낮은 소국, 가장 오른쪽에 3주지 장미, 왼쪽 아래에 낮은 소국 두기',
+      '모든 꽃을 뒤쪽 12~1시의 2주지 0˚ 기준점을 향해 대각선 앞방사로 꽂기',
+      '소국과 신종 셀렘을 넣고 주지 하단은 셀렘으로 가리기',
+      '남은 침봉은 돈나무를 잘라 가리고 물과 여백은 답답하지 않게 남기기'
      ],
      fullOrder:[
-      '원형 수반에 물을 담고 침봉을 수반 안쪽 중심보다 살짝 뒤에 놓습니다. 침봉이 너무 앞에 오면 가지가 앞으로 쏠려 보이므로, 정면에서 안정적인 중심을 먼저 잡습니다.',
-      '주지는 가장 긴 가지입니다. 경사형에서는 이 주지가 한쪽으로 비스듬히 뻗는 선을 만들며, 가지의 휨이 가장 예쁘게 보이는 면을 정면으로 둡니다.',
-      '부지는 주지와 반대되는 낮은 방향으로 꽂아 균형을 잡습니다. 물 위의 여백이 살아나도록 너무 많은 잎으로 덮지 않습니다.',
-      '종지는 앞쪽 낮은 위치에 짧게 꽂습니다. 주지, 부지, 종지가 서로 다른 높이와 방향을 만들며 비대칭 균형을 이루어야 합니다.',
-      '보조 가지는 주지에서 부지와 종지로 이어지는 선을 끊기지 않게 연결하는 용도로 씁니다. 한곳에 뭉치지 않게 간격을 두고 꽂습니다.',
-      '초점 꽃은 침봉 앞쪽의 낮은 위치에 꽂아 시선이 모이는 지점을 만듭니다. 동양 꽃꽂이는 여백이 중요하므로 꽃을 많이 채우기보다 방향과 높이를 정리합니다.',
-      '보조 꽃은 초점 꽃보다 작고 낮게 배치합니다. 꽃 얼굴이 모두 같은 방향을 보지 않게 살짝 차이를 주고, 가지의 경사진 선을 가리지 않게 합니다.',
-      '짧은 그린 소재로 침봉 주변을 가립니다. 단, 물과 수반의 여백이 보이도록 답답하게 덮지 않고, 마지막에 사방에서 돌려 보며 선과 균형을 확인합니다.'
+      '원형 수반에 물을 담고 침봉을 수반 안쪽 중심보다 살짝 뒤에 놓습니다. 침봉이 너무 앞에 오면 전체 가지가 앞으로 쏠려 보이므로 정면에서 안정적인 중심을 먼저 잡습니다.',
+      '첨부 도식 기준 경사형 침봉 위치는 □2주지 12시, ○1주지 8~9시, △3주지 5시입니다. 경사형 1주지는 직립형 2주지와 같은 역할이므로 9시에 꽂고 엉덩이를 비틀어 8시 30분 방향으로 눕힙니다. 세 주지는 침봉 외곽이 아니라 안쪽에 안정적으로 꽂습니다.',
+      '줄기를 꽂을 때는 하단을 검지로 꾹 눌러 침봉에 고정합니다. 주지를 꽂거나 뺄 때에는 가위로 침봉 반대편을 눌러 침봉이 들리거나 밀리지 않게 합니다.',
+      '1주지는 옆으로 40~60˚ 기울이되 약 45˚가 적당합니다. 2주지는 1주지 길이의 2/3로 12시 방향에 세우고 뒤로 5~10˚ 눕힙니다. 뒤로 5~10˚라는 것은 활쏘기하듯 만들어진 ) 곡선의 끝과 끝을 연결한 선의 각도입니다.',
+      '주지 전체는 괄호처럼 밖에서 안으로 포옹하는 오목한 형태여야 합니다. 3주지는 5시 안쪽에 꽂아 일자로만 두지 말고 살짝 왼쪽으로 돌려 ) 형태로 감싸게 하며, 화기에 닿지 않고 닿을 듯 말 듯 띄웁니다.',
+      '자른 나무의 2/3를 길이 기준으로 삼아 주지 사이의 비율을 확인합니다. 세 주지가 만드는 삼각형이 경사형의 외곽이 되므로 한 주지가 다른 선을 끊거나 한곳에 뭉치지 않게 합니다.',
+      '다음으로 종지를 꽂습니다. 왼쪽의 비대칭 삼각형 여백을 지킨 뒤 종지는 그 여백 안에 넣지 않고 바깥·밑·뒤에 무성하지 않게 둡니다. 주지 자체의 무게가 충분하면 종지를 생략해도 됩니다. 주지 흉터를 가릴 때는 종지를 1/4 길이로 짧게 잘라 앞에 꽂습니다. 3주지 안쪽에 아주 작고 짧고 얇은 종지를 넣으면 깊이감과 침봉 가림을 얻을 수 있지만, 바닥에 꽂아 계단식으로 만들면 안 됩니다.',
+      '그다음 1·2·3주지 장미를 꽂습니다. 장미 길이는 자른 장미의 2/3를 기준으로 비교하고, 각 주지의 흐름을 따라가게 합니다.',
+      '1주지 장미는 침봉 안쪽으로 조금 더 깊게 넣습니다. 꽃을 침봉에 꽂을 때는 단순히 줄기만 삼각형 안에 꽂고 머리를 밖으로 빼는 것이 아니라, 꽃을 돌려 각도를 맞춰 침봉에 꽂히는 줄기 하단부터 맨 위 꽃 머리까지 전부 주지 삼각형 안에 위치시킵니다.',
+      '포컬은 화기 중앙이면서 침봉 앞쪽 1/3 지점, 전체 높이의 1/3보다 아래에 둡니다. 1주지와 2주지를 연결한 일자선의 중앙 안쪽에 꽂고 앞으로 45˚ 눕힙니다. 포컬 길이는 수반 지름의 최대 길이에서 시작해 1cm씩 잘라 작품에 맞춥니다.',
+      '포컬과 쉐도우는 얼굴 하나 차이로 붙여 함께 꽂습니다. )가 아니라 나를 바라보며 등을 대고 누운 듯한 (( 곡선을 만들고, 쉐도우는 포컬 왼쪽에서 아주 살짝 앞쪽과 가운데로 나오게 합니다. 다른 꽃은 포컬보다 앞으로 튀어나오지 않게 합니다.',
+      '장미 보조를 꽂습니다. 1주지 보조장미는 1주지 장미 바로 뒤에, 2주지 보조장미는 오른쪽 앞쪽에 둡니다. 1주지·2주지 장미 세트와 포컬+쉐도우 세트는 각각 붙이되 꽃줄기가 X자로 교차하지 않게 합니다. 모든 장미는 주지들이 감싸 만든 스노우볼과 침봉 안쪽에 담깁니다.',
+      '경사형에서는 2주지 나무만 뒤로 갑니다. 나머지 꽃은 그보다 뒤로 넘기지 말고 앞쪽 각도를 조절해 ))처럼 꺾어 앞쪽으로 꽂습니다. 꽃을 평행한 일자나 계단식으로 두지 않고 V 방사형으로 펼칩니다.',
+      '소국과 장미의 위치는 왼쪽 위의 중간 높이 소국에서 시작해 그 오른쪽에 2주지 장미를 높게 둡니다. 그보다 오른쪽에는 낮은 소국, 가장 오른쪽에는 3주지 장미를 두고, 왼쪽 아래에도 낮은 소국을 둡니다. 입력해 주신 위치 도식의 높낮이와 좌우 흐름을 그대로 기준으로 삼습니다.',
+      '2주지가 0˚로 세워진 뒤쪽 12~1시 방향의 점을 하나의 기준점으로 봅니다. 모든 꽃은 이 점을 향해 방사형으로 대각선 꽂기 하되, 사람이 보는 기준으로 뒤방사가 아니라 앞으로 쏟아지면서 뒤로 꽂히는 앞방사가 되어야 합니다.',
+      '소국과 신종 셀렘을 사용해 꽃 사이를 연결합니다. 주지 하단은 셀렘으로 가려 줄기 다리가 그대로 드러나지 않게 합니다.',
+      '셀렘으로 가리고도 남아 보이는 침봉은 돈나무를 짧게 잘라 가립니다. 침봉은 숨기되 수반의 물과 동양형의 여백까지 답답하게 덮지는 않습니다.'
      ],
      checks:[
-      '원형 수반 안쪽에 침봉이 안정적으로 놓였는가?',
-      '주지의 경사진 선이 분명하게 보이는가?',
-      '주지, 부지, 종지의 길이와 방향이 서로 다르게 잡혔는가?',
-      '가지의 선이 한곳에 뭉치지 않고 여백을 살리는가?',
-      '침봉 주변은 가렸지만 물과 수반의 여백은 살아 있는가?'
+      '경사형 침봉에서 □2주지는 12시, ○1주지는 8~9시, △3주지는 5시 안쪽에 꽂혀 있는가?',
+      '1주지가 9시에서 8시 30분 방향으로 비틀어지고 40~60˚ 중 약 45˚로 기울어져 있는가?',
+      '2주지가 1주지의 2/3이며 뒤쪽 12시 방향에서 0˚로 세워져 있는가?',
+      '2주지가 12시 위치에서 뒤로 5~10˚ 눕고 주지 전체가 밖에서 안으로 감싸는 오목한 포옹 곡선인가?',
+      '3주지가 5시 안쪽에서 살짝 왼쪽으로 돌려져 화기에 닿을 듯 말 듯 떠 있는가?',
+      '2주지를 옆으로 비틀어서 꽂았는가?',
+      '자른 나무의 2/3와 자른 장미의 2/3 비율을 각각 확인했는가?',
+      '1·2·3주지를 먼저 꽂고 종지를 주지 아래 선이 끊기지 않게 선적으로 연결했는가?',
+      '1·2·3주지 장미를 돌려 각도를 맞추고, 침봉에 꽂힌 줄기 하단부터 맨 위 꽃 머리까지 전부 주지 삼각형 안에 들어오는가?',
+      '1주지 장미를 침봉 안쪽으로 조금 더 넣었는가?',
+      '포컬이 중앙·침봉 앞쪽 1/3·전체 높이 1/3 아래에서 1·2주지 연결선 안쪽에 있는가?',
+      '포컬과 쉐도우가 얼굴 하나 차이로 붙어 (( 곡선을 이루고 쉐도우가 왼쪽에서 살짝 앞·가운데로 나오는가?',
+      '1주지 보조는 1주지 장미 바로 뒤, 2주지 보조는 오른쪽 앞쪽이며 모든 장미가 주지 스노우볼 안에 있는가?',
+      '경사형에서 2주지 나무만 뒤로 가고 나머지 꽃은 앞각도를 조절해 )) 흐름으로 꽂혔는가?',
+      '중간 높이 소국 → 높은 2주지 장미 → 낮은 소국 → 3주지 장미의 좌우 흐름과 왼쪽 아래 낮은 소국 위치가 맞는가?',
+      '모든 꽃이 뒤쪽 12~1시의 2주지 기준점을 향해 대각선 앞방사로 꽂혔는가?',
+      '소국과 신종 셀렘을 사용하고, 주지 하단은 셀렘으로 가렸는가?',
+      '남은 침봉을 돈나무로 가렸는가?'
      ]},
-    {key:'oriental', name:'직립형', exam:'제3과제', desc:'원형 수반과 침봉을 사용해 주지를 세워 선, 여백, 비대칭 균형을 잡는 동양 꽃꽂이', guide:'oriental', vessel:'kenzan', photo:'',
-     fullNote:'핵심 ① 수반과 침봉 위치 확인 ② 세 주지의 선이 자연스럽게 이어짐 ③ 여백 살리기 ④ 꽃은 적게, 가지의 방향성은 분명하게',
+    {key:'oriental', name:'직립형', exam:'제3과제', desc:'1·2·3주지와 장미를 삼각형 안에 구성하고 포컬·쉐도우를 앞쪽으로 강조하는 동양 꽃꽂이', guide:'oriental', vessel:'kenzan', photo:'', photos:[refAsset('oriental-upright-20260718-final-front.jpg'),refAsset('oriental-upright-20260718-final-side.jpg')],
+     materials:'절지류, 장미, 카네이션, 소국, 신종 셀렘, 돈나무',
+     fullNote:'핵심 ① 침봉 위치: ○1주지 12시·□2주지 8시·△3주지 5시 ② 1주지 나무는 5˚ 뒤, 주지장미는 앞으로 당겨 숙이고 그 바로 뒤에 0˚ 보조장미 ③ 포컬은 중앙·앞쪽 1/3·전체 1/3 아래 ④ 포컬+쉐도우는 얼굴 하나 차이로 붙여 (( 곡선 ⑤ 모든 장미는 주지 스노우볼 안 ⑥ 꽃은 V 방사형·서로 다른 높이·깊이 ⑦ 꽃은 침봉 꽂힘점부터 맨 위 머리까지 주지 삼각형 안',
      legend:[
       {role:'line', label:'가지·그린 소재'},
       {role:'rose', label:'장미'},
@@ -1825,35 +2205,81 @@
       {role:'mum', label:'매스(소국)'}
      ],
      order:[
-      '원형 수반에 물을 담고, 침봉을 수반 안쪽 중심보다 살짝 뒤로 놓기',
-      '주지: 긴 가지를 침봉 뒤쪽에 꽂아 전체 높이와 기준선을 잡기',
-      '부지: 왼쪽 앞쪽으로 낮게 뻗는 가지를 꽂아 여백과 방향을 만들기',
-      '종지: 오른쪽 앞쪽으로 더 낮은 가지를 꽂아 세 방향의 균형 만들기',
-      '보조 가지를 추가해 주지에서 부지와 종지로 이어지는 선을 자연스럽게 연결하기',
-      '초점 꽃을 침봉 앞쪽 낮은 위치에 꽂아 시선이 모이는 지점 만들기',
-      '보조 꽃은 초점 꽃보다 작고 낮게, 여백을 막지 않도록 소량 배치하기',
-      '짧은 그린 소재로 침봉 주변을 가리되, 물과 여백이 답답해 보이지 않게 마무리하기'
+      '수반의 중반까지 물이 찰랑이게 채우고 침봉 놓기',
+      '직립형 침봉 위치: ○1주지는 12시, □2주지는 8시, △3주지는 5시에 모두 외곽이 아닌 안쪽으로 꽂기',
+      '꽂을 때 줄기 하단을 검지로 꾹 누르고, 꽂거나 뺄 때 가위로 침봉 반대편을 눌러 고정하기',
+      '1주지는 12시에 꽂아 1시 방향으로 눕히고 엉덩이를 오른쪽으로 비틀어 누른 뒤 화기 뒤쪽으로 밀어 안정시키기',
+      '전처리: 절지류는 사선, 꽃과 셀렘은 일자로 커팅하고 꽃은 홀수로 준비한 뒤 아래에서 위로 분무하기',
+      '1·2·3주지를 먼저 꽂기: 1주지는 화기 폭+높이의 1.5배를 보이는 길이로 맞추기',
+      '2주지는 직선 가지로 1주지의 3/4~2/3 범위, 이상적으로 2/3로 잡아 8시 안쪽에 꽂고 40~60˚ 중 약 45˚로 옆으로 세워 눕히되 45˚라도 살짝 위쪽으로 세우며 뒤로 5~10˚ 기울이기',
+      '3주지는 2주지의 2/3 길이로 5시 안쪽에 꽂아 살짝 왼쪽으로 돌리고 화기에 닿을 듯 말 듯 띄우며 2·3주지 끝이 가운데를 향하게 하기',
+      '모든 주지를 밖에서 안으로 포옹하는 오목한 ( ) 곡선으로 연결하고, 줄기가 V자 같은 라인에 놓이지 않게 옆·뒤 각도로 비틀기',
+      '종지를 주지 아래의 흐름이 끊기지 않도록 선적으로 꽂기',
+      '1·2·3주지 장미는 돌려 각도를 맞추고 침봉에 꽂히는 줄기 하단부터 맨 위 꽃 머리까지 모두 주지 삼각형 안에 두기',
+      '1주지 나무는 5˚ 뒤로 두고, 1주지 장미는 앞으로 당겨 숙인 뒤 그 바로 뒤에 0˚로 선 짧은 보조장미를 넣어 장미를 앞으로 밀기',
+      '2주지 장미는 주지 방향을 따라 2주지의 2/3, 3주지 장미도 2주지의 2/3로 포컬 쉐도우보다 짧고 낮게 꽂기',
+      '포컬은 화기 중앙·침봉 앞쪽 1/3·전체 높이 1/3 아래에서 1·2주지 연결선의 중앙 안쪽에 두고 앞으로 45˚ 눕히기',
+      '포컬과 쉐도우는 얼굴 하나 차이로 붙여 (( 곡선을 만들고, 쉐도우는 왼쪽에서 아주 살짝 앞·가운데로 나오게 꽂기',
+      '장미 보조: 1주지는 주지 장미의 2/3 길이로 바로 뒤 0˚, 2주지는 주지 장미보다 꽃 얼굴 하나 낮게 오른쪽 앞에 두기. 좌우로 애매하게 비틀지 않고 모든 장미를 주지 스노우볼 안에 담기',
+      '카네이션은 위쪽 봉우리에서 아래로 갈수록 피고 풍성하게, 오방색 계열로 꽂기',
+      '소국과 신종 셀렘을 꽂고 소국은 큰 꽃보다 높지 않게 하기',
+      '주지 하단은 셀렘으로, 남은 침봉은 돈나무를 잘라 가리기',
+      '주지 장미와 보조장미를 그룹으로 유지해 삼지창처럼 벌어지지 않게 하고 주지와 장미 줄기는 붙지 않게 마무리하기'
      ],
      fullOrder:[
-      '원형 수반에 물을 담고 침봉을 수반 안쪽 중심보다 살짝 뒤에 놓습니다. 침봉이 너무 앞에 오면 가지가 앞으로 쏠려 보이므로, 정면에서 보았을 때 안정적인 중심을 먼저 잡습니다.',
-      '주지는 가장 긴 가지입니다. 침봉 뒤쪽에 꽂아 전체 높이와 작품의 기준선을 잡고, 가지의 휨이 가장 예쁘게 보이는 면을 정면으로 둡니다.',
-      '부지는 왼쪽 앞쪽으로 낮게 뻗는 가지입니다. 주지보다 짧게 잡고, 물 위의 여백이 살아나도록 너무 많은 잎으로 덮지 않습니다.',
-      '종지는 오른쪽 앞쪽으로 더 낮게 뻗는 가지입니다. 주지, 부지, 종지가 서로 다른 높이와 방향을 만들며 비대칭 균형을 이루어야 합니다.',
-      '보조 가지는 주지에서 부지와 종지로 이어지는 선을 끊기지 않게 연결하는 용도로 씁니다. 한곳에 뭉치지 않게 간격을 두고 꽂습니다.',
-      '초점 꽃은 침봉 앞쪽의 낮은 위치에 꽂아 시선이 모이는 지점을 만듭니다. 동양 꽃꽂이는 여백이 중요하므로 꽃을 많이 채우기보다 방향과 높이를 정리합니다.',
-      '보조 꽃은 초점 꽃보다 작고 낮게 배치합니다. 꽃 얼굴이 모두 같은 방향을 보지 않게 살짝 차이를 주고, 가지의 선을 가리지 않게 합니다.',
-      '짧은 그린 소재로 침봉 주변을 가립니다. 단, 물과 수반의 여백이 보이도록 답답하게 덮지 않고, 마지막에 사방에서 돌려 보며 선과 균형을 확인합니다.'
+      '원형 수반에는 물이 화기 중반까지 찰랑이게 채웁니다. 침봉을 안정적으로 놓고, 마지막에 45˚ 각도로 위에서 내려다보았을 때 침봉이 보이지 않을 정도로 주지 다리와 주변을 가릴 계획을 잡습니다.',
+      '전처리할 때 절지류는 물을 잘 올릴 수 있도록 사선으로 커팅하고 꽃과 셀렘은 일자로 커팅합니다. 꽃은 홀수로 꽂으며 분무는 아래에서 위로 올려가며 합니다.',
+      '최신 순서는 1·2·3주지를 먼저 꽂는 것부터 시작합니다. 1주지 길이는 화기 폭+높이를 합한 기준 길이의 1.5배입니다. 1.5배는 1배 길이에 그 반절인 0.5배, 즉 대략 한 뼘을 더한 길이입니다. 모든 비율은 실제로 자른 줄기 길이가 아니라 작품에서 눈에 보이는 길이를 기준으로 맞춥니다.',
+      '2주지는 직선인 가지를 쓰는 것이 가장 좋습니다. 길이는 1주지의 3/4~2/3 범위이며 이상적인 기준은 2/3이고 1/2은 아닙니다. 8시 안쪽에 꽂아 40~60˚ 중 약 45˚로 옆으로 세워 눕히되, 45˚라도 살짝 위쪽을 보도록 세로로 세웁니다. 활쏘기하듯 만든 ) 곡선의 끝과 끝을 연결한 선이 뒤로 5~10˚가 되게 하고, 잎은 풍성하게 두며 가지 끝은 작품 가운데를 향하게 합니다.',
+      '3주지는 2주지의 2/3 길이로 5시 안쪽에 잡습니다. 일자로 두지 말고 살짝 왼쪽으로 돌려 ) 형태로 감싸며 화기에 닿지 않고 닿을 듯 말 듯 띄웁니다. 2주지와 3주지의 끝은 모두 가운데를 향하게 하고, 세 주지는 배나 가슴이 튀어나오지 않는 오목한 포옹 곡선이어야 합니다.',
+      '1·2·3주지를 세운 다음 종지를 꽂습니다. 직립형 침봉 위치는 ○1주지 12시, □2주지 8시, △3주지 5시이며 모두 침봉 외곽이 아닌 안쪽에 둡니다. 1주지는 12시에 꽂아 1시 방향으로 눕히고 엉덩이를 오른쪽으로 비틀어 누른 뒤 화기 뒤쪽으로 밀어 안정시킵니다. 종지는 왼쪽 비대칭 삼각형 여백 안에 넣지 않고 바깥·밑·뒤에 선적으로 둡니다.',
+      '그다음 1·2·3주지 장미를 차례로 꽂습니다. 꽃을 침봉에 꽂을 때는 줄기의 꽂히는 부분만 삼각형 안에 두고 머리를 밖으로 내보내면 안 됩니다. 꽃을 돌려 각도를 맞춰 침봉에 꽂히는 줄기 하단부터 맨 위 꽃 머리까지 전부 세 주지가 만드는 삼각형 안에 위치시키고, 주지 줄기와 장미 줄기끼리는 붙지 않게 간격을 둡니다.',
+      '직립형 1주지 나무는 하늘을 보는 0˚에 가깝고 나무만 약 5˚ 뒤로 눕습니다. 주지장미를 나무 바로 앞에 붙이면 보조장미 자리가 없으므로, 주지장미를 앞으로 당겨 숙여 밀어낸 뒤 그 바로 뒤에 짧은 보조장미를 하늘을 보고 꼿꼿이 선 0˚로 넣습니다. 주지보다 더 뒤로 갈 수 없으므로 오른쪽·왼쪽으로 애매하게 비틀지 않습니다.',
+      '2주지 장미는 2주지 방향을 그대로 따라가며 2주지 길이의 2/3로 꽂습니다. 3주지 장미도 2주지 길이의 2/3로 잡되 포컬 쉐도우 장미보다 짧고 낮게 놓습니다.',
+      '포컬은 화기 중앙이면서 침봉 앞쪽 1/3 지점, 전체 높이의 1/3보다 아래에 둡니다. 1주지와 2주지를 연결한 일자선의 중앙 안쪽에 꽂고 앞으로 45˚ 눕힙니다. 포컬 길이는 수반 지름의 최대 길이에서 시작해 1cm씩 잘라 작품에 맞추며, 다른 꽃이 포컬보다 앞으로 나오지 않게 합니다.',
+      '포컬과 쉐도우는 얼굴 하나 차이로 붙여 함께 꽂습니다. )가 아니라 나를 바라보며 등을 대고 누운 듯한 (( 곡선을 만들고, 쉐도우는 포컬 왼쪽에서 아주 살짝 앞쪽과 가운데로 나오게 합니다. 두 줄기가 X자로 교차하지 않게 합니다.',
+      '장미 보조를 꽂습니다. 1주지 보조장미는 주지 장미 길이의 2/3로 잡아 주지장미 바로 뒤에 0˚로 세웁니다. 2주지 보조장미는 2주지 장미보다 꽃 얼굴 하나만큼 낮게 오른쪽 앞쪽에 둡니다. 각 장미 세트는 서로 붙이되 좌우로 애매하게 비틀지 않고 주지가 만든 스노우볼 안에 담습니다. 꽃 얼굴 높이·길이·깊이는 모두 다르게 하여 일렬이나 계단식이 되지 않게 합니다.',
+      '주지 장미와 보조장미는 붙어 있는 하나의 그룹으로 보여야 하며 삼지창처럼 벌어지면 안 됩니다. 동시에 주지 나무 줄기와 장미 줄기끼리는 붙지 않게 분리합니다.',
+      '카네이션은 동양 꽃꽂이에 추천하는 소재입니다. 위쪽은 봉우리로 두고 아래로 내려올수록 꽃이 피고 풍성해지게 배치하며, 오방색처럼 선명하고 다소 촌스러운 전통 색 조합을 사용합니다.',
+      '소국과 신종 셀렘을 꽂습니다. 소국은 큰 꽃보다 높게 올라오지 않게 하고, 셀렘은 주지 하단을 가리는 데 사용합니다. 셀렘으로 가리고도 남아 보이는 침봉은 돈나무를 짧게 잘라 가립니다.',
+      '마지막으로 주지 꽃 얼굴들이 전체적으로 삼각형을 이루는지 확인합니다. 2주지 잎이 풍성한지, 2·3주지 끝이 가운데를 향하는지, 포컬과 쉐도우가 측면에서 충분히 앞으로 나왔는지, 45˚ 위에서 침봉과 주지 다리가 보이지 않는지, 물이 수반 중반까지 차 있는지까지 확인합니다.'
      ],
      checks:[
-      '원형 수반 안쪽에 침봉이 안정적으로 놓였는가?',
-      '주지, 부지, 종지의 길이와 방향이 서로 다르게 잡혔는가?',
-      '가지의 선이 한곳에 뭉치지 않고 여백을 살리는가?',
-      '초점 꽃이 낮은 앞쪽에서 시선을 모으되 과하게 많지 않은가?',
-      '침봉 주변은 가렸지만 물과 수반의 여백은 살아 있는가?'
+      '수반의 물이 화기 중반까지 찰랑이게 채워졌는가?',
+      '직립형 침봉에서 ○1주지는 12시, □2주지는 8시, △3주지는 5시 안쪽에 꽂혀 있는가?',
+      '1주지가 12시에 꽂혀 1시 방향으로 눕고 엉덩이를 오른쪽으로 비튼 뒤 화기 뒤로 밀려 안정됐는가?',
+      '2주지가 8시 안쪽에서 40~60˚ 중 약 45˚로 옆으로 세워 눕되 살짝 위쪽을 보도록 세로로 서고 뒤로 5~10˚ 기울어졌는가?',
+      '3주지가 5시 안쪽에서 살짝 왼쪽으로 돌려져 화기에 닿을 듯 말 듯 떠 있는가?',
+      '모든 주지가 밖에서 안으로 감싸는 오목한 포옹 곡선이며 배와 가슴이 튀어나오지 않는가?',
+      '절지류는 사선, 꽃과 셀렘은 일자로 커팅했는가?',
+      '꽃은 홀수로 꽂고 아래에서 위로 분무했는가?',
+      '1·2·3주지를 먼저 꽂고 종지를 주지 아래 선이 끊기지 않게 선적으로 연결했는가?',
+      '1주지의 보이는 길이가 화기 폭+높이의 1.5배인가?',
+      '1.5배를 기준 길이 1배+그 반절 0.5배(약 한 뼘)로 계산했는가?',
+      '2주지는 직선이고 1주지의 3/4~2/3, 짧게는 2/3이며 1/2이 아닌가?',
+      '2주지를 옆으로 비틀어서 꽂았는가?',
+      '2주지 잎이 풍성하고 2·3주지 끝이 가운데를 향하는가?',
+      '3주지가 2주지의 2/3이고 1·2·3주지 나무가 삼각형을 이루는가?',
+      '1·2·3주지 장미를 돌려 각도를 맞추고, 침봉에 꽂힌 줄기 하단부터 맨 위 꽃 머리까지 전부 주지 삼각형 안에 들어오는가?',
+      '1주지 나무가 약 5˚ 뒤에 있고, 주지장미를 앞으로 당겨 숙인 뒤 그 바로 뒤에 짧은 0˚ 보조장미를 세웠는가?',
+      '2주지 장미와 3주지 장미가 각각 2주지의 2/3 비율인가?',
+      '포컬이 중앙·침봉 앞쪽 1/3·전체 높이 1/3 아래에서 1·2주지 연결선 안쪽에 있고 앞으로 45˚ 눕는가?',
+      '포컬과 쉐도우가 얼굴 하나 차이로 붙어 (( 곡선을 이루며 쉐도우가 왼쪽에서 살짝 앞·가운데로 나오는가?',
+      '1주지 보조장미가 주지 장미의 2/3 길이로 바로 뒤 0˚에 있으며 좌우로 애매하게 비틀리지 않았는가?',
+      '2주지 보조장미가 2주지 장미보다 꽃 얼굴 하나만큼 낮게 오른쪽 앞쪽에 있는가?',
+      '포컬·1주지 보조장미·2주지 보조장미의 길이가 같은가?',
+      '포컬·1주지 보조장미·2주지 장미가 비슷한 높이 흐름이되 완전히 같은 높이는 아닌가?',
+      '주지 장미와 보조장미가 그룹을 이루며 삼지창처럼 벌어지지 않는가?',
+      '주지 나무 줄기와 장미 줄기끼리는 붙지 않았는가?',
+      '카네이션이 위쪽은 봉우리, 아래로 갈수록 피고 풍성하며 오방색 계열인가?',
+      '소국이 큰 꽃보다 높지 않고 신종 셀렘이 주지 하단을 가리는가?',
+      '남은 침봉을 돈나무로 가렸는가?',
+      '45˚ 위에서 침봉과 주지 다리가 보이지 않는가?',
+      '주지 꽃 얼굴들이 전체적으로 삼각형을 이루는가?'
      ]},
     {key:'dome', name:'반구형', exam:'제2과제', desc:'방사형·사방화·대칭, 측면이 둥근 곡선 반구형으로 나와야 하는 구성', guide:'dome', photo:refAsset('dome-final.png'),
      stepPhotos:{2:refAsset('dome-step2.png'),4:refAsset('dome-step4.png'),7:refAsset('dome-step7.png'),8:[refAsset('dome-step8-a.png'),refAsset('dome-step8-b.png')]},
-     fullNote:'핵심: 1층 거베라 위엔 2층 장미, 1층 장미 위엔 2층 거베라',
+     fullNote:'핵심:\n1층 거베라 위엔 2층 장미, 1층 장미 위엔 2층 거베라\n포컬이 아니라 2층 V자 거베라와 화기 모서리 거베라가 삼각형을 이룸\n장미가 아니라 2층 V자 거베라와 하단 배꼽 거베라가 역삼각형을 이룸',
      legend:[
       {role:'rose', label:'장미'},
       {role:'gerbera', label:'거베라'},
@@ -1862,9 +2288,9 @@
      ],
      order:[
       '1층 장미: 화기 모서리에 머리 하나 나오게 "대각선으로 눕혀서" 4송이 꽂기',
-      '1층 거베라: A, a, C, c 옆면에 거베라 "머리 나오게 눕혀서" 4송이 꽂기',
+      '1층 화기 모서리 거베라: A, a, C, c 옆면에 거베라 "머리 나오게 눕혀서" 4송이 꽂기',
       '포컬: 정중앙에 "1cm 높게" 꽂기',
-      '2층 거베라: "모서리 꼭짓점"에 4송이 기울여서 V 형태로 꽂기',
+      '2층 거베라: "모서리 꼭짓점"에 4송이 기울여서 V 형태로 꽂고, 하단 중앙 배꼽 거베라와 함께 역삼각형 만들기. 포컬이 아니라 2층 V자 거베라와 화기 모서리 거베라로 삼각형 만들기',
       '1층 루스커스: 거베라와 장미 "사이에 짧게" 꽂기',
       '"포컬 옆" 루스커스 꽂기',
       '"2층 장미: 1층 거베라 위"에 기울여서 V 형태로 꽂기',
@@ -1875,9 +2301,9 @@
      ],
      fullOrder:[
       '1층 장미는 화기 모서리에 머리 하나가 나오게 대각선으로 눕혀서 4송이 꽂습니다.',
-      '1층 거베라는 A, a, C, c 옆면에 거베라 머리가 나오게 눕혀서 4송이 꽂습니다.',
+      '1층 화기 모서리 거베라는 A, a, C, c 옆면에 거베라 머리가 나오게 눕혀서 4송이 꽂습니다.',
        '포컬은 정중앙에 1cm 정도 높게 꽂아 중심을 잡습니다.',
-      '2층 거베라는 모서리 꼭짓점에 4송이를 기울여 V 형태로 꽂습니다.',
+      '2층 거베라는 모서리 꼭짓점에 4송이를 기울여 V 형태로 꽂습니다. 정면에서 포컬이 아니라 2층 V자 거베라와 1층 화기 모서리 거베라가 삼각형을 이루게 합니다. 같은 2층 V자 거베라와 하단 중앙의 배꼽 거베라는 역삼각형을 이루게 하며, 이 역삼각형은 장미가 아니라 거베라로 만드는 구조입니다.',
       '1층 루스커스는 거베라와 장미 사이에 짧게 꽂아 1층의 빈 공간을 연결합니다.',
       '포컬 옆에는 루스커스를 꽂아 중앙이 끊겨 보이지 않게 보완합니다.',
       '2층 장미는 1층 거베라 위에 기울여서 V 형태로 꽂습니다.',
@@ -1893,10 +2319,12 @@
       '중심 포컬과 주변 꽃의 높낮이가 자연스럽게 이어지는가?',
       '하단과 플로랄폼을 그린 소재로 정리했는가?',
       '사방 어디서 보아도 빈 곳이 없는가?'
+      ,'포컬이 아니라 2층 V자 거베라와 화기 모서리 거베라가 삼각형을 이루는가?'
+      ,'장미가 아니라 2층 V자 거베라와 하단 배꼽 거베라가 역삼각형을 이루는가?'
      ]},
-    {key:'vertical', name:'수직형', exam:'제2과제', desc:'이등변삼각형 기준으로 수직축, 좁은 폭, 위아래 선의 안정감을 잡는 구성', guide:'vertical', photo:'',
+    {key:'vertical', name:'수직형', exam:'제2과제', desc:'이등변삼각형 기준으로 수직축, 좁은 폭, 위아래 선의 안정감을 잡는 구성', guide:'vertical', photo:refAsset('vertical-final-20260904.png'),
      materials:'아미장미, 캡거베라, 리시안셔스, 크림소국, 루스커스, 편백',
-     fullNote:'형태: 이등변삼각형 / 소재: 아미장미, 캡거베라, 리시안셔스, 크림소국, 루스커스, 편백',
+     fullNote:'핵심:\n이등변삼각형 형태·지그재그 배치·수직 상승선 강조\n뒷뼈대 루스커스: 중앙은 화기 높이의 3배 이상으로 뒤로 0~5˚ 눕히고, 양옆 2대는 최대한 붙여 중간-긴 중앙-짧은 순서\n중앙 장미 아래 세로꽃: 거베라-리시안셔스-거베라-장미-필러 순서로 내려오며 점점 정면 보기\n포컬 거베라: 플로랄폼 중앙·앞쪽 1/3 지점, 앞으로 45˚, 전체 높이의 1/3보다 살짝 높게\n화기 모서리 거베라 2송이와 포컬 거베라가 삼각형을 이룸\n하단 배꼽 장미와 2층의 짧은 V자 장미가 역삼각형을 이룸\n포컬 위 양쪽 거베라와 거베라 아래 양쪽 장미는 V자\n측면 1층은 짧은 루스커스로 연결하고, 편백은 뒤로 갈수록 길게 계단식',
      legend:[
       {role:'rose', label:'아미장미'},
       {role:'gerbera', label:'캡거베라'},
@@ -1907,47 +2335,35 @@
       {role:'cypress', label:'그린 소재(편백)'}
      ],
      order:[
-      'b, 루스커스를 화기 높이의 3.5배로 세로 꽂기: 살짝 뒤로 기울이기',
-      'b 양쪽 꼭짓점에 왼쪽 긴 루스커스, 오른쪽 짧은 루스커스 꽂기',
-      'b, 1번 루스커스 앞에 머리 하나 작은 긴 장미 꽂기',
-      'e, 포컬: 앞을 향해 45도, 전체 높이의 1/3보다 살짝 높게 꽂기',
-      '[1층] 7, 9 꼭짓점 거베라: 화기 모서리에 대각선 2송이 꽂기',
-      '[1층] 8번, 플로랄폼 앞쪽에 스탠다드 장미 1송이를 앞쪽을 바라보게 꽂기: 3번 장미의 1/4 길이, 장미 얼굴 1개 높이',
-      'a, c 양옆에 장미를 가로로 짧게 꽂기: 6번 장미와 길이 같게, 3번 장미의 1/4 길이',
-      '7, 9 꼭짓점에 장미 2송이 꽂기',
-      '5번/b 양쪽, 루스커스 옆쪽에 바깥쪽으로 대각선 긴 거베라 2송이를 세워 꽂기',
-      '세로 지그재그: 5번 면적 안에서 b 왼쪽 거베라, 오른쪽 장미, 왼쪽 장미, 오른쪽 거베라 순으로 머리 하나씩 낮춰 꽂기',
-      'd, f 양쪽에 리시안셔스를 대각선으로 꽂기',
-      'C 위쪽 꼭짓점에 리시안셔스를 살짝 대각선으로, 세워진 거베라와 비슷한 높이로 꽂기',
-      'a, c에 리시안셔스를 대각선 바깥으로 기울여 꽂고, 그 아래에 크림소국 꽂기',
-      'a 외곽에 크림소국을 대각선 바깥으로 기울여 꽂기',
-      'd, f 안쪽과 10번 좌우 꽃 사이, 6번 장미 위~4번 포컬 사이에 크림소국을 넣고, 9번 왼쪽 거베라 앞에는 길이 긴 리시안셔스 꽂기',
-      '루스커스 추가: 5~6번 사이, 7번 앞뒤에 꽂기',
-      '편백과 루스커스로 사이사이를 꽂아 플로랄폼과 빈틈 정리하기'
+      '뒷뼈대 루스커스 3대: 중앙은 화기 높이의 3배 이상으로 뒤로 0~5˚ 눕히고, 양옆 2대는 최대한 붙여 중간-긴 중앙-짧은 순서로 꽂기',
+      '중앙 장미를 꽂고, 맨 뒤 뼈대의 중간·짧은 루스커스 앞에 거베라를 꽂은 뒤 짧은 쪽 거베라 위에 리시안셔스 꽂기',
+      '양팔 장미를 가로로 짧게 꽂고 1층 화기 모서리에 거베라 2송이를 대각선으로 꽂아 포컬 거베라 기준 삼각형 만들기',
+      '포컬 거베라를 플로랄폼 중앙·앞쪽 1/3 지점에 앞으로 45˚ 기울여 전체 높이의 1/3보다 살짝 높게 꽂기',
+      '1층 배꼽 위에 리시안셔스를 꽂아 포컬과 하단을 연결하기',
+      '하단 배꼽 장미를 기준으로 2층 양쪽에 짧은 장미를 V자 형태로 꽂아 역삼각형 만들기',
+      '중앙 장미 아래 세로꽃을 위부터 거베라-리시안셔스-거베라-장미-필러 순으로 지그재그 배치하고 아래로 갈수록 점점 정면을 보게 하기',
+      '측면 1층에 짧은 루스커스를 꽂아 꽃 사이와 외곽선을 연결하기',
+      '포컬 거베라 위 양쪽에 거베라를 V자로 꽂아 수직 상승선 강조하기',
+      '편백을 꽃 사이에 꽂되 뒤로 갈수록 길어지는 계단식으로 배치하기',
+      '이등변삼각형 외곽·지그재그 배치·수직 상승선을 확인하고 플로랄폼과 빈틈 정리하기'
      ],
      fullOrder:[
-      'b에 루스커스를 화기 높이의 3.5배 길이로 잡아 세로로 꽂습니다. 수직선이 너무 앞으로 쏠리지 않도록 살짝 뒤로 기울입니다.',
-      'b 양쪽 꼭짓점에는 왼쪽 긴 루스커스와 오른쪽 짧은 루스커스를 꽂아 이등변삼각형의 윗부분 폭을 잡습니다.',
-      'b의 1번 루스커스 앞에는 머리 하나 작은 긴 장미를 꽂아 수직 중심 꽃선을 만듭니다.',
-      'e 위치의 포컬은 앞을 향해 45도로 꽂습니다. 높이는 전체 높이의 1/3보다 살짝 높게 잡아 중앙 시선이 너무 낮아지지 않게 합니다.',
-      '1층의 7, 9 꼭짓점에는 거베라 2송이를 화기 모서리에 대각선으로 꽂습니다.',
-      '1층 8번, 플로랄폼 앞쪽에는 스탠다드 장미 1송이를 앞쪽을 바라보게 꽂습니다. 길이는 3번 장미의 1/4 정도, 장미 얼굴 1개 높이로 잡습니다.',
-      'a, c 양옆에는 장미를 가로로 짧게 꽂습니다. 6번 장미와 길이를 같게 맞추고, 3번 장미의 1/4 길이 정도로 낮게 잡습니다.',
-      '7, 9 꼭짓점에는 장미 2송이를 꽂아 1층 거베라와 하단 장미선을 연결합니다.',
-      '5번/b 양쪽, 루스커스 옆쪽에는 긴 거베라 2송이를 바깥쪽으로 대각선 방향이 느껴지게 세워 꽂습니다.',
-      '5번 면적 안에서 세로 지그재그를 만듭니다. b 왼쪽에는 3번보다 머리 하나 낮게 거베라, 오른쪽에는 머리 하나 낮게 장미, 다시 왼쪽에 머리 하나 낮게 장미, 오른쪽에 머리 하나 낮게 거베라를 넣습니다.',
-      'd, f 양쪽에는 리시안셔스를 대각선으로 꽂아 중간 면을 부드럽게 이어줍니다.',
-      'C 위쪽 꼭짓점에는 리시안셔스를 살짝 대각선으로 꽂습니다. 높이는 세워진 거베라와 비슷하게 맞춥니다.',
-      'a, c에는 리시안셔스를 대각선 바깥으로 기울여 꽂고, 그 아래에는 크림소국을 넣어 낮은 면을 채웁니다.',
-      'a 외곽에는 크림소국을 대각선 바깥으로 기울여 꽂아 왼쪽 외곽선을 보강합니다.',
-      'd, f 안쪽에는 크림소국을 넣고, 10번의 왼쪽·오른쪽 꽃들 사이에도 크림소국을 하나씩 넣습니다. 6번 장미 위~4번 포컬 사이에도 크림소국과 루스커스를 넣고, 9번 왼쪽 거베라 앞에는 길이 긴 리시안셔스를 꽂습니다.',
-      '루스커스는 5~6번 사이와 7번 앞뒤에 추가해 꽃 사이 흐름을 연결합니다.',
-      '마지막으로 편백과 루스커스를 사이사이에 꽂아 플로랄폼과 빈틈을 가립니다. 수직형 폭이 넓어지지 않게 꽃보다 너무 튀어나오지 않도록 짧게 정리합니다.'
+      '수직형은 이등변삼각형 형태를 기본으로 하고, 꽃을 좌우 지그재그로 배치해 중앙의 수직 상승선을 강조합니다. 맨 뒤 뼈대 루스커스는 3대를 최대한 붙여 꽂습니다. 중앙의 가장 긴 루스커스는 화기 높이의 3배 이상으로 잡아 뒤로 0~5˚ 눕히고, 양옆은 중간 길이-긴 중앙-짧은 길이 순서가 되게 합니다.',
+      '중앙 루스커스 앞에 중앙 장미를 꽂아 수직 중심 꽃선을 만듭니다. 맨 뒤 뼈대의 중간 루스커스와 짧은 루스커스 앞에는 거베라를 각각 꽂고, 짧은 쪽 거베라 위에는 리시안셔스를 넣어 높낮이를 연결합니다.',
+      '양팔에는 장미를 가로로 짧게 꽂습니다. 1층 화기 모서리에는 거베라 2송이를 대각선으로 꽂아 이등변삼각형의 하단 폭과 좌우 균형을 잡고, 포컬 거베라를 꼭짓점으로 하는 거베라 삼각형을 만듭니다.',
+      '포컬 거베라는 플로랄폼 중앙·앞쪽 1/3 지점에 꽂아 작업자를 향해 앞으로 45˚ 기울이고, 꽃 얼굴은 전체 높이의 1/3보다 살짝 높은 위치에 둡니다. 포컬이 너무 낮거나 중앙에서 벗어나지 않게 확인합니다.',
+      '1층 배꼽 위에는 리시안셔스를 꽂아 배꼽과 포컬 사이 흐름이 끊기지 않게 연결합니다. 리시안셔스가 포컬보다 앞으로 튀어나오지 않게 길이와 각도를 조절합니다.',
+      '하단 배꼽 장미를 기준으로 2층 양쪽에는 짧은 장미를 V자 형태로 꽂아 역삼각형을 만듭니다. 좌우 장미의 높이와 벌어지는 각도를 맞추되 수직형의 폭이 과하게 넓어지지 않게 합니다.',
+      '중앙 장미 아래 세로꽃은 위부터 거베라-리시안셔스-거베라-장미-필러 순서로 지그재그 내려오게 배치합니다. 아래로 내려갈수록 꽃 얼굴이 점점 정면을 보게 낮추어, 측면에서도 앞으로 둥글게 떨어지는 흐름이 보이게 합니다.',
+      '측면 1층에는 짧은 루스커스를 꽂아 1층 꽃 사이와 외곽선을 연결합니다. 루스커스가 꽃보다 과하게 튀어나오거나 수직형 폭을 넓히지 않게 짧게 정리합니다.',
+      '포컬 거베라 위 양쪽에는 거베라를 V자 형태로 꽂습니다. 두 거베라가 포컬과 자연스럽게 연결되면서 위쪽 수직 상승선을 강조하도록 좌우 높이와 각도를 맞춥니다.',
+      '편백은 꽃 사이사이에 꽂아 플로랄폼과 빈틈을 가립니다. 앞쪽은 짧게, 뒤로 갈수록 길어지는 계단식으로 배치하되 꽃선을 덮거나 뚱뚱하게 퍼지지 않게 합니다.',
+      '마지막으로 정면에서 이등변삼각형 외곽, 중앙 수직 상승선, 좌우 지그재그 배치를 확인합니다. 측면에서는 꽃 얼굴이 위에서 아래로 갈수록 점점 정면을 향하며 앞으로 둥글게 떨어지는지 확인합니다.'
      ],
-     checks:['이등변삼각형의 수직 중심축이 한쪽으로 기울지 않았는가?','b의 긴 루스커스와 양쪽 루스커스가 위쪽 기준선을 분명하게 잡는가?','포컬이 앞을 향해 45도이며 전체 높이의 1/3보다 살짝 높은가?','6번 장미와 a,c 가로 장미의 길이가 서로 같게 낮게 맞춰졌는가?','5번 면적 안 세로 지그재그 꽃선이 거베라-장미-장미-거베라 순으로 내려오는가?','리시안셔스와 크림소국이 필러/매스로 구분되어 빈 면을 채우는가?','편백과 루스커스가 플로랄폼을 가리되 수직형 폭을 넓히지 않는가?']},
-    {key:'tri', name:'삼각형', exam:'제2과제', desc:'수직축 좌우대칭, 방사형 1초점, 세 꼭지점을 명확히 표현하는 삼각형 구성', guide:'tri', photo:'',
+     checks:['이등변삼각형 형태이며 지그재그 배치와 수직 상승선이 분명한가?','중앙 루스커스가 화기 높이의 3배 이상이고 뒤로 0~5˚ 눕혀졌는가?','뒷뼈대 루스커스 3대가 최대한 붙어 있으며 중간-긴 중앙-짧은 순서인가?','중앙 장미를 꽂고 중간·짧은 뼈대 루스커스 앞에 거베라, 짧은 쪽 거베라 위에 리시안셔스를 꽂았는가?','양팔 장미와 1층 대각선 거베라가 좌우 균형을 이루는가?','화기 모서리 거베라 2송이와 포컬 거베라가 삼각형을 이루는가?','포컬 거베라가 플로랄폼 중앙·앞쪽 1/3 지점에서 앞으로 45˚ 기울고 전체 높이의 1/3보다 살짝 높은가?','1층 배꼽 위 리시안셔스가 포컬과 하단을 연결하는가?','하단 배꼽 장미와 2층의 짧은 V자 장미가 역삼각형을 이루는가?','중앙 장미 아래 세로꽃이 위부터 거베라-리시안셔스-거베라-장미-필러 순서이며 아래로 갈수록 점점 정면을 보는가?','측면 1층의 짧은 루스커스가 꽃 사이와 외곽선을 연결하는가?','포컬 위 양쪽 거베라가 V자를 이루며 수직 상승선을 강조하는가?','편백이 앞은 짧고 뒤로 갈수록 길어지는 계단식으로 꽂혔는가?']},
+    {key:'tri', name:'삼각형', exam:'제2과제', desc:'직선적 형태와 일정한 간격으로 수직축 좌우대칭, 방사형 1초점, 세 꼭지점을 명확히 표현하는 대칭 일방형', guide:'tri', photo:refAsset('tri-final-20260904.png'),
      materials:'장미, 거베라, 리시안셔스, 소국, 루스커스, 편백',
-     fullNote:'핵심: 1번 장미부터 포컬 - 4번 스프레이 장미까지 측면에서 봤을 때 둥글게 떨어지기 / 삼각형 모양으로 거베라 - 장미 - 거베라+장미 - 거베라 순으로 꽂기',
+     fullNote:'핵심:\n직선적 삼각형 · 일정한 간격 · 대칭 일방형\n수직축 좌우대칭 · 방사형 1초점 · 세 꼭지점 명확히 표현\n세 모서리 점을 직선으로 맞추고 2층 V자 거베라는 시원하게 바깥으로 빼기\n중앙 세로 루스커스는 뒤로 0~5도, 양팔과 대각선 루스커스로 뼈대 완성\nㅗ형 뼈대 사이 좌우에 루스커스를 2개씩, 총 4개 추가해 삼각형 외곽 완성\n포컬 거베라: 플로랄폼 중앙·앞쪽 1/3 지점, 앞으로 45도, 전체 높이의 1/3보다 살짝 높게\n배꼽 장미와 맞춘 포컬 아래 2층 장미는 짧은 역삼각형 V자\n편백은 꽃보다 약간 짧게, 남은 루스커스는 뼈대 대칭 보강',
      legend:[
       {role:'line', label:'그린 소재(루스커스)'},
       {role:'rose', label:'장미'},
@@ -1958,47 +2374,37 @@
       {role:'cypress', label:'그린 소재(편백)'}
      ],
      order:[
-      '긴 루스커스를 중심과 양옆으로 꽂아 삼지창 만들기',
-      '그 사이에 루스커스 1대씩 꽂아 총 5단 루스커스로 삼각형 뼈대 만들기',
-      'b, 긴 장미: 화기 높이의 3배 / 뒤로 0~5도 "눕히기"',
-      'a, c 양쪽에 장미를 "가로" 꽂기: 3번의 2/3 길이',
-      'e, 포컬: "앞을 향해 45도"',
-      '[1층 - 8] 장미 얼굴 1개 나오게 앞쪽으로 꽂아주기',
-      '[1층] 화기 모서리에 거베라 2송이를 대각선으로 꽂기',
-      '[1층] 8 / 플로랄폼 앞쪽에 스탠다드 장미 1송이를 "앞쪽을 바라보며" 꽂기',
-      '2번 사이 루스커스 앞에 장미 1송이씩 꽂기',
-      '5 / b 양쪽 살짝 앞쪽에 대각선으로 긴 거베라 2송이 꽂기',
-      '4, 6 옆면에 대각선으로 거베라 2송이 꽂기',
-      '7, 9 꼭짓점에 장미 2송이 꽂기',
-      '3번 장미 앞 아래로 리시안셔스를 지그재그로 꽂기',
-      'B, E 대각선으로 리시안셔스를 꽂기: 11번 거베라보다 살짝 길게',
-      '4번 장미 앞에 리시안셔스를 4번 장미~7번 거베라 사이 길이로 가로로 양쪽에 꽂기',
-      '2번 뼈대 루스커스 사이 빈 곳과 10번 거베라 아래, 6번 장미 위~5번 포컬 사이에 소국 꽂기',
-      '뒷면은 루스커스와 편백으로 가리기: 편백은 한 부분만 넣지 말고 전체적으로 짧게 넣기'
+      '중앙 세로와 양팔에 루스커스 꽂기: 중앙 세로는 뒤로 0~5도 눕히기',
+      '그 사이에 대각선으로 루스커스를 꽂아 삼각형 뼈대 완성하기',
+      'ㅗ형 뼈대 사이 좌우에 루스커스를 2개씩, 총 4개 추가해 삼각형 외곽 완성하기',
+      '루스커스 앞에 장미 꽂기: 머리가 무거우면 살짝 들리게 꽂아도 됨',
+      '포컬 거베라: 플로랄폼 중앙·앞쪽 1/3 지점, 앞으로 45도, 전체 높이의 1/3보다 살짝 높게',
+      '1층 거베라를 화기 모서리에 대각선으로 꽂아 포컬 거베라 기준 삼각형 만들기: 얼굴 하나 나오게',
+      '배꼽에 장미 꽂기',
+      '가장자리 뼈대 루스커스 앞에 장미를 대각선으로 꽂기',
+      '하단 배꼽 장미와 맞춰 2층에 짧은 장미를 V자로 꽂아 역삼각형 만들기: 포컬 아래',
+      '2층 V자 거베라를 시원하게 바깥으로 빼내기',
+      '스프레이 리시안셔스로 남은 면과 선을 연결하여 채우기',
+      '소국과 편백 채우기: 편백은 꽃보다 약간 짧게, 남은 루스커스는 뼈대 대칭으로 보강'
      ],
      fullOrder:[
-      '긴 루스커스를 중심과 양옆으로 꽂아 삼지창 형태를 만듭니다. 위 꼭짓점과 좌우 하단 꼭짓점이 먼저 또렷해야 이후 꽃이 삼각형으로 보입니다.',
-      '그 사이에 루스커스 1대씩을 추가해 총 5단 루스커스로 삼각형 뼈대를 만듭니다. 루스커스는 외곽 뼈대를 강조하는 용도이므로 좌우 길이가 대칭으로 보여야 합니다.',
-      'b 위치에 긴 장미를 화기 높이의 3배 길이로 잡고, 뒤로 0~5도 눕혀 꽂습니다.',
-      'a, c 양쪽에는 장미를 가로로 꽂습니다. 길이는 3번 장미의 2/3 정도로 맞춰 좌우 하단 폭을 만듭니다.',
-      'e 위치의 포컬은 앞을 향해 45도로 꽂아 방사형 1초점의 기준을 잡습니다.',
-      '1층 8번 위치에는 장미 얼굴 1개가 나오게 앞쪽으로 꽂아줍니다.',
-      {text:'1층 화기 모서리에는 거베라 2송이를 대각선으로 꽂습니다.', hint:'포컬 기준으로 앞에서 보았을 때 삼각형 선이 만들어져야 합니다.'},
-      '1층 8번, 플로랄폼 앞쪽에 스탠다드 장미 1송이를 앞쪽을 바라보게 꽂아 하단 중심을 한 번 더 잡습니다.',
-      '2번 사이 루스커스 앞에는 장미 1송이씩을 꽂아 루스커스 뼈대와 꽃점이 따로 놀지 않게 연결합니다.',
-      '5번과 b 양쪽, 살짝 앞쪽에는 긴 거베라 2송이를 대각선으로 꽂습니다.',
-      '4번과 6번 옆면에는 거베라 2송이를 대각선으로 꽂아 옆면 삼각 흐름을 이어줍니다.',
-      '7번과 9번 꼭짓점에는 장미 2송이를 꽂아 1층 삼각형과 위쪽 면을 연결합니다.',
-      '3번 장미 앞 아래로 리시안셔스를 지그재그로 꽂습니다. b 살짝 왼쪽 리시안셔스는 10번 거베라보다 플로랄폼 기준 살짝 뒤쪽에 두고 길이는 조금 더 높게, 그 아래 10번 거베라를 지나 5번 포컬 중앙 기준 살짝 오른쪽으로 이어줍니다.',
-      'B, E 대각선으로 리시안셔스를 넣습니다. 길이는 11번 거베라보다 살짝 길게 잡아 옆면 흐름을 보완합니다.',
-      '4번 장미 앞에는 리시안셔스를 4번 장미~7번 거베라 사이 길이로 가로로 양쪽에 꽂습니다.',
-      '2번 뼈대 루스커스 사이 빈 곳에는 소국을 넣고, 10번 거베라 아래와 6번 장미 위~5번 포컬 사이에도 소국을 꽂아 면을 채웁니다.',
-      {text:'뒷면은 루스커스와 편백으로 가립니다.', hint:'루스커스는 외곽 뼈대 강조용, 편백은 사이사이 플로랄폼을 가리고 필러처럼 채우는 용도입니다. 편백은 꽃보다 너무 나오지 않게, 꽃 얼굴보다 조금 아래 들어가게 짧게 넣고 한 부분만 둥글게 넣지 말고 전체적으로 넣습니다. 뒷부분은 루스커스로 통일하면 빠릅니다.'}
+      '중앙 세로와 양팔에 루스커스를 꽂습니다. 중앙 세로 루스커스는 뒤로 0~5도 눕히고, 좌우 양팔은 같은 가로 선상에 대칭되게 놓아 위 꼭짓점과 좌우 꼭짓점을 먼저 분명히 잡습니다.',
+      '중앙 세로와 양팔 사이에 루스커스를 대각선으로 꽂아 삼각형 뼈대를 완성합니다. 삼각형의 세 모서리 점을 연결했을 때 직선으로 맞아야 하며, 간격을 일정하게 유지해 직선적인 대칭 일방형이 되게 합니다.',
+      'ㅗ형 뼈대 사이의 왼쪽과 오른쪽에 루스커스를 각각 2개씩, 총 4개 추가로 꽂습니다. 중앙 세로와 양팔 사이의 빈 외곽을 채워 삼각형의 양쪽 사선이 분명하게 이어지게 합니다.',
+      '뼈대 루스커스 앞에 장미를 꽂아 꽃선과 뼈대를 연결합니다. 장미 머리가 무거워 아래로 처지면 살짝 들리게 꽂아도 됩니다.',
+      '포컬 거베라는 플로랄폼 중앙·앞쪽 1/3 지점에 꽂습니다. 앞으로 45도 각도로 쏠리게 하고, 꽃머리는 전체 높이의 1/3보다 살짝 높게 두어 방사형 1초점의 중심을 분명히 합니다.',
+      '1층 거베라는 화기 좌우 모서리에 대각선으로 꽂습니다. 화기 밖으로 얼굴 하나가 나오게 길이를 맞추고 좌우 높이와 각도를 대칭으로 맞추며, 포컬 거베라를 꼭짓점으로 하는 거베라 삼각형을 만듭니다.',
+      '하단 중앙 배꼽 위치에 장미를 꽂아 포컬 아래 중심을 잡습니다.',
+      '가장자리 삼각형 뼈대의 루스커스 앞에는 장미를 대각선으로 꽂습니다. 꽃머리들이 외곽 직선을 흐리지 않도록 일정한 간격으로 연결합니다.',
+      '하단 배꼽 장미와 위치를 맞춰 포컬 아래 2층에 짧은 장미를 V자로 꽂아 역삼각형을 만듭니다. 양쪽 길이와 벌어지는 각도를 대칭으로 맞춥니다.',
+      '2층의 V자 거베라는 답답하게 모으지 말고 시원하게 바깥으로 빼냅니다. 좌우가 같은 높이와 각도로 뻗으면서도 삼각형 외곽의 직선 흐름을 이어야 합니다.',
+      '스프레이 리시안셔스로 남은 면과 선을 연결하여 채웁니다. 삼각형의 직선적 외곽과 일정한 간격, 포컬을 향한 방사 흐름을 가리지 않도록 분배합니다.',
+      '필러 꽃인 소국과 편백으로 빈 곳을 채웁니다. 편백은 꽃보다 약간 짧게 넣고, 루스커스가 남으면 삼각형 뼈대의 좌우 대칭을 맞추는 데 추가로 사용합니다.'
      ],
-     checks:['수직축을 기준으로 좌우대칭이 맞는가?','방사형 1초점으로 제작되었는가?','위, 좌, 우 세 꼭지점이 명확하게 표현되는가?','측면에서 1번 장미, 포컬, 4번 스프레이 장미 흐름이 둥글게 떨어지는가?','거베라 - 장미 - 거베라+장미 - 거베라 순서의 삼각형 꽃선이 보이는가?','루스커스 5단 뼈대가 삼각형 외곽을 잡고 있는가?','편백이 한 부분에만 몰리지 않고 전체적으로 짧게 들어갔는가?']},
-    {key:'fan', name:'부채형', exam:'제2과제', desc:'수직축 좌우대칭, 방사형 1초점, 세 꼭지점을 명확히 표현하는 부채형 구성', guide:'fan', photo:'',
+     checks:['삼각형의 세 모서리 점을 연결했을 때 직선으로 맞는가?','2층 V자 거베라가 시원하게 바깥으로 빠졌는가?','직선적 형태와 일정한 간격이 유지되는가?','대칭 일방형으로 보이는가?','수직축 좌우대칭, 방사형 1초점, 세 꼭지점이 명확히 표현되는가?','중앙 세로와 양팔에 루스커스를 꽂고 중앙 세로는 뒤로 0~5도 눕혔는가?','그 사이 대각선 루스커스로 삼각형 뼈대를 완성했는가?','ㅗ형 뼈대 사이 좌우에 루스커스를 2개씩, 총 4개 추가해 삼각형 외곽을 완성했는가?','루스커스 앞에 장미를 꽂고 머리가 무거우면 살짝 들리게 조절했는가?','포컬 거베라가 플로랄폼 중앙·앞쪽 1/3 지점에 앞으로 45도, 전체 높이의 1/3보다 살짝 높게 위치하는가?','화기 모서리 거베라 2송이와 포컬 거베라가 삼각형을 이루는가?','1층 거베라가 화기 모서리에 대각선으로 꽂혀 얼굴 하나가 나오는가?','하단 배꼽 장미와 2층의 짧은 V자 장미가 역삼각형을 이루는가?','스프레이 리시안셔스가 남은 면과 선을 연결하는가?','소국과 꽃보다 약간 짧은 편백이 빈 곳을 채우고, 남은 루스커스가 뼈대를 대칭으로 보강하는가?']},
+    {key:'fan', name:'부채형', exam:'제2과제', desc:'수직축 좌우대칭, 방사형 1초점, 세 꼭지점을 명확히 표현하는 부채형 구성', guide:'fan', photo:refAsset('fan-final-20260904.png'),
      materials:'장미, 거베라, 포컬, 소국, 스프레이 장미, 루스커스, 편백',
-     fullNote:'핵심: 1번 장미 > 포컬 > 6번 스탠다드 장미까지 측면에서 봤을 때 둥글게 떨어지기',
+     fullNote:'핵심:\n1초점 방사형 · 포컬포인트 · 모든 줄기 플로랄폼에 3cm 깊이로 꽂기\n수직축 좌우대칭 · 방사형 1초점 제작 · 위·좌·우 세 꼭지점 명확히 표현\n세로 중앙 루스커스: 화기 너비의 3배, 뒤로 0~5˚ 눕히기\n양팔 루스커스: 화기 너비의 2배 · 좌우에 2개씩 총 4개를 추가해 둥근 부채형 외곽 완성\n포컬 거베라: 20cm, 플로랄폼 중앙·앞쪽 1/3 지점에서 앞으로 45˚\n화기 모서리 거베라 2송이와 포컬 거베라가 삼각형을 이룸\n하단 배꼽 장미와 2층의 짧은 V자 장미가 역삼각형을 이룸\n1번 장미 > 포컬 > 배꼽 장미까지 측면에서 둥글게 떨어지기\n편백 또는 루스커스로 뒤를 채우되 화기 밖으로 튀어나오지 않기',
      legend:[
       {role:'rose', label:'장미'},
       {role:'gerbera', label:'거베라'},
@@ -2008,42 +2414,39 @@
       {role:'line', label:'그린 소재(루스커스)'}
      ],
      order:[
-      'b, "긴 루스커스" 1송이: a~c 화기 높이의 3배 / 뒤로 0~5˚ "눕히기"',
-      '[1층] a, c 양쪽에 루스커스 1송이씩 "가로" 꽂기: 1번의 2/3 길이',
-      '1번~2번 사이에 길이 줄여가며 루스커스 양쪽에 2송이씩 꽂아 둥근 "부채형(반달형) 테두리" 만들기',
-      'b, 1번 루스커스 앞에 "긴 장미" 1송이: "루스커스보다 조금 짧음" / 뒤로 0~5˚ "눕히기"',
-      '[1층] a, c 양쪽, 2번 루스커스 앞에 긴 장미를 루스커스보다 조금 짧게 꽂기',
-      '[1층] 8번, 플로랄폼 앞쪽에 스탠다드 장미 1송이를 "앞쪽을 바라보며" 꽂기',
-      'e, 포컬: "앞을 향해 45˚"',
-      '3번 "루스커스(메인 부채살) 앞마다" 살짝 낮게 장미 꽂기',
-      '[1층] 6번 스탠다드 장미 양옆에 거베라 2송이를 화기 모서리에 일자로 꽂기',
-      '[2층] 7, 9 꼭짓점 장미: 6번 기준으로 "역삼각형"으로 기울여 꽂기',
-      '[3층] 4·5·7·8 / 5·6·8·9 가운데 꼭짓점과 대칭 위치에 "거베라"와 그 사이 "스프레이 장미" 꽂기',
-      '소국과 스프레이 장미를 사이사이 비어 있는 부분(C, F 뒤쪽)에 넣어 "면적 채우기"',
-      '포컬 위에 장미 꽂기: 포컬 기준으로 장미 - 거베라 - 장미 순으로 위로 오르기',
-      '[1층] 2번~9번 사이, 6번 장미 양옆에 예쁜 루스커스 꽂기("꽃-루스커스-꽃-루스커스")',
-      '루스커스를 바로 잘라서, 또는 편백으로 사이를 채우고 뒤쪽의 메인 부채살 앞쪽에는 길게 꽂기'
+      '모든 줄기는 1초점 포컬포인트를 향하게 방사형으로, 플로랄폼에 3cm 깊이로 꽂기',
+      '세로 중앙 루스커스: 화기 너비의 3배, 뒤로 0~5˚ 눕혀 꽂기',
+      '양팔 루스커스: 화기 너비의 2배로 좌우대칭되게 꽂아 ㅗ형 뼈대 만들기',
+      'ㅗ형 뼈대 사이의 좌우에 루스커스를 각각 2개씩, 총 4개 추가해 둥근 부채형 외곽 완성하기',
+      'ㅗ형 루스커스 앞에 장미를 꽂아 뼈대의 꽃선 연결하기',
+      '포컬 거베라를 20cm 길이로 앞으로 45˚ 기울여 꽂고, 하단 중앙에 배꼽 장미 꽂기',
+      '세로 중앙 장미와 포컬 거베라 사이에 장미를 꽂고, 그 양옆에 긴 V자 거베라 꽂기',
+      'ㅗ형 장미 사이 중앙에 장미를 대각선으로 꽂아 삼각형처럼 연결하기',
+      '화기 모서리에 거베라를 대각선으로 꽂아 포컬 거베라 기준 삼각형 만들기',
+      '하단 배꼽 장미와 맞춰 2층에 짧은 장미를 V자로 꽂아 역삼각형 만들기',
+      '위 장미 뒤, 2층 바깥쪽에 거베라 V자를 시원하게 꽂기',
+      '사이사이에 스프레이 장미나 남은 꽃을 넣어 부채형 라인 강조하기',
+      '편백 또는 루스커스로 뒤를 채우되 화기 밖으로 튀어나오지 않게 마무리하기'
      ],
      fullOrder:[
-      'b에 긴 루스커스 1송이를 a~c 화기 높이의 3배 길이로 잡고, 뒤로 0~5˚ 눕혀 꽂습니다.',
-      'a, c 양쪽 1층에 루스커스 1송이씩을 1번의 2/3 길이로 가로로 꽂아 좌우 기준선을 잡습니다.',
-      '1번과 2번 사이에 길이를 줄여가며 루스커스를 양쪽에 2송이씩 더 꽂아 둥근 부채형, 즉 반달형 테두리를 만듭니다.',
-      'b의 1번 루스커스 바로 앞에 긴 장미 1송이를 루스커스보다 조금 짧게 잡고, 뒤로 0~5˚ 눕혀 꽂습니다.',
-      'a, c 양쪽 1층의 2번 루스커스 앞에는 긴 장미를 루스커스보다 조금 짧게 꽂아 좌우 외곽 꽃점을 잡습니다.',
-      '플로랄폼 앞쪽 8번 위치에 스탠다드 장미 1송이를 앞쪽을 바라보게 꽂아 하단 중심을 잡습니다.',
-      'e 위치의 포컬은 앞을 향해 45˚로 꽂아 시선이 중앙으로 모이게 합니다.',
-      {text:'3번 루스커스, 즉 메인 부채살 앞마다 장미를 살짝 낮게 꽂아 부채살의 꽃점을 이어줍니다.', hint:'폼에 잘 꽂히지 않으면 살짝 앞으로 꽂고, 꽃 얼굴은 손으로 살살 만져 펴줍니다.'},
-      {text:'6번 스탠다드 장미 양옆에는 거베라 2송이를 화기 모서리에 일자로 꽂습니다.', hint:'포컬 기준으로 앞에서 보았을 때 삼각형이 되어야 하며, 6번 장미보다 튀어나오지 않게 합니다. 6번, 9번, 2번으로 갈수록 점점 짧아져 전체 1층이 둥근 곡선을 이루어야 합니다.'},
-      '2층의 7, 9 꼭짓점에는 장미를 6번 기준 역삼각형으로 기울여 꽂습니다.',
-      '3층은 4·5·7·8, 5·6·8·9 사이의 가운데 꼭짓점과 대칭 위치에 거베라를 넣고, 그 사이에는 스프레이 장미를 꽂아 면을 이어줍니다.',
-      '소국과 스프레이 장미는 같은 보조 점으로 보고, 사이사이 비어 있는 부분, 특히 C와 F 뒤쪽에 넣어 면적을 채웁니다.',
-      '포컬 위에는 장미, 거베라, 장미 순으로 하나씩 위로 올라가게 꽂아 중앙 흐름을 만듭니다.',
-      {text:'1층의 2번~9번 사이와 6번 장미 양옆에는 예쁜 루스커스를 꽃-루스커스-꽃-루스커스 흐름으로 꽂습니다.', hint:'윗부분이 잘렸거나 예쁘지 않은 루스커스는 뒤를 가리거나 사이사이 안쪽을 채우는 용도로 씁니다.'},
-      '루스커스를 바로 잘라서, 또는 편백으로 사이를 채우고 뒤쪽의 메인 부채살 앞쪽에는 길게 꽂아 플로랄폼과 빈틈을 정리합니다.'
+      '모든 줄기는 하나의 초점인 포컬포인트를 향해 방사형으로 꽂고, 플로랄폼에 약 3cm 깊이로 단단하게 꽂습니다. 수직축을 기준으로 좌우대칭을 맞추고 위·좌·우 세 꼭지점을 분명히 표현합니다.',
+      '세로 중앙 루스커스는 화기 너비의 3배 길이로 잡아 뒤로 0~5˚ 눕혀 꽂습니다. 작품의 수직축이므로 좌우로 기울지 않게 중심을 맞춥니다.',
+      '양팔 루스커스는 화기 너비의 2배 길이로 같은 가로 선상의 하단 좌우에 대칭되게 꽂아 ㅗ형 뼈대를 완성합니다.',
+      'ㅗ형 뼈대 사이의 왼쪽과 오른쪽에 루스커스를 각각 2개씩, 총 4개 추가로 꽂습니다. 중앙에서 양팔로 갈수록 길이를 줄여 둥근 부채형, 즉 반달형 외곽이 되게 합니다.',
+      'ㅗ형을 이루는 중앙과 양팔 루스커스 앞에 장미를 꽂아 뼈대의 꽃점을 연결합니다. 장미는 루스커스보다 조금 짧게 하고 좌우 높이와 각도를 대칭으로 맞춥니다.',
+      '포컬 거베라는 20cm 길이로 플로랄폼 중앙·앞쪽 1/3 지점에 앞으로 45˚ 기울여 꽂습니다. 하단 중앙에는 앞을 바라보는 배꼽 장미를 꽂아 포컬 아래 중심을 잡습니다.',
+      '세로 중앙 장미와 포컬 거베라 사이에 장미 한 송이를 꽂습니다. 그 장미 양옆에는 긴 거베라를 V자로 꽂아 중앙의 세로 흐름과 부채형 양쪽 선을 연결합니다.',
+      'ㅗ형 장미 사이의 중앙에는 장미를 대각선으로 꽂습니다. 삼각형 구성처럼 양쪽의 장미가 중심을 향해 방사되면서 좌우대칭을 이루게 합니다.',
+      '화기 좌우 모서리에 거베라를 대각선으로 꽂아 포컬 거베라를 꼭짓점으로 하는 거베라 삼각형이 보이게 합니다. 화기 밖으로 과도하게 튀어나오지 않도록 길이와 각도를 맞춥니다.',
+      '하단 배꼽 장미와 위치를 맞춰 2층에 짧은 장미를 V자로 꽂아 역삼각형을 만듭니다. 양쪽 길이와 벌어지는 각도를 대칭으로 맞춥니다.',
+      '바로 위 장미 뒤쪽의 2층 바깥에 거베라를 V자로 시원하게 꽂습니다. 답답하게 모으지 말고 부채형 외곽의 방사선을 이어주되 세 꼭지점과 둥근 테두리를 흐리지 않게 합니다.',
+      '사이사이에 스프레이 장미나 남은 꽃을 넣어 부채형 라인과 면을 연결합니다. 소국과 스프레이 장미는 빈 면을 채우되 중앙의 1초점 방사 흐름을 가리지 않게 분배합니다.',
+      '편백 또는 루스커스로 뒷부분과 플로랄폼을 채웁니다. 뒤통수를 가리되 화기 밖으로 튀어나오지 않게 화기 선에 맞추고, 메인 부채살 앞쪽은 필요한 만큼 길게 연결합니다.'
      ],
-     checks:['수직축을 기준으로 좌우대칭이 맞는가?','방사형 1초점으로 꽂혀 있는가?','위, 좌, 우 세 꼭지점이 명확하게 표현되는가?','측면에서 1번 장미, 포컬, 6번 스탠다드 장미 흐름이 둥글게 떨어지는가?','루스커스 부채형 테두리가 7개 기준점으로 둥글게 이어지는가?','1층 하단 곡선이 6번, 9번, 2번으로 갈수록 자연스럽게 짧아지는가?','소국, 스프레이 장미, 루스커스로 빈 면적을 채웠는가?']},
+     checks:['모든 줄기가 1초점 포컬포인트를 향해 방사형으로, 플로랄폼에 약 3cm 깊이로 꽂혀 있는가?','수직축을 기준으로 좌우대칭이 맞는가?','위, 좌, 우 세 꼭지점이 명확하게 표현되는가?','세로 중앙 루스커스가 화기 너비의 3배이며 뒤로 0~5˚ 눕혀져 있는가?','양팔 루스커스가 화기 너비의 2배이며 같은 가로 선상의 하단 좌우에 대칭되게 꽂혀 있는가?','ㅗ형 뼈대 사이 좌우에 루스커스를 2개씩, 총 4개 추가해 둥근 부채형 외곽을 만들었는가?','ㅗ형 루스커스 앞에 장미를 꽂아 뼈대의 꽃선을 연결했는가?','포컬 거베라가 20cm 길이로 플로랄폼 중앙·앞쪽 1/3 지점에서 앞으로 45˚ 기울어져 있는가?','하단 중앙의 배꼽 장미가 앞을 바라보며 포컬 아래 중심을 잡는가?','세로 중앙 장미와 포컬 사이에 장미가 있고, 그 양옆의 긴 거베라가 V자를 이루는가?','ㅗ형 장미 사이 중앙의 장미가 대각선으로 꽂혀 삼각형처럼 연결되는가?','화기 모서리 거베라 2송이와 포컬 거베라가 삼각형을 이루는가?','화기 모서리의 거베라가 대각선으로 꽂혀 포컬 기준 거베라 삼각형을 이루는가?','하단 배꼽 장미와 2층의 짧은 V자 장미가 역삼각형을 이루는가?','위 장미 뒤 2층 바깥쪽의 거베라 V자가 시원하게 벌어지는가?','스프레이 장미와 남은 꽃이 사이사이의 부채형 라인을 강조하는가?','편백 또는 루스커스로 뒤를 채우되 화기 밖으로 튀어나오지 않았는가?','측면에서 중앙 장미, 포컬, 배꼽 장미의 흐름이 둥글게 떨어지는가?','소국과 스프레이 장미가 빈 면을 채우면서 1초점 방사 흐름을 가리지 않는가?']},
     {key:'horiz', name:'수평형', exam:'제2과제', desc:'방사형·사방화·대칭, 낮은 수평선과 꽃 사이의 층을 맞추는 구성', guide:'horiz', photo:refAsset('horiz-final.jpg'),
      stepPhotos:{6:refAsset('horiz-step6.png'),9:refAsset('horiz-step9.jpg')},
+     fullNote:'핵심: ① 포컬 거베라 = 2번 장미 위~아래 전체 길이의 절반(짧은 폭 1/2) = 화기 높이 1배, 90˚ 수직 ② 수직 1 : 수평 4 ③ 양쪽 대각선 길이 일치 ④ 1층 1·2번 장미와 루스커스를 타원형으로 연결 ⑤ 2층 거베라는 대각선 V형태로 포컬·1층 장미와 완만한 곡선 ⑥ 포컬 주변 루스커스 4개 ⑦ 편백은 꽃보다 낮게',
      legend:[
       {role:'rose', label:'장미'},
       {role:'gerbera', label:'거베라'},
@@ -2053,28 +2456,29 @@
      order:[
       '1층 "장미" 길게: 화기 대각선 길이 / a, c 양옆에 한 송이씩 가로로 눕혀 꽂기',
       '1층 "장미" 짧게: 머리 하나 나오는 길이 / A, C 위아래에 눕혀 꽂기',
-      '"거베라 = 포컬": 2번 전체 길이의 절반 높이 / 정중앙에 꽂기',
+      '"거베라 = 포컬": 2번 장미의 위~아래 전체 길이의 절반(짧은 폭의 1/2) = 화기 높이 1배 / 정중앙에 90도 수직으로 꽂기',
       '1층 "장미" 추가: 1번과 2번 장미 사이에 중간 길이 장미 총 4송이 꽂기',
       '1층 모서리 "거베라": 화기 모서리에 머리 하나 나오는 길이',
-      '2층 거베라: A, C, a, c 끝 "모서리"에 거베라 4송이를 기울여 V모양으로 꽂기',
+      '2층 거베라: A, C, a, c 끝 "모서리"에 거베라 4송이를 대각선 V모양으로 꽂고 포컬·1층 장미와 완만한 곡선으로 연결하기',
       '1층 루스커스로 보완: 1층 "꽃들 아래에" 루스커스를 꽃보다 살짝 "길게" 꽂기',
-      '1층 "장미 사이" 루스커스 꽂기: 1층 장미인 1번과 4번 사이에 루스커스 4송이 꽂기',
-      '2층 "루스커스" 꽂기: ㄱ, ㄴ 거베라 사이에 루스커스 4송이를 V모양으로 꽂기',
+      '1층 "장미 사이" 루스커스 꽂기: 1·2번 장미가 타원형으로 이어지도록 루스커스를 꽂고, 장미는 루스커스 길이만큼 잘라 루스커스 위에서 머리 하나 차이 나게 꽂기',
+      '포컬 "루스커스" 꽂기: 포컬을 둘러싸도록 루스커스 4개 꽂기',
       '"스프레이" 소재 빈 공간에 꽂아 면 채우기',
-      '"편백"으로 플로랄폼을 숨기고 꽃 사이사이 빈 공간을 마무리하기'
+      '"편백"을 꽃보다 낮게 사이사이에 꽂아 플로랄폼을 숨기기',
+      '최종 확인: 양쪽 대각선 길이, 수직 1 : 수평 4, 꽃 연결성, 소재 분배, 사방형 확인하기'
      ],
      fullOrder:[
       '1층에 장미를 화기 대각선 길이인 30cm를 재고, 그보다 꽂을 길이를 고려해 3cm 정도 길게 잡아 a, c 양옆에 한 송이씩 가로로 눕혀 꽂습니다. 전체 가로 길이는 약 70cm를 기준으로 봅니다. 잎은 있는 상태로 작업하되, 아래로 처지면 잘라 정리하고, 위에 세로로 꽂는 경우에는 잎을 면을 가리는 용도로 활용할 수 있습니다.',
       '장미를 1번의 1/3 길이, 즉 약 10cm이자 머리 하나가 나올 정도로 짧게 잡아 A, C 위아래에 눕혀 꽂습니다. 장미 얼굴이 크다면 화기 기준으로 얼굴 하나가 밖으로 나오는 정도를 기준으로 잡습니다.',
-      '플로랄폼 정중앙 B에 거베라를 세로로 꽂아 포컬을 만듭니다. 높이는 2번 전체 길이의 절반, 즉 A~B 또는 B~C 흐름에 맞춰 잡고, 너무 높아져 수평형의 낮은 인상이 깨지지 않게 합니다.',
+      '플로랄폼 정중앙 B에 포컬 거베라를 90도로 수직으로 꽂습니다. 길이는 2번 장미의 위~아래 전체 길이의 절반, 즉 짧은 폭의 1/2이자 화기 높이의 1배입니다. 너무 높아져 수평형의 낮은 인상이 깨지지 않게 합니다.',
       '1층에 장미를 추가합니다. 1번과 2번 장미 사이, a와 c 선을 기준으로 양옆에 중간 길이 장미를 한 송이씩 꽂아 1층의 모서리 점을 잡습니다.',
       '1층 거베라를 화기 모서리에 머리 하나씩 나오게 꽂습니다. 위에서 내려다보았을 때 장미 점들과 번갈아 이어져야 하며, 빨강·파랑 예시색이 아니라 실제 소재 역할 색상으로 구분합니다.',
-      '2층 거베라를 A, C, a, c 끝 모서리에 4송이 기울여 꽂습니다. V모양으로 살짝 올라오게 하되, 측면에서는 둥근 돔 형태가 되도록 높이를 맞춥니다.',
-      '1번 가로 장미 아래에 루스커스가 3cm 정도 살짝 나오게 꽂습니다. 전체적으로 다른 장미들 밑에도 그린 소재를 꽃보다 살짝 길게 넣어 하단 선을 받쳐줍니다. 루스커스는 손의 열감으로 일자로 펴주고, 시험 전에는 집에서 미리 정리해두면 좋습니다.',
-      '1층 장미인 1번과 4번 사이에 루스커스 4송이를 대칭으로 꽂아 빈 선을 이어줍니다. 꽃 사이가 끊겨 보이지 않게 하되, 그린이 꽃보다 과하게 튀어나오지 않게 합니다.',
-      '포컬 양옆의 ㄱ, ㄴ 보조선 위치에 거베라 사이로 루스커스 4송이를 V모양으로 꽂아 넣습니다. 중앙이 답답해지지 않도록 잎의 방향을 나누어 넣습니다.',
+      '2층 거베라를 A, C, a, c 끝 모서리에 4송이 대각선 V모양으로 기울여 꽂습니다. 포컬과 1층 장미 사이가 끊기지 않도록 완만한 곡선으로 연결하고, 측면에서는 둥근 돔 형태가 되도록 높이를 맞춥니다.',
+      '1번 가로 장미 아래에 루스커스가 3cm 정도 살짝 나오게 꽂습니다. 장미를 품에 꽂힌 루스커스 길이만큼 잘라 루스커스 위에 꽂으면 머리 하나 정도 차이가 자연스럽게 납니다. 루스커스는 손의 열감으로 일자로 펴주고, 시험 전에는 집에서 미리 정리해두면 좋습니다.',
+      '1층의 1·2번 장미가 위에서 보았을 때 타원형으로 이어지도록 장미 사이에 루스커스를 꽂아 꽃과 그린의 선을 연결합니다. 꽃 사이가 끊겨 보이지 않게 하되 그린이 과하게 튀어나오지 않게 합니다.',
+      '포컬을 둘러싸도록 루스커스 4개를 사방에 나누어 꽂습니다. 중앙이 답답해지지 않도록 잎 방향을 나누고 포컬의 수직선을 가리지 않습니다.',
       '스프레이 소재는 잎을 정리한 뒤 꽂습니다. 비어 있는 곳을 빠르게 채우되, 수평형의 낮고 둥근 돔 형태와 사방화 균형이 흐트러지지 않게 합니다.',
-      '편백으로 플로랄폼을 숨기고 마무리합니다. 꽃 사이사이 그린을 채워 빈틈을 가리되, 전체 수평선과 둥근 곡선이 무너지지 않는지 위와 측면에서 함께 확인합니다.'
+      '편백은 꽃보다 낮게 사이사이에 꽂아 플로랄폼을 숨깁니다. 마지막으로 양쪽 대각선 길이가 맞는지, 전체 비율이 수직 1 : 수평 4인지, 꽃 연결성과 소재 분배가 자연스러운지, 사방형이 분명한지 확인합니다.'
      ],
      checks:[
       '방사형·사방화·대칭 구성이 분명한가?',
@@ -2082,15 +2486,227 @@
       '위에서 내려다보았을 때 장미, 거베라, 포컬, 그린 소재의 점 위치가 균형 있게 찍혔는가?',
       '측면에서 둥근 돔 모양으로 낮게 이어지는가?',
       '꽃 사이사이에 그린 소재와 스프레이 소재가 채워졌는가?',
-      '편백으로 플로랄폼이 자연스럽게 가려졌는가?'
+      '편백으로 플로랄폼이 자연스럽게 가려졌는가?',
+      '포컬 거베라가 2번 장미 위~아래 전체 길이의 절반이자 화기 높이 1배이며 90도로 수직인가?',
+      '전체 비율이 수직 1 : 수평 4인가?',
+      '꽃 연결성과 소재 분배가 자연스럽고 사방형이 분명한가?',
+      '1층 1·2번 장미가 타원형으로 이어지도록 루스커스가 꽂혔는가?',
+      '장미를 루스커스 길이만큼 잘라 루스커스 위에서 머리 하나 정도 차이가 나는가?',
+      '2층 거베라가 대각선 V형태이며 포컬·1층 장미와 완만한 곡선으로 연결되는가?',
+      '포컬을 둘러싸도록 루스커스 4개를 꽂았는가?',
+      '편백이 꽃보다 낮게 사이사이 플로랄폼을 가리는가?'
      ]},
     {key:'hand', name:'핸드타이드 꽃다발', hidden:true, desc:'나선 줄기, 얼굴 방향, 그립 지점 정리', guide:'sphere', photo:'',
      order:['소재 길이와 얼굴 방향을 먼저 정리합니다.','그립 지점과 나선 방향을 정합니다.','중심 초점화를 잡고 첫 줄기 방향을 고정합니다.','꽃 얼굴이 바깥을 보도록 돌려가며 추가합니다.','매스 소재로 둥근 돔 실루엣을 만듭니다.','필러와 그린으로 빈 공간을 자연스럽게 채웁니다.','그립 아래 줄기 흐름과 바인딩 지점을 정리합니다.','손에 들었을 때 좌우 무게와 얼굴 방향을 점검합니다.'],
      checks:['줄기가 한 점에서 나선으로 모였는지','꽃 얼굴이 바깥을 고르게 향하는지','그립 지점이 깔끔하게 정리됐는지','둥근 돔 형태로 묶였는지','손에 들었을 때 균형이 맞는지']},
   ];
+  /* 이전 완성본에 저장돼 있던 서양형 과제별·단계별 참고 사진 연결 복구 */
+  const RESTORED_WESTERN_PHOTOS={
+    dome:{
+      photos:[refAsset('ref-dome.jpg'),refAsset('dome-cheatsheet-20260904.png'),refAsset('dome-final-20260904.png'),refAsset('dome-final.png')],
+      stepPhotos:{
+        1:refAsset('dome-step1-a.jpg'),
+        2:[refAsset('dome-step2-a.jpg'),refAsset('dome-step2.png')],
+        3:refAsset('dome-step3-a.jpg'),
+        4:[refAsset('dome-step4-a.jpg'),refAsset('dome-step4.png')],
+        5:[refAsset('dome-step7-a.jpg'),refAsset('dome-layer-curve-20260904.png')],
+        6:[refAsset('dome-step8-a.jpg'),refAsset('dome-step8-b.jpg')],
+        7:[refAsset('dome-step8-c.jpg'),refAsset('dome-step8-d.jpg'),refAsset('dome-step7.png')],
+        8:[refAsset('dome-step5-a.jpg'),refAsset('dome-step8-a.jpg'),refAsset('dome-step8-b.jpg'),refAsset('dome-step8-c.jpg'),refAsset('dome-step8-d.jpg'),refAsset('dome-step8-a.png'),refAsset('dome-step8-b.png')],
+        9:refAsset('dome-step9-a.jpg')
+      }
+    },
+    horiz:{
+      photos:[{src:refAsset('ref-horiz.jpg'),label:'수평형 참고'},{src:refAsset('foam-measure.png'),label:'사각수반 안쪽 길이 기준 폼 재단'},{src:refAsset('horiz-ruscus-base.png'),label:'루스커스는 바닥쪽, 장미는 그 위층'},{src:refAsset('top-grid-9cells-20260904.svg'),label:'폼 위 9칸 그리드'},{src:refAsset('horiz-final-20260904-flipped.png'),label:'수평형 완성'},{src:refAsset('horiz-final.jpg'),label:'수평형 완성 추가'}],
+      stepPhotos:{
+        1:[refAsset('horiz-step1-a.jpg'),refAsset('horiz-step1-b.jpg')],
+        2:refAsset('horiz-step2-a.jpg'),
+        3:refAsset('horiz-step3-a.jpg'),
+        4:[refAsset('horiz-step4-a.jpg'),refAsset('horiz-step4-b.jpg')],
+        5:refAsset('horiz-step5-a.jpg'),
+        6:[refAsset('horiz-step6-a.jpg'),refAsset('horiz-step6-b.jpg'),refAsset('horiz-step6.png')],
+        8:refAsset('horiz-step7-a.jpg'),
+        9:[refAsset('horiz-step8-a.jpg'),refAsset('horiz-step8-b.jpg'),refAsset('horiz-step9.jpg')],
+        10:refAsset('horiz-step9-a.jpg'),
+        11:refAsset('horiz-step10-a.jpg')
+      }
+    },
+    lshape:{
+      photos:[refAsset('ref-lshape-a.jpg'),refAsset('ref-lshape-b.jpg'),refAsset('lshape-cheatsheet-20260903.png'),refAsset('top-grid-9cells-20260904.svg'),refAsset('lshape-final-20260904.png')],
+      stepPhotos:{8:[refAsset('lshape-shoulder-angle-20260903.png'),refAsset('lshape-gerbera-side-line-20260903.png')]}
+    },
+    invT:{
+      photos:[refAsset('ref-invt.jpg'),refAsset('invt-cheatsheet-20260903.png'),refAsset('top-grid-9cells-20260904.svg'),refAsset('invt-final-20260904-flipped.png')],
+      stepPhotos:{5:refAsset('invt-focal-angle-20260903.png')}
+    },
+    vertical:{
+      photos:[refAsset('ref-vertical.jpg'),refAsset('top-grid-9cells-20260904.svg'),refAsset('vertical-final-20260904.png')],
+      stepPhotos:{
+        1:refAsset('vertical-step1-a.jpg'),
+        2:[refAsset('vertical-step2-a.jpg'),refAsset('vertical-step2-b.jpg'),refAsset('top-grid-9cells-20260904.svg')],
+        3:refAsset('vertical-step3-a.jpg'),
+        4:[refAsset('vertical-step4-a.jpg'),refAsset('vertical-focal-angle-20260904.png')],
+        6:refAsset('vertical-step5-a.jpg'),
+        7:refAsset('vertical-step7-a.jpg'),
+        8:[refAsset('vertical-step8-a.jpg'),refAsset('vertical-corner-rose-20260904.png')],
+        9:refAsset('vertical-step9-a.jpg'),
+        10:[refAsset('vertical-step10-a.jpg'),refAsset('vertical-step10-b.jpg'),refAsset('vertical-step10-c.jpg')],
+        11:[refAsset('vertical-step11-a.jpg'),refAsset('vertical-step11-b.jpg')],
+        12:[refAsset('vertical-step12-a.jpg'),refAsset('vertical-step12-b.jpg'),refAsset('vertical-step12-c.jpg')],
+        13:[refAsset('vertical-step13-a.jpg'),refAsset('vertical-step13-b.jpg'),refAsset('vertical-step13-c.jpg'),refAsset('vertical-step13-d.jpg'),refAsset('vertical-step13-e.jpg')],
+        15:[refAsset('vertical-step14-a.jpg'),refAsset('vertical-step14-b.jpg')]
+      }
+    },
+    tri:{
+      photos:[refAsset('ref-tri-a.jpg'),refAsset('ref-tri-b.jpg'),refAsset('top-grid-9cells-20260904.svg'),refAsset('tri-final-20260904.png')],
+      stepPhotos:{
+        1:refAsset('tri-step1-a.jpg'),
+        2:refAsset('tri-step2-a.jpg'),
+        4:refAsset('tri-step3-a.jpg'),
+        5:refAsset('tri-step4-a.jpg'),
+        6:refAsset('tri-step5-a.jpg'),
+        7:refAsset('tri-step6-a.jpg'),
+        8:refAsset('tri-step7-a.jpg'),
+        10:refAsset('tri-step8-a.jpg'),
+        11:[refAsset('tri-step9-a.jpg'),refAsset('tri-step9-b.jpg')],
+        12:[refAsset('tri-step9-a.jpg'),refAsset('tri-step9-b.jpg')],
+        13:refAsset('tri-step13-a.jpg'),
+        14:refAsset('tri-step14-a.jpg'),
+        15:refAsset('tri-step15-a.jpg'),
+        16:[refAsset('tri-step15-b.jpg'),refAsset('tri-step15-c.png')]
+      }
+    },
+    fan:{
+      photos:[{src:refAsset('ref-fan.jpg'),label:'부채형 참고'},{src:refAsset('fan-cheatsheet.png'),label:'부채형 족보: A 3배, B=C 2배, D 1배, 포컬 45˚'},{src:refAsset('top-grid-9cells-20260904.svg'),label:'폼 위 9칸 그리드'},{src:refAsset('fan-final-20260904.png'),label:'부채형 완성'}],
+      stepPhotos:{2:refAsset('fan-step2-a.jpg'),3:refAsset('fan-step3-a.jpg')}
+    }
+  };
+  Object.entries(RESTORED_WESTERN_PHOTOS).forEach(([key,photoData])=>{
+    const task=TASKS.find(item=>item.key===key);
+    if(!task) return;
+    task.photos=photoData.photos;
+    task.stepPhotos=photoData.stepPhotos;
+  });
+  /* 이전 완성본에 저장돼 있던 동양형 완성·단계 사진 연결 복구 */
+  const RESTORED_ORIENTAL_PHOTOS={
+    orientalSlant:{
+      photos:[
+        {src:refAsset('oriental-slant-kenzan-top-diagram-20260906.svg'),label:'침봉 위에서 본 경사형 위치 도해'},
+        {src:refAsset('oriental-upright-pinholder-support-map-20260905.png'),label:'침봉 지지면'},
+        {src:refAsset('oriental-upright-20260718-cutting-tip-a.jpg'),label:'사선커팅 참고 1'},
+        {src:refAsset('oriental-upright-20260718-cutting-tip-b.jpg'),label:'사선커팅 참고 2'},
+        {src:refAsset('oriental-upright-20260718-rose-leaf-spread.jpg'),label:'장미 잎 펴주기'},
+        {src:refAsset('oriental-slant-rectangular-vessel-shift-20260905.png'),label:'직사각형 화기 한쪽 배치'},
+        {src:refAsset('oriental-slant-20260725-final.jpg'),label:'경사형 완성 모습'},
+        {src:refAsset('oriental-slant-20260815-final.jpg'),label:'경사형 완성 모습 2'},
+        {src:refAsset('oriental-slant-20260815-radial.jpg'),label:'경사형 완성 방사형'}
+      ],
+      stepPhotos:{
+        1:[refAsset('oriental-slant-kenzan-top-diagram-20260906.svg'),refAsset('oriental-upright-pinholder-support-map-20260905.png'),refAsset('oriental-upright-20260718-cutting-tip-a.jpg'),refAsset('oriental-upright-20260718-cutting-tip-b.jpg'),refAsset('oriental-slant-detail-primary-forward-flow.png'),{src:refAsset('oriental-task3-detail-branch-face-center.png'),rotate:90},refAsset('oriental-slant-20260725-step01-primary.jpg'),refAsset('oriental-slant-20260815-step01-primary.jpg')],
+        2:refAsset('oriental-slant-20260725-step02-second-primary.jpg'),
+        3:refAsset('oriental-slant-20260725-step03-third-primary.jpg'),
+        4:[refAsset('oriental-slant-detail-primary-support-layer.png'),refAsset('oriental-slant-detail-primary-support-full.png'),refAsset('oriental-slant-20260725-step04-primary-support.jpg')],
+        5:refAsset('oriental-slant-20260725-step05-second-support.jpg'),
+        7:refAsset('oriental-slant-20260725-step07-primary-rose.jpg'),
+        8:refAsset('oriental-slant-20260725-step08-second-rose.jpg'),
+        9:[{src:refAsset('oriental-slant-detail-third-rose-curve.png'),rotate:90},refAsset('oriental-slant-20260725-step09-third-rose.jpg'),refAsset('oriental-slant-20260815-step09-third-rose.jpg')],
+        10:refAsset('oriental-slant-20260725-step10-focal.jpg'),
+        11:refAsset('oriental-slant-20260725-step11-focal-shadow.jpg'),
+        12:[refAsset('oriental-slant-detail-rose-support-gather.png'),refAsset('oriental-slant-20260725-step12-primary-rose-support.jpg'),refAsset('oriental-slant-20260725-step12-second-rose-support.jpg')],
+        13:[refAsset('oriental-upright-20260718-rose-leaf-spread.jpg'),refAsset('oriental-slant-20260815-step13-seven-roses-a.jpg'),refAsset('oriental-slant-20260815-step13-seven-roses-b.jpg')],
+        14:[refAsset('oriental-slant-detail-mum-inside-triangle.png'),refAsset('oriental-slant-20260725-step14-mum-a.jpg'),refAsset('oriental-slant-20260725-step14-mum-b.jpg')],
+        15:[refAsset('oriental-slant-20260725-final.jpg'),refAsset('oriental-slant-20260815-final.jpg')]
+      }
+    },
+    oriental:{
+      photos:[
+        {src:refAsset('oriental-upright-kenzan-top-diagram-20260906.svg'),label:'침봉 위에서 본 위치 도해'},
+        {src:refAsset('oriental-upright-pinholder-support-map-20260905.png'),label:'침봉 지지면'},
+        {src:refAsset('oriental-upright-20260718-cutting-tip-a.jpg'),label:'사선커팅 참고 1'},
+        {src:refAsset('oriental-upright-20260718-cutting-tip-b.jpg'),label:'사선커팅 참고 2'},
+        {src:refAsset('oriental-upright-20260718-rose-leaf-spread.jpg'),label:'장미 잎 펴주기'},
+        {src:refAsset('oriental-upright-20260718-final-front.jpg'),label:'완성본'},
+        {src:refAsset('oriental-upright-20260718-final-side.jpg'),label:'옆에서 본 모습'},
+        {src:refAsset('oriental-upright-20260725-complete-front.jpg'),label:'직립형 완성 모습'},
+        {src:refAsset('oriental-upright-20260815-final-a.jpg'),label:'직립형 완성 모습 2'},
+        {src:refAsset('oriental-upright-20260815-final-b.jpg'),label:'직립형 완성 모습 3'},
+        {src:refAsset('oriental-upright-20260815-radial-a.jpg'),label:'직립형 완성 방사형 1'},
+        {src:refAsset('oriental-upright-20260815-radial-b.jpg'),label:'직립형 완성 방사형 2'},
+        {src:refAsset('oriental-upright-20260815-radial-c.jpg'),label:'직립형 완성 방사형 3'}
+      ],
+      stepPhotos:{
+        1:[refAsset('oriental-upright-20260718-step01-primary.jpg'),refAsset('oriental-upright-detail-primary-line.png'),refAsset('oriental-upright-20260725-primary-floating-trim.jpg'),refAsset('oriental-upright-20260725-primary-center-lines.jpg'),refAsset('oriental-upright-detail-primary-cut.png'),refAsset('oriental-upright-detail-primary-rounded.png'),refAsset('oriental-upright-detail-primary-support.png'),refAsset('oriental-upright-20260725-primary-support.jpg'),refAsset('oriental-upright-detail-primary-support-linear.png'),{src:refAsset('oriental-task3-detail-branch-face-center.png'),rotate:90},refAsset('oriental-upright-20260815-step01-primary-insert.jpg'),refAsset('oriental-upright-20260815-step01-primary-line.jpg')],
+        2:[refAsset('oriental-upright-20260725-second-selection.jpg'),refAsset('oriental-upright-detail-second-v-shape.png'),refAsset('oriental-upright-detail-second-bend.png'),refAsset('oriental-upright-detail-second-support.png'),refAsset('oriental-upright-second-branch-selection-20260905.png'),refAsset('oriental-upright-second-branch-palm-20260905.png'),refAsset('oriental-upright-detail-second-support-front-heavy.png')],
+        3:[refAsset('oriental-upright-20260725-third-selection.jpg'),refAsset('oriental-upright-step03-third-branch-a-20260905.png'),refAsset('oriental-upright-step03-third-branch-b-20260905.png'),refAsset('oriental-upright-20260815-step02-03-branches.jpg'),refAsset('oriental-upright-20260815-step01-primary-support.jpg'),refAsset('oriental-upright-20260725-second-support.jpg')],
+        4:[refAsset('oriental-upright-detail-three-branches.png'),refAsset('oriental-upright-20260718-step04-all-branches.jpg')],
+        5:[refAsset('oriental-upright-20260725-primary-rose-pair.jpg'),refAsset('oriental-upright-step06-primary-rose-20260905.png'),refAsset('oriental-upright-step10-primary-rose-support-20260905.png'),refAsset('oriental-upright-20260815-step05-primary-rose.jpg')],
+        6:[refAsset('oriental-upright-20260725-rose-lines-overview.jpg'),refAsset('oriental-upright-step07-second-rose-20260905.png'),refAsset('oriental-upright-step11-second-rose-support-20260905.png'),refAsset('oriental-upright-20260815-step06-08-roses.jpg'),refAsset('oriental-upright-step12-focal-shadow-a-20260905.png')],
+        7:[refAsset('oriental-upright-20260718-step07-focal.jpg'),refAsset('oriental-upright-step09-focal-rose-20260905.png'),refAsset('oriental-upright-20260725-rose-lines-overview.jpg'),refAsset('oriental-upright-20260815-step07-focal.jpg')],
+        8:[refAsset('oriental-upright-20260725-rose-lines-overview.jpg'),refAsset('oriental-upright-step08-third-rose-a-20260905.png'),refAsset('oriental-upright-20260815-step06-08-roses.jpg')],
+        9:[refAsset('oriental-upright-20260725-focal-shadow.jpg'),refAsset('oriental-upright-step12-rounded-shadow-20260905.png'),refAsset('oriental-upright-20260815-step09-focal-shadow-a.jpg'),refAsset('oriental-upright-20260815-step09-focal-shadow-b.jpg')],
+        10:[refAsset('oriental-upright-20260718-step10-all-roses.jpg'),refAsset('oriental-upright-20260725-all-seven-roses.jpg'),refAsset('oriental-upright-step13-seven-roses-20260905.png'),refAsset('oriental-upright-step08-third-rose-b-20260905.png')],
+        11:[refAsset('oriental-upright-20260718-rose-leaf-spread.jpg'),refAsset('oriental-upright-step08-leaf-trim-20260905.png')],
+        12:[refAsset('oriental-upright-20260718-step12-mums.jpg'),refAsset('oriental-upright-detail-mum-height.png'),refAsset('oriental-upright-step16-17-mum-cypress-a-20260905.png'),refAsset('oriental-upright-detail-mum-wrap-inward.png'),refAsset('oriental-upright-20260815-step12-mums.jpg')],
+        13:[refAsset('oriental-upright-detail-selloum-massage.png'),refAsset('oriental-upright-detail-selloum-placement.png'),refAsset('oriental-upright-detail-selloum-angle-a.png'),refAsset('oriental-upright-detail-selloum-angle-b.png'),refAsset('oriental-upright-detail-selloum-wrap-front.png'),refAsset('oriental-upright-detail-selloum-l-shape.png'),refAsset('oriental-upright-20260725-complete-front.jpg'),refAsset('oriental-upright-20260815-final-a.jpg'),refAsset('oriental-upright-20260815-final-b.jpg'),refAsset('oriental-upright-20260815-radial-a.jpg'),refAsset('oriental-upright-20260815-radial-b.jpg'),refAsset('oriental-upright-20260815-radial-c.jpg')]
+      }
+    }
+  };
+  Object.entries(RESTORED_ORIENTAL_PHOTOS).forEach(([key,photoData])=>{
+    const task=TASKS.find(item=>item.key===key);
+    if(!task) return;
+    task.photos=photoData.photos;
+    task.stepPhotos=photoData.stepPhotos;
+  });
+  /* 이전 완성본에 저장돼 있던 코사지 완성·단계 사진 연결 복구 */
+  const restoredCorsageTask=TASKS.find(item=>item.key==='corsage');
+  if(restoredCorsageTask){
+    restoredCorsageTask.photos=[
+      {src:refAsset('task1-structure-overview-note-20260904.jpg'),label:'전체 제작 설명'},
+      {src:refAsset('task1-bouquet-corsage-overview-note-20260904.jpg'),label:'원추형·반구형·코사지 설명'},
+      {src:refAsset('corsage-complete-front-20260904.jpg'),label:'코사지 완성샷 앞면'},
+      {src:refAsset('corsage-complete-back-20260904.jpg'),label:'코사지 완성샷 뒷면'}
+    ];
+    restoredCorsageTask.stepPhotos={
+      2:refAsset('corsage-step02-triangle-binding-20260906.png'),
+      3:refAsset('corsage-step02-triangle-binding-20260906.png'),
+      5:refAsset('corsage-step05-ruscus-wire-20260906.png'),
+      6:refAsset('corsage-step06-mini-rose-wire-20260906.png'),
+      7:refAsset('corsage-step07-leaf-wire-20260906.png')
+    };
+  }
+  /* 과거 버전에서 연결이 누락된 고유 참고 사진 복구 */
+  const RECOVERED_LEGACY_PHOTOS={"bouquetDome":{"photos":[{"src":{"__legacyRef":"bouquet-dome-structure-final-20260904.png"},"label":"구조물 1번"},{"src":{"__legacyRef":"bouquet-dome-flowers-final-20260904.png"},"label":"스파이럴 후 꽃다발"},{"src":{"__legacyRef":"bouquet-dome-structure-complete-01-20260904.jpg"},"label":"완성 사진"},{"src":{"__legacyRef":"bouquet-dome-structure-complete-02-20260904.jpg"},"label":"완성 사진"},{"src":{"__legacyRef":"bouquet-dome-structure-complete-03-20260904.jpg"},"label":"완성 사진"},{"src":{"__legacyRef":"bouquet-dome-structure-complete-04-20260904.jpg"},"label":"완성 사진"},{"src":{"__legacyRef":"bouquet-dome-flower-complete-01-20260904.jpg"},"label":"반구형 꽃다발 완성샷"},{"src":{"__legacyRef":"task1-structure-overview-note-20260904.jpg"},"label":"전체 제작 설명"},{"src":{"__legacyRef":"task1-bouquet-corsage-overview-note-20260904.jpg"},"label":"원추형·반구형·코사지 설명"}],"stepPhotos":{"1":[{"__legacyRef":"bouquet-dome-structure-step02-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step02-b-20260904.jpg"}],"2":[{"__legacyRef":"bouquet-dome-structure-step04-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step05-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step05-b-20260904.jpg"}],"3":[{"__legacyRef":"bouquet-dome-structure-step06-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step06-b-20260904.jpg"}],"4":[{"__legacyRef":"bouquet-dome-structure-step07-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step07-b-20260904.jpg"}],"5":[{"__legacyRef":"bouquet-dome-structure-step08-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step08-b-20260904.jpg"}],"6":[{"__legacyRef":"bouquet-dome-structure-step09-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step09-b-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step09-c-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step09-d-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step09-e-20260904.jpg"},{"__legacyRef":"bouquet-dome-structure-step09-f-20260904.jpg"}],"8":[{"__legacyRef":"bouquet-dome-flower-step11-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-flower-step11-b-20260904.jpg"}],"9":[{"__legacyRef":"bouquet-dome-flower-step12-15-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-flower-step12-15-b-20260904.jpg"}],"10":[{"__legacyRef":"bouquet-dome-flower-step12-15-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-flower-step12-15-b-20260904.jpg"}],"11":[{"__legacyRef":"bouquet-dome-flower-step12-15-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-flower-step12-15-b-20260904.jpg"}],"12":[{"__legacyRef":"bouquet-dome-flower-step12-15-a-20260904.jpg"},{"__legacyRef":"bouquet-dome-flower-step12-15-b-20260904.jpg"}],"13":[{"__legacyRef":"bouquet-dome-ruscus-lower-hide-20260906.png"}],"14":[{"__legacyRef":"bouquet-dome-flowers-final-20260904.png"}]}},"bouquetCone":{"photos":[{"src":{"__legacyRef":"bouquet-cone-structure-final-20260904.png"},"label":"구조물 1번"},{"src":{"__legacyRef":"bouquet-cone-flowers-final-20260904.png"},"label":"스파이럴 후 꽃다발"},{"src":{"__legacyRef":"bouquet-cone-structure-complete-01-20260904.jpg"},"label":"구조물 완성샷"},{"src":{"__legacyRef":"bouquet-cone-structure-complete-02-20260904.jpg"},"label":"완성 상단 디테일"},{"src":{"__legacyRef":"task1-structure-overview-note-20260904.jpg"},"label":"전체 제작 설명"},{"src":{"__legacyRef":"task1-bouquet-corsage-overview-note-20260904.jpg"},"label":"원추형·반구형·코사지 설명"}],"stepPhotos":{"1":[{"__legacyRef":"bouquet-cone-structure-step03-a-20260904.jpg"}],"2":[{"__legacyRef":"bouquet-cone-structure-step04-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-step04-b-20260904.jpg"}],"3":[{"__legacyRef":"bouquet-cone-structure-step05-a-20260904.jpg"}],"5":[{"__legacyRef":"bouquet-cone-structure-step07-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-shared-handle-support-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-shared-handle-decor-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-shared-handle-decor-b-20260904.jpg"}],"6":[{"__legacyRef":"bouquet-cone-structure-step09-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-step09-b-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-step09-c-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-step10-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-shared-handle-decor-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-shared-handle-decor-b-20260904.jpg"}],"8":[{"__legacyRef":"bouquet-cone-structure-step08-a-20260904.jpg"},{"__legacyRef":"bouquet-cone-structure-step08-b-20260904.jpg"}],"9":[{"__legacyRef":"bouquet-cone-flower-step15-a-20260904.jpg"}],"10":[{"__legacyRef":"bouquet-cone-flower-step16-18-a-20260904.jpg"}],"19":[{"__legacyRef":"bouquet-cone-flower-step19-20-a-20260904.jpg"}],"20":[{"__legacyRef":"bouquet-cone-flower-step19-20-a-20260904.jpg"}],"24":[{"__legacyRef":"bouquet-cone-flower-step24-a-20260904.jpg"}]}},"orientalSlant":{"stepPhotos":{"1":[{"__legacyRef":"oriental-task3-detail-emergency-stem-brace.png"}]}},"oriental":{"stepPhotos":{"1":[{"__legacyRef":"oriental-upright-20260725-primary-selection.jpg"},{"__legacyRef":"oriental-upright-detail-primary-support-space.png"},{"__legacyRef":"oriental-task3-detail-emergency-stem-brace.png"},{"__legacyRef":"oriental-upright-step01-primary-vertical-20260905.png"},{"__legacyRef":"oriental-upright-step01-pinholder-workaround-20260905.png"},{"__legacyRef":"oriental-upright-pinholder-map-20260905.png"}],"2":[{"__legacyRef":"oriental-upright-step02-second-branch-20260905.png"},{"__legacyRef":"oriental-upright-step02-second-front-wrap-20260905.png"}],"4":[{"__legacyRef":"oriental-upright-step04-primary-support-a-20260905.png"}],"5":[{"__legacyRef":"oriental-upright-step05-primary-support-b-20260905.png"},{"__legacyRef":"oriental-upright-step05-support-lower-close-20260905.png"},{"__legacyRef":"oriental-upright-step05-support-side-20260905.png"}],"6":[{"__legacyRef":"oriental-upright-step14-rose-line-check-20260905.png"}],"12":[{"__legacyRef":"oriental-upright-step12-no-straight-line-20260905.png"}],"13":[{"__legacyRef":"oriental-upright-step17-cypress-finish-b-20260905.png"}],"14":[{"__legacyRef":"oriental-upright-step14-rose-line-check-20260905.png"}],"15":[{"__legacyRef":"oriental-upright-step15-inside-triangle-20260905.png"},{"__legacyRef":"oriental-upright-step15-outside-wrong-20260905.png"},{"__legacyRef":"oriental-upright-shape-hand-note-20260905.png"}]},"photos":[{"src":{"__legacyRef":"oriental-general-slide-20260905.png"},"label":"동양 꽃꽂이 기본"},{"src":{"__legacyRef":"oriental-upright-slide-20260905.png"},"label":"직립형 이론"},{"src":{"__legacyRef":"oriental-upright-board-overview-20260905.png"},"label":"직립형 칠판 요약"},{"src":{"__legacyRef":"oriental-upright-pinholder-map-20260905.png"},"label":"침봉 위에서 본 위치"},{"src":{"__legacyRef":"oriental-upright-cut-thick-branch-20260905.png"},"label":"두꺼운 절지 커팅"},{"src":{"__legacyRef":"oriental-slant-slide-20260905.png"},"label":"경사형 비교 참고"}]},"tri":{"stepPhotos":{"11":[{"__legacyRef":"tri-step12-a.jpg"}],"16":[{"__legacyRef":"tri-step15-c.jpg"}]}},"vertical":{"stepPhotos":{"6":[{"__legacyRef":"vertical-step6-a.jpg"}]}}};
+  const legacyPhotoList=value=>value==null?[]:(Array.isArray(value)?value:[value]);
+  function materializeLegacyPhoto(value){
+    if(value&&typeof value==='object'&&typeof value.__legacyRef==='string') return refAsset(value.__legacyRef);
+    if(value&&typeof value==='object'&&!Array.isArray(value)){
+      const copy={...value};
+      if(copy.src) copy.src=materializeLegacyPhoto(copy.src);
+      return copy;
+    }
+    return value;
+  }
+  function mergeLegacyPhotoList(existing,recovered){
+    const merged=[],seen=new Set();
+    [...legacyPhotoList(existing),...legacyPhotoList(recovered).map(materializeLegacyPhoto)].forEach(item=>{
+      const src=typeof item==='string'?item:(item&&item.src)||'';
+      if(!src||seen.has(src)) return;
+      seen.add(src); merged.push(item);
+    });
+    return merged;
+  }
+  Object.entries(RECOVERED_LEGACY_PHOTOS).forEach(([key,photoData])=>{
+    const task=TASKS.find(item=>item.key===key);
+    if(!task) return;
+    if(photoData.photos) task.photos=mergeLegacyPhotoList(task.photos||task.photo,photoData.photos);
+    task.stepPhotos=task.stepPhotos||{};
+    Object.entries(photoData.stepPhotos||{}).forEach(([step,items])=>{
+      task.stepPhotos[step]=mergeLegacyPhotoList(task.stepPhotos[step],items);
+    });
+  });
   const TASK_SEQUENCE=[
-    'bouquetDome','bouquetCone','corsage',
-    'horiz','dome','vertical','lshape','invT','tri','fan',
+    'corsage','bouquetDome','bouquetCone',
+    'dome','horiz','lshape','invT','vertical','tri','fan',
     'orientalSlant','oriental'
   ];
   function taskLimitMinutes(t){ return (t&&t.limitMin)||EXAM_LIMIT_MINUTES[(t&&t.exam)||'']||0; }
@@ -2104,7 +2720,7 @@
   const flowers=[]; let selected=null, seq=1;
   const undoStack=[], redoStack=[]; let historyRestoring=false, controlEdit=null;
   let showGuide=true, activeOrderStep=0, pendingGuidePoint=null, activeGuideRec=null, matArmed=false;
-  let photoViewIndex=0;
+  let photoViewIndex=0, photoContextStep=null;
   let legendFilterRoles=null;
   const FOAM_TOP_Y=2.28;
   const FOAM_INSERT_Y=FOAM_TOP_Y-0.42;
@@ -2204,13 +2820,216 @@
 
   /* ===================== 좌측 목록 ===================== */
   function esc(s){ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-  function orderRichHTML(s){ return esc(s).replace(/&quot;([^&]+?)&quot;/g,'<span class="order-em">$1</span>'); }
-  function fullOrderItemHTML(item){
-    if(!item||typeof item!=='object') return orderRichHTML(item);
-    const hint=item.hint?(Array.isArray(item.hint)?item.hint:[item.hint]):[];
-    return orderRichHTML(item.text||'')+(hint.length?`<details class="full-order-hint"><summary>밑줄 설명</summary><div class="hint-body">${hint.map(h=>`<p>${orderRichHTML(h)}</p>`).join('')}</div></details>`:'');
+  function normalizeGreenMarkup(value){ return String(value??'').replace(/\*\*([^*\n]+?)\*\*/g,'*$1*'); }
+  function orderRichHTML(s){
+    const raw=normalizeGreenMarkup(s);
+    const html=esc(raw)
+      .replace(/\*([^*\n]+?)\*/g,'<span class="order-shape">$1</span>')
+      .replace(/&quot;([\s\S]+?)&quot;/g,'<span class="order-em">$1</span>');
+    return /(?:\(\s*강조\s*\)|-\s*강조)/.test(raw)?`<strong class="order-strong">${html}</strong>`:html;
+  }
+  function fullOrderItemHTML(item,stepNo=0){
+    const isObject=!!item&&typeof item==='object';
+    const hint=isObject&&item.hint?(Array.isArray(item.hint)?item.hint:[item.hint]):[];
+    const photos=normalizePhotoList(((curTask&&curTask.stepPhotos)||{})[stepNo]);
+    const text=orderRichHTML(isObject?(item.text||'설명 보기'):item);
+    if(!hint.length&&!photos.length) return text;
+    const hintHTML=hint.map(h=>`<p>${orderRichHTML(h)}</p>`).join('');
+    const photoHTML=photos.length?`<div class="full-order-step-photos">${photos.map((photo,index)=>{
+      const alt=photo.label||`${stepNo}번 참고 사진 ${index+1}`;
+      const caption=photo.label?`<figcaption>${esc(photo.label)}</figcaption>`:'';
+      return `<figure class="full-order-step-photo"><img src="${esc(photo.src)}" alt="${esc(alt)}">${caption}</figure>`;
+    }).join('')}</div>`:'';
+    return `<details class="full-order-hint"><summary>${text}</summary><div class="hint-body">${hintHTML}${photoHTML}</div></details>`;
+  }
+  const CONTENT_EDIT_MODE_KEY='hwa3_content_edit_mode';
+  let contentEditMode=LS.get(CONTENT_EDIT_MODE_KEY)==='1';
+  const CONTENT_EDIT_PREFIX='hwa3_content_v1_';
+  const SHARED_REQUIRED_CHECKS_KEY='hwa3_required_checks_v1';
+  const SINGLE_GREEN_MARKUP_MIGRATION_KEY='hwa3_single_green_markup_v1_';
+  const TASK2_COLOR_RECOMMENDATIONS='제2과제\n① 진한 피치·오렌지 거베라 + 오렌지 장미 + 크림·연노랑 미니소국 + 핑크·그린 리시안셔스\n② 연핑크 거베라 + 연보라 장미 + 연보라 리시안셔스\n③ 크림 거베라 + 피치팡팡·오렌지아즈마 소국\n④ 살구색 거베라 + 주황색 장미 + 분홍색 리시안셔스 + 크림 소국';
+  function normalizeColorRecommendationBlock(value){
+    const raw=String(value??'').trim();
+    const headerMatch=raw.match(/^\s*(\[(?:\*{1,2})?색 조합 추천(?:\*{1,2})?\])\s*/);
+    if(!headerMatch) return raw;
+    const header=headerMatch[1], body=raw.slice(headerMatch[0].length).trim();
+    const matches=[...body.matchAll(/^제([123])과제(?:\s|$)/gm)];
+    if(!matches.length) return [header,body].filter(Boolean).join('\n');
+    const sections=[], seen=new Set(), preamble=body.slice(0,matches[0].index).trim();
+    if(preamble) sections.push(preamble);
+    matches.forEach((match,index)=>{
+      const taskNo=match[1];
+      if(seen.has(taskNo)) return;
+      seen.add(taskNo);
+      sections.push(body.slice(match.index,index+1<matches.length?matches[index+1].index:body.length).trim());
+    });
+    if(!seen.has('2')) sections.push(TASK2_COLOR_RECOMMENDATIONS);
+    return [header,...sections].filter(Boolean).join('\n\n');
+  }
+  function normalizeSharedRequiredTexts(items){
+    const texts=(items||[]).map(plainEditableText).map(text=>text.trim()).filter(Boolean), normalized=[];
+    for(let index=0;index<texts.length;index++){
+      const text=texts[index];
+      if(/^\[(?:\*{1,2})?색 조합 추천(?:\*{1,2})?\]/.test(text)){
+        const parts=[text];
+        while(index+1<texts.length&&/^제[123]과제(?:\s|$)/.test(texts[index+1])) parts.push(texts[++index]);
+        normalized.push(normalizeColorRecommendationBlock(parts.join('\n\n')));
+      } else normalized.push(text);
+    }
+    return normalized;
+  }
+  function contentEditKey(task=curTask){ return CONTENT_EDIT_PREFIX+(task&&task.key?task.key:'task'); }
+  function readContentEdits(task=curTask){
+    try{ const value=JSON.parse(LS.get(contentEditKey(task))||'{}'); return value&&typeof value==='object'?value:{}; }
+    catch(e){ return {}; }
+  }
+  function writeContentEdits(value,task=curTask){ LS.set(contentEditKey(task),JSON.stringify(value||{})); }
+  function plainEditableText(item){ return item&&typeof item==='object'?String(item.text||''):String(item??''); }
+  function wrapLegacyGreenSegments(value){
+    return normalizeGreenMarkup(value).split(/("[^"\n]*"|\*[^*\n]+?\*)/g).map(part=>{
+      if(!part||/^"[^"\n]*"$/.test(part)||/^\*[^*\n]+?\*$/.test(part)) return part;
+      const match=part.match(/^(\s*)([\s\S]*?)(\s*)$/);
+      return match&&match[2]?`${match[1]}*${match[2]}*${match[3]}`:part;
+    }).join('');
+  }
+  function legacyGreenMarkupText(item,task=curTask){
+    const raw=normalizeGreenMarkup(plainEditableText(item)), isWestern=!!(task&&task.exam==='제2과제');
+    const hasWesternV=isWestern&&/(?:V\s*형태|V자)/.test(raw);
+    const isWesternVInstruction=hasWesternV&&/(?:꽂|만들|이루|형성)/.test(raw);
+    const isWesternShoulder=isWestern&&/어깨\s*장미/.test(raw)&&/수평\s*[·ㆍ・]\s*수직/.test(raw)&&/1\/4/.test(raw)&&/45/.test(raw);
+    if(!raw.includes('\n')&&(isWesternVInstruction||isWesternShoulder)) return wrapLegacyGreenSegments(raw);
+    return raw.split(/("[^"\n]*"|\*[^*\n]+?\*)/g).map(part=>{
+      if(!part||/^"[^"\n]*"$/.test(part)||/^\*[^*\n]+?\*$/.test(part)) return part;
+      const isosceles=[];
+      let text=part.replace(/이등변\s*삼각형/g,value=>`@@EDIT_ISOSCELES_${isosceles.push(value)-1}@@`);
+      text=text.replace(task&&task.key==='tri'?/(삼각형\s*(?:뼈대|외곽)|역삼각형|삼각형)/g:/(역삼각형|삼각형)/g,'*$1*');
+      if(isWestern) text=text.replace(/(V\s*형태|V자)/g,'*$1*');
+      return text.replace(/@@EDIT_ISOSCELES_(\d+)@@/g,(_,index)=>isosceles[Number(index)]||'');
+    }).join('');
+  }
+  function editableMarkupText(item){ return normalizeGreenMarkup(plainEditableText(item)); }
+  function migrateMarkupItem(item,task){
+    if(item&&typeof item==='object') return Object.assign({},item,{text:legacyGreenMarkupText(item,task)});
+    return legacyGreenMarkupText(item,task);
+  }
+  function migrateSavedGreenMarkupOnce(task){
+    const migrationKey=SINGLE_GREEN_MARKUP_MIGRATION_KEY+(task&&task.key?task.key:'task');
+    if(LS.get(migrationKey)==='1') return;
+    const edits=readContentEdits(task); let changed=false;
+    ['order','fullOrder','checks'].forEach(field=>{
+      if(!Object.prototype.hasOwnProperty.call(edits,field)||!Array.isArray(edits[field])) return;
+      edits[field]=edits[field].map(item=>migrateMarkupItem(item,task)); changed=true;
+    });
+    if(Object.prototype.hasOwnProperty.call(edits,'fullNote')){ edits.fullNote=legacyGreenMarkupText(edits.fullNote,task); changed=true; }
+    if(changed) writeContentEdits(edits,task);
+    LS.set(migrationKey,'1');
+  }
+  function migrateSharedGreenMarkupOnce(){
+    const migrationKey=SINGLE_GREEN_MARKUP_MIGRATION_KEY+'shared';
+    if(LS.get(migrationKey)==='1') return;
+    const saved=LS.get(SHARED_REQUIRED_CHECKS_KEY);
+    if(saved!==null){
+      try{ const parsed=JSON.parse(saved); if(Array.isArray(parsed)) LS.set(SHARED_REQUIRED_CHECKS_KEY,JSON.stringify(parsed.map(item=>legacyGreenMarkupText(item,curTask)))); }
+      catch(e){}
+    }
+    LS.set(migrationKey,'1');
+  }
+  function cloneEditableItems(items){ return (items||[]).map(item=>item&&typeof item==='object'?JSON.parse(JSON.stringify(item)):String(item??'')); }
+  function bulkEditorText(items,task=curTask){ return (items||[]).map(item=>editableMarkupText(item,task)).join('\n\n'); }
+  function parseBulkEditorText(value){ return String(value??'').split(/\n\s*\n+/).map(item=>item.trim()).filter(Boolean); }
+  function bulkMatchIndexes(currentTexts,nextTexts){
+    const used=new Set();
+    return nextTexts.map((value,index)=>{
+      let found=currentTexts.findIndex((old,oldIndex)=>!used.has(oldIndex)&&old===value);
+      if(found<0&&index<currentTexts.length&&!used.has(index)) found=index;
+      if(found>=0) used.add(found);
+      return found;
+    });
+  }
+  function saveEditableBulk(field,value){
+    const nextTexts=parseBulkEditorText(value), current=cloneEditableItems(editableField(field)), currentTexts=current.map(plainEditableText), matches=bulkMatchIndexes(currentTexts,nextTexts);
+    const edits=readContentEdits();
+    edits[field]=field==='fullOrder'?nextTexts.map((next,index)=>{ const oldIndex=matches[index], old=oldIndex>=0?current[oldIndex]:null; return old&&typeof old==='object'?Object.assign({},old,{text:next}):next; }):nextTexts;
+    if(field==='order'){ const guideSteps=editableOrderGuideSteps(); edits.orderGuideSteps=matches.map(oldIndex=>oldIndex>=0?(Number(guideSteps[oldIndex])||0):0); activeOrderStep=0; }
+    if(field==='checks'){ const states=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'); LS.set('hwa3_chk_'+curTask.key,JSON.stringify(matches.map(oldIndex=>oldIndex>=0?!!states[oldIndex]:false))); }
+    writeContentEdits(edits);
+  }
+  function defaultEditableField(field,task=curTask){
+    if(field==='checks') return defaultTaskChecks(task).map(item=>legacyGreenMarkupText(item,task));
+    if(field==='fullNote') return legacyGreenMarkupText(String((task&&task.fullNote)||''),task);
+    const items=cloneEditableItems((task&&task[field])||[]);
+    if(field==='fullOrder'&&task&&task.exam==='제2과제'&&!items.some(item=>plainEditableText(item).includes(WESTERN_FACE_ANGLE_NOTE))) items.unshift(WESTERN_FACE_ANGLE_NOTE);
+    return items.map(item=>migrateMarkupItem(item,task));
+  }
+  function editableField(field,task=curTask){
+    const edits=readContentEdits(task);
+    if(Object.prototype.hasOwnProperty.call(edits,field)) return edits[field];
+    return defaultEditableField(field,task);
+  }
+  function editableOrderGuideSteps(task=curTask){
+    const edits=readContentEdits(task), items=editableField('order',task)||[];
+    if(Array.isArray(edits.orderGuideSteps)&&edits.orderGuideSteps.length===items.length) return edits.orderGuideSteps.slice();
+    return items.map((_,index)=>index+1);
+  }
+  function saveEditableField(field,value,task=curTask){
+    const edits=readContentEdits(task); edits[field]=value; writeContentEdits(edits,task);
+  }
+  function setEditableItem(field,index,value){
+    const items=cloneEditableItems(editableField(field));
+    if(index<0||index>=items.length) return;
+    const old=items[index]; items[index]=old&&typeof old==='object'?Object.assign({},old,{text:value}):value;
+    saveEditableField(field,items);
+  }
+  function addEditableItem(field){
+    const items=cloneEditableItems(editableField(field)); items.push('');
+    const edits=readContentEdits(); edits[field]=items;
+    if(field==='order'){ const guideSteps=editableOrderGuideSteps(); guideSteps.push(0); edits.orderGuideSteps=guideSteps; }
+    writeContentEdits(edits);
+    if(field==='checks'){ const states=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'); states.push(false); LS.set('hwa3_chk_'+curTask.key,JSON.stringify(states)); }
+  }
+  function deleteEditableItem(field,index){
+    const items=cloneEditableItems(editableField(field));
+    if(index<0||index>=items.length) return;
+    items.splice(index,1);
+    const edits=readContentEdits(); edits[field]=items;
+    if(field==='order'){ const guideSteps=editableOrderGuideSteps(); guideSteps.splice(index,1); edits.orderGuideSteps=guideSteps; activeOrderStep=0; }
+    writeContentEdits(edits);
+    if(field==='checks'){ const states=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'); states.splice(index,1); LS.set('hwa3_chk_'+curTask.key,JSON.stringify(states)); }
+  }
+  function resetEditableContent(){
+    if(!confirm('현재 과제에서 수정·추가·삭제한 문구를 모두 지우고 기본 필기로 복원할까요?')) return false;
+    LS.remove(contentEditKey()); LS.remove('hwa3_chk_'+curTask.key); activeOrderStep=0;
+    renderOrder(); renderChecks(); if(!$('fullOrderModal').hidden) setFullOrderPanel(true);
+    toast('현재 과제 문구를 기본값으로 복원했습니다'); return true;
+  }
+  function syncContentEditButton(){
+    ['contentEditBtn','contentEditTopBtn'].forEach(id=>{
+      const button=$(id); if(!button) return;
+      button.textContent=contentEditMode?'수정 종료':(id==='contentEditTopBtn'?'문구 수정':'수정모드');
+      button.classList.toggle('on',contentEditMode); button.setAttribute('aria-pressed',String(contentEditMode));
+    });
+  }
+  function setContentEditMode(on){
+    contentEditMode=!!on; LS.set(CONTENT_EDIT_MODE_KEY,contentEditMode?'1':'0'); activeOrderStep=0; syncContentEditButton(); renderOrder(); renderChecks();
+    if(!$('fullOrderModal').hidden) setFullOrderPanel(true);
+    if(contentEditMode) requestAnimationFrame(()=>{ const panel=$('orderList'), orderPanel=panel&&panel.closest('.order-panel'), left=panel&&panel.closest('.left'); if(left&&orderPanel) left.scrollTo({top:Math.max(0,orderPanel.offsetTop-16),behavior:'smooth'}); });
+    toast(contentEditMode?'문구 수정모드가 켜졌습니다':'문구 수정내용을 저장했습니다');
   }
   function taskTitleHTML(t){ return `<span class="task-title-text">${esc(t.name)}</span>${t.exam?`<span class="round-badge">${esc(t.exam)}</span>`:''}`; }
+  function taskTimeParts(t){
+    if(!t) return [];
+    if(t.key==='corsage') return ['10분'];
+    if(t.key==='bouquetDome'||t.key==='bouquetCone') return ['구조물 20분','꽃 넣기 10분','묶기 10분'];
+    return [];
+  }
+  function taskCardTitleHTML(t){
+    const inline=t&&t.key==='corsage'?`<span class="task-time-inline">${esc(taskTimeParts(t)[0])}</span>`:'';
+    return `<span class="task-title-text">${esc(t.name)}</span>${inline}${t.exam?`<span class="round-badge">${esc(t.exam)}</span>`:''}`;
+  }
+  function taskTimeRowHTML(t){
+    if(!t||t.key==='corsage') return '';
+    const parts=taskTimeParts(t); return parts.length?`<div class="task-time-row">${parts.map(part=>`<span class="task-time-chip">${esc(part)}</span>`).join('')}</div>`:'';
+  }
   function taskLabelText(t){ return `${t.name||''}${t.exam?' · '+t.exam:''}`; }
   function taskDescText(t){ return t&&t.materials?`${t.desc}\n소재: ${t.materials}`:(t?t.desc:''); }
   function localDate(iso){ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d); }
@@ -2309,6 +3128,7 @@
     const n=Number(stepNo)||0;
     activeOrderStep=(opt.toggle&&activeOrderStep===n)?0:n;
     activeGuideRec=null;
+    photoContextStep=null;
     photoViewIndex=0;
     renderOrder(); renderLegend(); updateDots();
     if(!$('photoPanel').hidden) updatePhotoPanel();
@@ -2351,8 +3171,13 @@
       const limit=EXAM_LIMIT_MINUTES[g.label];
       title.textContent=limit?`${g.label} · ${limit}분`:g.label;
       section.appendChild(title);
+      if(g.label==='제2과제'){
+        const timing=document.createElement('div'); timing.className='task-group-time';
+        timing.innerHTML=['꽃 넣기 20분','백 처리 10분'].map(part=>`<span class="task-time-chip">${esc(part)}</span>`).join('');
+        section.appendChild(timing);
+      }
       g.items.forEach(t=>{ const d=document.createElement('div'); d.className='task'+(t===curTask?' sel':'');
-        d.innerHTML=`<div class="t">${taskTitleHTML(t)}</div><div class="d">${esc(t.desc)}</div>`; d.onclick=()=>selectTask(t); section.appendChild(d); });
+        d.innerHTML=`<div class="t">${taskCardTitleHTML(t)}</div>${taskTimeRowHTML(t)}<div class="d">${esc(t.desc)}</div>`; d.onclick=()=>selectTask(t); section.appendChild(d); });
       box.appendChild(section);
     });
   }
@@ -2360,12 +3185,25 @@
     const list=$('orderList'); if(!list) return;
     const shortName=(curTask.name||'').replace(' 꽃꽂이','').replace(' 센터피스','').replace(' 꽃다발','');
     const badge=$('orderTaskBadge'); if(badge){ const limit=taskLimitMinutes(curTask); badge.textContent=curTask.exam?(limit?`${curTask.exam} · ${limit}분`:curTask.exam):(shortName||'작업'); }
-    list.innerHTML='';
-    (curTask.order||[]).forEach((step,i)=>{ const li=document.createElement('li'); li.innerHTML=orderRichHTML(step);
-      const stepNo=i+1; if(activeOrderStep===stepNo) li.className='active';
-      li.title='소재를 선택하면 이 순서의 가이드 위치에 바로 배치됩니다.';
-      li.onclick=()=>activateOrderStep(stepNo,{toggle:true});
-      list.appendChild(li); });
+    const steps=editableField('order')||[];
+    list.innerHTML=''; list.classList.toggle('content-editing',contentEditMode);
+    if(contentEditMode){
+      const editor=document.createElement('li'); editor.className='content-bulk-wrap';
+      const area=document.createElement('textarea'); area.className='content-bulk-editor order-bulk-editor'; area.value=bulkEditorText(steps); area.setAttribute('aria-label','작업순서 전체 문구'); area.spellcheck=false; area.oninput=()=>saveEditableBulk('order',area.value);
+      const help=document.createElement('p'); help.className='content-bulk-help'; help.textContent='문단 사이를 빈 줄 하나로 구분합니다. *글자*는 초록색, "글자"는 주황색으로 표시됩니다. 이 큰 칸 안에서 문단을 지우거나 붙여 넣고, 잘라내어 순서를 옮기면 전체 작업순서에 자동 저장됩니다.';
+      const tools=document.createElement('div'); tools.className='content-edit-tools';
+      const reset=document.createElement('button'); reset.type='button'; reset.className='content-edit-reset'; reset.textContent='기본값 복원'; reset.onclick=resetEditableContent;
+      const note=document.createElement('span'); note.className='content-edit-save-note'; note.textContent='입력 즉시 과제별로 자동 저장됩니다.';
+      tools.append(reset,note); editor.append(area,help,tools); list.appendChild(editor); return;
+    }
+    const guideSteps=editableOrderGuideSteps();
+    steps.forEach((step,i)=>{
+      const li=document.createElement('li'); li.innerHTML=orderRichHTML(plainEditableText(step));
+      const guideStep=Number(guideSteps[i])||0; if(guideStep&&activeOrderStep===guideStep) li.className='active';
+      li.title=guideStep?'소재를 선택하면 이 순서의 가이드 위치에 바로 배치됩니다.':'직접 추가한 문구입니다.';
+      li.onclick=()=>guideStep?activateOrderStep(guideStep,{toggle:true}):toast('직접 추가한 문구는 3D 가이드와 연결되지 않습니다');
+      list.appendChild(li);
+    });
   }
   function renderLegend(){
     const lg=$('legend'); if(!lg) return;
@@ -2443,10 +3281,23 @@
     if(!modal||!title||!body) return;
     modal.hidden=!open;
     if(!open) return;
-    title.textContent='전체 작업 설명 · '+taskLabelText(curTask);
-    const items=curTask.fullOrder||curTask.order||[];
-    const note=curTask.fullNote?`<p class="full-order-note">${esc(curTask.fullNote)}</p>`:'';
-    body.innerHTML=note+`<ol>${items.map(v=>`<li>${fullOrderItemHTML(v)}</li>`).join('')}</ol>`;
+    const items=editableField('fullOrder')||editableField('order')||[], fullNote=String(editableField('fullNote')||'');
+    if(!contentEditMode){
+      title.textContent='전체 작업 설명 · '+taskLabelText(curTask);
+      const note=fullNote?`<p class="full-order-note">${orderRichHTML(fullNote)}</p>`:'';
+      body.innerHTML=note+`<ol>${items.map((v,index)=>`<li>${fullOrderItemHTML(v,index+1)}</li>`).join('')}</ol>`;
+      return;
+    }
+    title.textContent='전체 설명 수정 · '+taskLabelText(curTask); body.innerHTML='';
+    const intro=document.createElement('p'); intro.className='full-order-editor-intro'; intro.textContent='핵심 요약과 상세 설명 전체를 큰 칸에서 한꺼번에 정리할 수 있습니다. *글자*는 초록색, "글자"는 주황색으로 표시됩니다. 상세 문단 사이는 빈 줄 하나로 구분합니다.';
+    const noteLabel=document.createElement('label'); noteLabel.className='full-order-edit-label'; noteLabel.textContent='핵심 요약';
+    const noteArea=document.createElement('textarea'); noteArea.value=editableMarkupText(fullNote); noteArea.setAttribute('aria-label','전체 설명 핵심 요약'); noteArea.oninput=()=>saveEditableField('fullNote',noteArea.value); noteLabel.appendChild(noteArea);
+    const detailLabel=document.createElement('label'); detailLabel.className='full-order-edit-label'; detailLabel.textContent='상세 설명 전체';
+    const detailArea=document.createElement('textarea'); detailArea.className='content-bulk-editor full-order-bulk-editor'; detailArea.value=bulkEditorText(items); detailArea.setAttribute('aria-label','전체 설명 상세 문구 전체'); detailArea.spellcheck=false; detailArea.oninput=()=>saveEditableBulk('fullOrder',detailArea.value); detailLabel.appendChild(detailArea);
+    const help=document.createElement('p'); help.className='content-bulk-help'; help.textContent='*글자*는 초록색, "글자"는 주황색입니다. 문단을 삭제하거나 새 문단을 붙여 넣고, 잘라내어 순서를 바꾸면 자동 저장됩니다.';
+    const tools=document.createElement('div'); tools.className='content-edit-tools';
+    const reset=document.createElement('button'); reset.type='button'; reset.className='content-edit-reset'; reset.textContent='기본값 복원'; reset.onclick=resetEditableContent;
+    tools.append(reset); body.append(intro,noteLabel,detailLabel,help,tools);
   }
   function showGrowthPointGuide(){
     const modal=$('fullOrderModal'), title=$('fullOrderTitle'), body=$('fullOrderBody');
@@ -4259,7 +5110,7 @@
   }
   function applyFlowerRotation(rec){
     if(!rec||!rec.sprite) return;
-    rec.sprite.rotation.set(rec.pitch||0,0,rec.angle||0);
+    rec.sprite.rotation.set(rec.pitch||0,clamp(rec.spin||0,0,Math.PI*2),rec.angle||0);
     rec.sprite.updateMatrixWorld(true);
   }
   function updateFlowerRenderOrder(rec){
@@ -4375,6 +5226,14 @@
   }
   function angleToDeg(angle){ return Math.round((angle||0)*180/Math.PI); }
   function degToAngle(deg){ return clamp(deg,-90,90)*Math.PI/180; }
+  function spinToDeg(angle){ return Math.round(clamp(angle||0,0,Math.PI*2)*180/Math.PI); }
+  function degToSpin(deg){ return clamp(deg,0,360)*Math.PI/180; }
+  function setFlowerSpin(rec,spin){
+    if(!rec) return;
+    rec.spin=clamp(spin||0,0,Math.PI*2);
+    applyFlowerRotation(rec);
+    syncSelSliders();
+  }
   function setFlowerTrim(rec,trim){
     if(!rec) return;
     rec.trim=clamp(trim,0,MAX_STEM_TRIM);
@@ -4389,6 +5248,7 @@
       pos:{x:rec.pos.x,y:rec.pos.y,z:rec.pos.z},
       angle:rec.angle||0,
       pitch:rec.pitch||0,
+      spin:rec.spin||0,
       scale:rec.scale||1,
       bend:rec.bend||0,
       bendControls:Array.isArray(rec.bendControls)?rec.bendControls.map(c=>({x:c.x||0,y:c.y||0,z:c.z||0})):null,
@@ -4416,6 +5276,7 @@
     if(Number.isFinite(rec.id)&&seq<=rec.id) seq=rec.id+1;
     rec.angle=snap.angle||0;
     rec.pitch=snap.pitch||0;
+    rec.spin=Number.isFinite(snap.spin)?snap.spin:0;
     rec.scale=snap.scale||1;
     rec.bend=snap.bend||0;
     rec.bendControls=Array.isArray(snap.bendControls)?snap.bendControls.map(c=>({x:c.x||0,y:c.y||0,z:c.z||0})):null;
@@ -4508,7 +5369,7 @@
     const sc=spriteScale(m); sp.scale.set(sc[0],sc[1],sc[2]); sp.renderOrder=10;
     sp.userData.flowerRoot=sp;
     sp.position.copy(point); if(scene) scene.add(sp);
-    const rec={id:seq++,matKey,sprite:sp,pos:{x:point.x,y:point.y,z:point.z},angle:0,pitch:0,scale:randomMaterialScale(),bend:0,bendControls:null,flipX:Math.random()<0.5,trim:0,anchorY:m.anchor||0.08,customTexture:null};
+    const rec={id:seq++,matKey,sprite:sp,pos:{x:point.x,y:point.y,z:point.z},angle:0,pitch:0,spin:0,scale:randomMaterialScale(),bend:0,bendControls:null,flipX:Math.random()<0.5,trim:0,anchorY:m.anchor||0.08,customTexture:null};
     applyFlowerSpriteState(rec);
     updateFlowerRenderOrder(rec);
     flowers.push(rec); rememberInitialFlowerState(rec); selectFlower(rec); renderMats(); updateScore();
@@ -4518,7 +5379,7 @@
   }
   function selectFlower(rec){ if(selected&&selected.sprite&&selected.sprite.material&&selected.sprite.material.color)selected.sprite.material.color.set(0xffffff); selected=rec;
     const m=rec?MAT[rec.matKey]:null; $('selMatBadge').textContent=m?m.name:'—';
-    ['rowScale','rowH','rowX','rowZ','rowRotateTitle','rowA','rowPitch','rowOrbit','rowCut'].forEach(id=>$(id).classList.toggle('active',!!rec));
+    ['rowScale','rowH','rowX','rowZ','rowRotateTitle','rowA','rowPitch','rowSpin','rowOrbit','rowCut'].forEach(id=>$(id).classList.toggle('active',!!rec));
     $('rowBend').classList.toggle('active',!!rec&&rec.matKey==='malchae');
     $('btnDup').disabled=!rec; $('btnSelReset').disabled=!rec; $('btnFlip').disabled=!rec; const cutBtn=$('btnCutMode'); if(cutBtn) cutBtn.disabled=!rec; $('btnDel').disabled=!rec;
     if(!rec) setCutMode(false);
@@ -4536,6 +5397,9 @@
     const pitch=selected.pitch||0;
     $('selPitch').value=Math.round((1-(pitch/MAX_FLOWER_ROT))*50);
     const pitchInput=$('selPitchDeg'); if(pitchInput&&document.activeElement!==pitchInput) pitchInput.value=angleToDeg(pitch);
+    const spin=clamp(selected.spin||0,0,Math.PI*2);
+    $('selSpin').value=Math.round((spin/(Math.PI*2))*100);
+    const spinInput=$('selSpinDeg'); if(spinInput&&document.activeElement!==spinInput) spinInput.value=spinToDeg(spin);
     $('selOrbit').value=Math.round(((Math.atan2(selected.pos.z,selected.pos.x)+Math.PI)/(Math.PI*2))*100);
     $('selScale').value=Math.round((((selected.scale||1)-MIN_FLOWER_SCALE)/(MAX_FLOWER_SCALE-MIN_FLOWER_SCALE))*100);
     $('selBend').value=Math.round((((selected.bend||0)+MAX_MALCHAE_BEND)/(MAX_MALCHAE_BEND*2))*100);
@@ -4603,6 +5467,7 @@
   $('selZ').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerViewZ(rec,(e.target.value/100)*MOVE_Z_LIMIT*2-MOVE_Z_LIMIT)); });
   $('selA').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerAngle(rec,(1-(e.target.value/50))*MAX_FLOWER_ROT)); });
   $('selPitch').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerPitch(rec,(1-(e.target.value/50))*MAX_FLOWER_ROT)); });
+  $('selSpin').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerSpin(rec,(e.target.value/100)*Math.PI*2)); });
   $('selADeg').addEventListener('input',e=>{
     const rec=beginSelectedControlEdit();
     if(!rec) return;
@@ -4627,11 +5492,23 @@
     const deg=Number(e.target.value);
     e.target.value=Number.isFinite(deg)?Math.round(clamp(deg,-90,90)):angleToDeg(selected?selected.pitch:0);
   });
+  $('selSpinDeg').addEventListener('input',e=>{
+    const rec=beginSelectedControlEdit();
+    if(!rec) return;
+    const raw=e.target.value;
+    if(raw==='') return;
+    const deg=Number(raw);
+    if(Number.isFinite(deg)) setFlowerSpin(rec,degToSpin(deg));
+  });
+  $('selSpinDeg').addEventListener('change',e=>{
+    const deg=Number(e.target.value);
+    e.target.value=Number.isFinite(deg)?Math.round(clamp(deg,0,360)):spinToDeg(selected?selected.spin:0);
+  });
   $('selOrbit').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerOrbit(rec,(e.target.value/100)*Math.PI*2-Math.PI)); });
   $('selScale').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerScale(rec,MIN_FLOWER_SCALE+(e.target.value/100)*(MAX_FLOWER_SCALE-MIN_FLOWER_SCALE))); });
   $('selBend').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerBend(rec,((e.target.value/100)*2-1)*MAX_MALCHAE_BEND)); });
   $('selCut').addEventListener('input',e=>{ editSelectedControl(rec=>setFlowerTrim(rec,(e.target.value/100)*MAX_STEM_TRIM)); });
-  ['selH','selX','selZ','selA','selPitch','selADeg','selPitchDeg','selOrbit','selScale','selBend','selCut'].forEach(id=>{
+  ['selH','selX','selZ','selA','selPitch','selSpin','selADeg','selPitchDeg','selSpinDeg','selOrbit','selScale','selBend','selCut'].forEach(id=>{
     const el=$(id); if(!el) return;
     el.addEventListener('pointerdown',beginSelectedControlEdit);
     el.addEventListener('focus',beginSelectedControlEdit);
@@ -4639,7 +5516,7 @@
     el.addEventListener('blur',finishSelectedControlEdit);
   });
   $('btnDup').onclick=()=>{ const src=selected; if(!src)return; const p={x:src.pos.x+0.25,y:src.pos.y,z:src.pos.z+0.15};
-    const rec=placeFlower(src.matKey,new THREE.Vector3(p.x,p.y,p.z),{skipHistory:true}); if(rec){ rec.angle=src.angle||0; rec.pitch=src.pitch||0; rec.scale=src.scale||1; rec.bend=src.bend||0; rec.bendControls=Array.isArray(src.bendControls)?src.bendControls.map(c=>({x:c.x||0,y:c.y||0,z:c.z||0})):null; rec.flipX=!!src.flipX; rec.trim=src.trim||0; applyFlowerSpriteState(rec); rememberInitialFlowerState(rec); syncSelSliders(); recordAdd(rec); } };
+    const rec=placeFlower(src.matKey,new THREE.Vector3(p.x,p.y,p.z),{skipHistory:true}); if(rec){ rec.angle=src.angle||0; rec.pitch=src.pitch||0; rec.spin=src.spin||0; rec.scale=src.scale||1; rec.bend=src.bend||0; rec.bendControls=Array.isArray(src.bendControls)?src.bendControls.map(c=>({x:c.x||0,y:c.y||0,z:c.z||0})):null; rec.flipX=!!src.flipX; rec.trim=src.trim||0; applyFlowerSpriteState(rec); rememberInitialFlowerState(rec); syncSelSliders(); recordAdd(rec); } };
   $('btnSelReset').onclick=()=>{ if(selected) resetFlowerToInitial(selected); };
   $('btnFlip').onclick=()=>{ if(selected) withFlowerEdit(selected,flipFlower); };
   const cutModeBtn=$('btnCutMode'); if(cutModeBtn) cutModeBtn.onclick=()=>{ if(selected) setCutMode(!cutMode); };
@@ -4676,6 +5553,8 @@
   $('photoPrev').onclick=()=>{ const items=currentPhotoContext().items; if(items.length>1){ photoViewIndex=(photoViewIndex-1+items.length)%items.length; updatePhotoPanel(); } };
   $('photoNext').onclick=()=>{ const items=currentPhotoContext().items; if(items.length>1){ photoViewIndex=(photoViewIndex+1)%items.length; updatePhotoPanel(); } };
   $('fullOrderBtn').onclick=()=>setFullOrderPanel(true);
+  $('contentEditBtn').onclick=()=>setContentEditMode(!contentEditMode);
+  $('contentEditTopBtn').onclick=()=>setContentEditMode(!contentEditMode);
   $('fullOrderClose').onclick=()=>setFullOrderPanel(false);
   $('fullOrderModal').addEventListener('click',e=>{ if(e.target===$('fullOrderModal')) setFullOrderPanel(false); });
   $('scoreInfo').onclick=()=>alert('현재 점수는 공식 배점이 아니라 연습용 자동 피드백입니다. 구조 30점, 균형 25점, 소재 역할/수량 25점, 초점 배치 20점을 기준으로 앱이 임시 계산합니다. 실제 시험 채점 기준이 공개 배점으로 확정된 것은 아니므로, 학습 방향을 확인하는 용도로만 봐주세요.');
@@ -4695,36 +5574,87 @@
     if(!panel||!img||!empty||!title) return;
     const ctx=currentPhotoContext();
     const items=ctx.items;
+    photoContextStep=ctx.step;
+    renderPhotoStepTabs(ctx);
     title.textContent='사진 참고 · '+ctx.label;
     if(items.length){
       if(photoViewIndex>=items.length) photoViewIndex=0;
       if(photoViewIndex<0) photoViewIndex=items.length-1;
-      img.src=items[photoViewIndex].src; img.hidden=false; empty.hidden=true;
+      const photoItem=items[photoViewIndex];
+      img.src=photoItem.src;
+      img.style.transform=photoItem.rotate?`rotate(${photoItem.rotate}deg) scale(.82)`:'';
+      img.hidden=false; empty.hidden=true;
       if(nav) nav.hidden=items.length<2;
       if(prev) prev.disabled=items.length<2;
       if(next) next.disabled=items.length<2;
       if(count) count.textContent=`${photoViewIndex+1}/${items.length}`;
     } else {
-      img.removeAttribute('src'); img.hidden=true; empty.hidden=false;
+      img.removeAttribute('src'); img.style.transform=''; img.hidden=true; empty.hidden=false;
       if(nav) nav.hidden=true;
       empty.textContent='이 과제의 참고 사진 경로를 TASKS의 photo 또는 stepPhotos 값에 넣어주세요.';
     }
+  }
+  function renderPhotoStepTabs(ctx){
+    const tabs=$('photoStepTabs');
+    if(!tabs) return;
+    const gallery=ctx&&ctx.groups?ctx:buildTaskPhotoGallery();
+    const groups=gallery.groups||[];
+    if(!groups.some(group=>group.step>0)){ tabs.innerHTML=''; tabs.hidden=true; return; }
+    tabs.hidden=false;
+    tabs.innerHTML='';
+    const shownStep=Number.isFinite(ctx&&ctx.step)?ctx.step:(photoContextStep!==null?photoContextStep:0);
+    const addTab=group=>{
+      const button=document.createElement('button');
+      button.type='button'; button.textContent=group.step?`${group.step}번`:'완성';
+      button.classList.toggle('on',shownStep===group.step);
+      button.setAttribute('aria-pressed',String(shownStep===group.step));
+      button.onclick=()=>{ photoContextStep=group.step; photoViewIndex=group.startIndex; updatePhotoPanel(); };
+      tabs.appendChild(button);
+    };
+    groups.forEach(addTab);
   }
   function normalizePhotoList(v){
     if(!v) return [];
     const arr=Array.isArray(v)?v:[v];
     return arr.map(item=>{
       if(!item) return null;
-      if(typeof item==='string') return {src:item.trim()};
-      return {src:String(item.src||'').trim(), label:item.label||''};
+      if(typeof item==='string') return {src:item.trim(),rotate:0};
+      return {src:String(item.src||'').trim(), label:item.label||'', rotate:Number(item.rotate)||0};
     }).filter(item=>item&&item.src);
   }
-  function currentPhotoContext(){
+  function buildTaskPhotoGallery(){
     const stepPhotos=curTask.stepPhotos||{};
-    if(activeOrderStep&&stepPhotos[activeOrderStep]){
-      return {label:`${taskLabelText(curTask)} · ${activeOrderStep}번`, items:normalizePhotoList(stepPhotos[activeOrderStep])};
+    const groups=[], items=[];
+    const addGroup=(step,label,value)=>{
+      const groupItems=normalizePhotoList(value).map(item=>Object.assign({},item,{contextStep:step,contextLabel:label}));
+      if(!groupItems.length) return;
+      const group={step,label,startIndex:items.length,items:groupItems};
+      groups.push(group);
+      items.push(...groupItems);
+    };
+    const completePhotos=normalizePhotoList(curTask.photos);
+    addGroup(0,taskLabelText(curTask),completePhotos.length?curTask.photos:curTask.photo);
+    Object.keys(stepPhotos).map(Number).filter(n=>Number.isFinite(n)&&n>0).sort((a,b)=>a-b).forEach(step=>{
+      addGroup(step,`${taskLabelText(curTask)} · ${step}번`,stepPhotos[step]);
+    });
+    return {groups,items};
+  }
+  function currentPhotoContext(){
+    const gallery=buildTaskPhotoGallery(), items=gallery.items;
+    const preferredStep=photoContextStep!==null?photoContextStep:(Number(activeOrderStep)||0);
+    if(items.length&&photoContextStep===null&&preferredStep){
+      const preferredGroup=gallery.groups.find(group=>group.step===preferredStep);
+      if(preferredGroup) photoViewIndex=preferredGroup.startIndex;
     }
-    return {label:taskLabelText(curTask), items:normalizePhotoList(curTask.photos||curTask.photo)};
+    if(photoViewIndex>=items.length) photoViewIndex=0;
+    if(photoViewIndex<0) photoViewIndex=Math.max(0,items.length-1);
+    const current=items[photoViewIndex];
+    return {
+      label:current?current.contextLabel:taskLabelText(curTask),
+      items,
+      step:current?current.contextStep:0,
+      groups:gallery.groups
+    };
   }
   function setPhotoPanel(open){
     const panel=$('photoPanel'), btn=$('btnPhoto');
@@ -4733,21 +5663,170 @@
     if(btn) btn.classList.toggle('on',open);
     if(open) updatePhotoPanel();
   }
+  function initPhotoPanelDrag(){
+    const panel=$('photoPanel'), head=panel&&panel.querySelector('.photo-head');
+    if(!panel||!head||head.dataset.dragReady==='1') return;
+    head.dataset.dragReady='1'; head.title='드래그해서 이동';
+    let drag=null, offsetX=0, offsetY=0;
+    const clampPosition=(left,top)=>{
+      const parent=panel.offsetParent||panel.parentElement;
+      if(!parent) return;
+      const margin=8, maxLeft=Math.max(margin,parent.clientWidth-panel.offsetWidth-margin), maxTop=Math.max(margin,parent.clientHeight-panel.offsetHeight-margin);
+      panel.style.left=Math.min(maxLeft,Math.max(margin,left))+'px';
+      panel.style.top=Math.min(maxTop,Math.max(margin,top))+'px';
+    };
+    head.addEventListener('pointerdown',event=>{
+      if(event.button!==0||event.target.closest('button')) return;
+      const parent=panel.offsetParent||panel.parentElement;
+      if(!parent) return;
+      const panelRect=panel.getBoundingClientRect(), parentRect=parent.getBoundingClientRect();
+      offsetX=event.clientX-panelRect.left; offsetY=event.clientY-panelRect.top;
+      panel.style.width=panelRect.width+'px'; panel.style.right='auto';
+      clampPosition(panelRect.left-parentRect.left,panelRect.top-parentRect.top);
+      drag=event.pointerId; panel.classList.add('dragging');
+      head.setPointerCapture(event.pointerId); event.preventDefault();
+    });
+    head.addEventListener('pointermove',event=>{
+      if(drag!==event.pointerId) return;
+      const parent=panel.offsetParent||panel.parentElement;
+      if(!parent) return;
+      const parentRect=parent.getBoundingClientRect();
+      clampPosition(event.clientX-parentRect.left-offsetX,event.clientY-parentRect.top-offsetY);
+    });
+    const stopDrag=event=>{
+      if(drag!==event.pointerId) return;
+      if(head.hasPointerCapture(event.pointerId)) head.releasePointerCapture(event.pointerId);
+      drag=null; panel.classList.remove('dragging');
+    };
+    head.addEventListener('pointerup',stopDrag);
+    head.addEventListener('pointercancel',stopDrag);
+    window.addEventListener('resize',()=>{
+      if(!panel.style.left||panel.hidden) return;
+      clampPosition(parseFloat(panel.style.left)||0,parseFloat(panel.style.top)||0);
+    });
+  }
 
   /* ===================== 과제 / 체크포인트 / 메모 ===================== */
-  function selectTask(t){ curTask=t; ensureTaskMaterial(t); activeOrderStep=0; pendingGuidePoint=null; activeGuideRec=null; matArmed=false; legendFilterRoles=null; photoViewIndex=0; renderTasks(); renderOrder(); renderLegend(); renderMats(); $('ctaskName').innerHTML=taskTitleHTML(t); $('ctaskDesc').textContent=taskDescText(t);
+  function selectTask(t){ curTask=t; ensureTaskMaterial(t); activeOrderStep=0; pendingGuidePoint=null; activeGuideRec=null; matArmed=false; legendFilterRoles=null; photoContextStep=null; photoViewIndex=0; renderTasks(); renderOrder(); renderLegend(); renderMats(); $('ctaskName').innerHTML=taskTitleHTML(t); $('ctaskDesc').textContent=taskDescText(t);
     updatePhotoPanel(); if(scene){ buildBase(); buildGuide(); } renderChecks(); loadMemo(); updateScore(); }
-  function taskChecks(){
-    return COMMON_PREP.concat(curTask.checks||[]);
+  function defaultTaskChecks(task=curTask){
+    if(Array.isArray(task&&task.checksComplete)) return task.checksComplete.slice();
+    const materialNotes=(task.exam==='제1과제'||task.exam==='제2과제')?MATERIAL_BUYING_PREP:[];
+    const examNotes=task.exam==='제1과제'?EXAM1_PREP:task.exam==='제2과제'?EXAM2_PREP:task.exam==='제3과제'?EXAM3_PREP:[];
+    return COMMON_PREP.concat(COLOR_COMMON_PREP,materialNotes,task.exam==='제2과제'?WESTERN_PREP:[],examNotes,task.checks||[]);
   }
-  function renderChecks(){ const saved=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'); const box=$('chkList'); box.innerHTML='';
-    taskChecks().forEach((c,i)=>{ const on=!!saved[i]; const d=document.createElement('label'); d.className='chk'+(on?' on':'');
-      const isGrowth=String(c).includes('하나의 생장점');
-      d.innerHTML=`<input type="checkbox" ${on?'checked':''}><span class="${isGrowth?'check-help':''}">${esc(c)}</span>`;
+  function taskChecks(){ return editableField('checks')||[]; }
+  function requiredCheckRecord(text,index=-1){
+    const value=plainEditableText(text), match=value.match(/^\s*\[([^\]]+)\]\s*([\s\S]*)$/);
+    return match?{index,title:match[1].trim(),body:match[2].trim(),text:value}:{index,title:'필수사항',body:value.trim(),text:value};
+  }
+  function extractLocalRequiredChecks(checks){
+    const required=[];
+    (checks||[]).forEach((item,index)=>{ const value=plainEditableText(item); if(/^\s*\[[^\]]+\]/.test(value)) required.push(requiredCheckRecord(value,index)); });
+    return required;
+  }
+  function defaultSharedRequiredTexts(){
+    for(const task of TASKS){
+      const found=extractLocalRequiredChecks(defaultTaskChecks(task));
+      if(found.length) return found.map(item=>item.text);
+    }
+    return [];
+  }
+  function readSharedRequiredTexts(){
+    const saved=LS.get(SHARED_REQUIRED_CHECKS_KEY);
+    if(saved!==null){
+      try{
+        const parsed=JSON.parse(saved);
+        if(Array.isArray(parsed)){
+          const rawTexts=parsed.map(plainEditableText), texts=normalizeSharedRequiredTexts(rawTexts);
+          if(JSON.stringify(texts)!==JSON.stringify(rawTexts)) LS.set(SHARED_REQUIRED_CHECKS_KEY,JSON.stringify(texts));
+          return texts;
+        }
+      }catch(e){}
+    }
+    for(const task of TASKS){
+      const found=extractLocalRequiredChecks(editableField('checks',task));
+      if(found.length){ const texts=normalizeSharedRequiredTexts(found.map(item=>item.text)); LS.set(SHARED_REQUIRED_CHECKS_KEY,JSON.stringify(texts)); return texts; }
+    }
+    const fallback=normalizeSharedRequiredTexts(defaultSharedRequiredTexts()); LS.set(SHARED_REQUIRED_CHECKS_KEY,JSON.stringify(fallback)); return fallback;
+  }
+  function saveSharedRequiredChecks(value){ LS.set(SHARED_REQUIRED_CHECKS_KEY,JSON.stringify(normalizeSharedRequiredTexts(parseBulkEditorText(value)))); }
+  function splitRequiredChecks(checks=taskChecks()){
+    const regular=[];
+    (checks||[]).forEach((item,index)=>{
+      const text=plainEditableText(item);
+      if(!/^\s*\[[^\]]+\]/.test(text)) regular.push({index,text});
+    });
+    const required=readSharedRequiredTexts().map((text,index)=>requiredCheckRecord(text,index));
+    return {required,regular};
+  }
+  function groupRequiredCheckCards(required){
+    const grouped=[]; let colorCard=null;
+    (required||[]).forEach(item=>{
+      const rawTitle=String(item.title||'').trim();
+      const titleMatch=rawTitle.match(/^\*{1,2}([\s\S]+?)\*{1,2}$/), title=titleMatch?titleMatch[1].trim():rawTitle;
+      const untitledTask=title==='필수사항'&&/^제[123]과제(?:\s|$)/.test(String(item.body||'').trim());
+      const titledTask=/^제[123]과제$/.test(title);
+      if(title==='색 조합 추천'){
+        colorCard={...item,title}; grouped.push(colorCard); return;
+      }
+      if(colorCard&&(untitledTask||titledTask)){
+        const continuation=titledTask?`${title}\n${item.body||''}`:String(item.body||'');
+        colorCard.body=[colorCard.body,continuation].filter(Boolean).join('\n\n'); return;
+      }
+      grouped.push(item); colorCard=null;
+    });
+    return grouped;
+  }
+  function renderRequiredChecks(required,box){
+    if(!required.length) return;
+    const section=document.createElement('section'); section.className='required-checks';
+    const title=document.createElement('h3'); title.textContent='시험 전 필수사항'; section.appendChild(title);
+    groupRequiredCheckCards(required).forEach(item=>{
+      const card=document.createElement('article'); card.className='required-check-card';
+      const heading=document.createElement('strong'); heading.textContent=item.title;
+      const body=document.createElement('p'); body.textContent=item.body;
+      card.append(heading,body); section.appendChild(card);
+    });
+    box.appendChild(section);
+  }
+  function resetCheckEditorContent(){
+    if(!confirm('현재 과제 체크포인트와 모든 과제 공용 시험 전 필수사항을 기본 필기로 복원할까요?')) return false;
+    LS.remove(contentEditKey()); LS.remove('hwa3_chk_'+curTask.key); LS.set(SHARED_REQUIRED_CHECKS_KEY,JSON.stringify(defaultSharedRequiredTexts()));
+    renderChecks(); toast('체크포인트와 공용 필수사항을 기본값으로 복원했습니다'); return true;
+  }
+  function renderChecks(){
+    const saved=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'), box=$('chkList'); box.innerHTML='';
+    const checks=taskChecks(), split=splitRequiredChecks(checks);
+    if(contentEditMode){
+      const wrap=document.createElement('div'); wrap.className='content-bulk-wrap';
+      const requiredLabel=document.createElement('label'); requiredLabel.className='check-edit-label'; requiredLabel.textContent='시험 전 필수사항 전체 (모든 과제 공용)';
+      const requiredArea=document.createElement('textarea'); requiredArea.className='content-bulk-editor required-bulk-editor'; requiredArea.value=bulkEditorText(split.required.map(item=>item.text)); requiredArea.setAttribute('aria-label','시험 전 필수사항 전체 문구'); requiredArea.spellcheck=false;
+      const regularLabel=document.createElement('label'); regularLabel.className='check-edit-label'; regularLabel.textContent='현재 과제 체크포인트 전체';
+      const regularArea=document.createElement('textarea'); regularArea.className='content-bulk-editor check-bulk-editor'; regularArea.value=bulkEditorText(split.regular.map(item=>item.text)); regularArea.setAttribute('aria-label','체크포인트 전체 문구'); regularArea.spellcheck=false;
+      requiredArea.oninput=()=>{ saveSharedRequiredChecks(requiredArea.value); };
+      regularArea.oninput=()=>{ saveEditableBulk('checks',regularArea.value); updateChkCount(); };
+      const help=document.createElement('p'); help.className='content-bulk-help'; help.textContent='*글자*는 초록색, "글자"는 주황색입니다. 시험 전 필수사항은 모든 과제가 하나의 내용을 공유합니다. 어느 과제에서 수정해도 전체 과제에 즉시 반영됩니다. 각 문단 사이는 빈 줄 하나로 구분합니다.';
+      const tools=document.createElement('div'); tools.className='check-edit-tools';
+      const reset=document.createElement('button'); reset.type='button'; reset.className='content-edit-reset'; reset.textContent='기본값 복원'; reset.onclick=resetCheckEditorContent;
+      wrap.append(requiredLabel,requiredArea,regularLabel,regularArea,help,tools); tools.append(reset); box.appendChild(wrap); updateChkCount(); return;
+    }
+    renderRequiredChecks(split.required,box);
+    split.regular.forEach(item=>{
+      const i=item.index, on=!!saved[i], d=document.createElement('label'); d.className='chk'+(on?' on':'');
+      const checkText=item.text, isGrowth=checkText.includes('하나의 생장점');
+      d.innerHTML=`<input type="checkbox" ${on?'checked':''}><span class="${isGrowth?'check-help':''}">${orderRichHTML(checkText)}</span>`;
       d.querySelector('input').onchange=e=>{ const arr=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'); arr[i]=e.target.checked; LS.set('hwa3_chk_'+curTask.key,JSON.stringify(arr)); d.classList.toggle('on',e.target.checked); updateChkCount(); };
       if(isGrowth) d.querySelector('span').onclick=e=>{ e.preventDefault(); e.stopPropagation(); showGrowthPointGuide(); };
-      box.appendChild(d); }); updateChkCount(); }
-  function updateChkCount(){ const arr=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'); $('chkCount').textContent=arr.filter(Boolean).length+'/'+taskChecks().length; }
+      box.appendChild(d);
+    });
+    updateChkCount();
+  }
+  function updateChkCount(){
+    const arr=JSON.parse(LS.get('hwa3_chk_'+curTask.key)||'[]'), regular=splitRequiredChecks(taskChecks()).regular;
+    $('chkCount').textContent=regular.reduce((count,item)=>count+(arr[item.index]?1:0),0)+'/'+regular.length;
+  }
+  window.addEventListener('storage',event=>{ if(event.key===SHARED_REQUIRED_CHECKS_KEY) renderChecks(); });
   let memoT=null;
   $('memo').addEventListener('input',()=>{ $('memoState').textContent='저장 중…'; clearTimeout(memoT); memoT=setTimeout(()=>{ LS.set('hwa3_memo_'+curTask.key,$('memo').value); $('memoState').textContent='저장됨'; },400); });
   function loadMemo(){ $('memo').value=LS.get('hwa3_memo_'+curTask.key)||''; $('memoState').textContent='저장됨'; }
@@ -4787,12 +5866,14 @@
 
   /* ===================== 시작 ===================== */
   function start(){
-    renderTasks(); renderOrder(); renderLegend(); renderMats(); renderExamSchedule();
-    MATERIALS.forEach(sourceImage);
+    TASKS.forEach(migrateSavedGreenMarkupOnce); migrateSharedGreenMarkupOnce();
+    // 필기·사진 전용 모드에서는 사진 패널을 고정해 둡니다.
+    syncContentEditButton(); renderTasks(); renderOrder(); renderLegend(); renderMats(); renderExamSchedule();
+    // 3D 소재 썸네일은 필기·사진 전용 모드에서 불러오지 않습니다.
     $('ctaskName').innerHTML=taskTitleHTML(curTask); $('ctaskDesc').textContent=taskDescText(curTask); $('btnGuide').classList.toggle('on',showGuide);
-    updatePhotoPanel(); renderChecks(); loadMemo(); init3D(); selectFlower(null); updateScore(); updateHistoryButtons();
+    updatePhotoPanel(); setPhotoPanel(true); renderChecks(); loadMemo(); selectFlower(null); updateScore(); updateHistoryButtons();
     // 테스트용 훅(브라우저 사용에는 영향 없음)
-    window.__hwa={flowers,updateScore,placeFlower,selectTask,activateOrderStep,MATERIALS,TASKS,FLORAL_PRACTICAL_SCHEDULE,setFlowerX,setFlowerZ,setFlowerViewX,setFlowerViewZ,setFlowerHeight,setFlowerAngle,setFlowerPitch,setFlowerOrbit,setFlowerScale,setFlowerBend,setFlowerTrim,flipFlower,undoLastFlower,redoLastFlower,setMat:k=>{curMat=MAT[k];renderMats();},bendMalchaeControl:(rec,index,x,y,z)=>{ if(!rec||rec.matKey!=='malchae') return; const ctrls=ensureMalchaeBendControls(rec); const i=clamp(index|0,0,MALCHAE_HANDLE_Y.length-1); ctrls[i]={x:clamp(x,-0.85,0.85),y:clamp(y,i===0?0:0.08,i===0?0.18:1.18),z:clamp(z,-0.85,0.85)}; rec.bend=0; applyFlowerSpriteState(rec); syncMalchaeHandles(); },get scoreEl(){return $('scoreTotal').textContent;},get activeOrderStep(){return activeOrderStep;},get baseGuideVisible(){return baseGroup?baseGroup.visible:null;},get malchaeHandleVisible(){return !!(malchaeHandleGroup&&malchaeHandleGroup.visible);}};
+    window.__hwa={flowers,updateScore,placeFlower,selectTask,activateOrderStep,MATERIALS,TASKS,FLORAL_PRACTICAL_SCHEDULE,setFlowerX,setFlowerZ,setFlowerViewX,setFlowerViewZ,setFlowerHeight,setFlowerAngle,setFlowerPitch,setFlowerSpin,setFlowerOrbit,setFlowerScale,setFlowerBend,setFlowerTrim,flipFlower,undoLastFlower,redoLastFlower,setMat:k=>{curMat=MAT[k];renderMats();},bendMalchaeControl:(rec,index,x,y,z)=>{ if(!rec||rec.matKey!=='malchae') return; const ctrls=ensureMalchaeBendControls(rec); const i=clamp(index|0,0,MALCHAE_HANDLE_Y.length-1); ctrls[i]={x:clamp(x,-0.85,0.85),y:clamp(y,i===0?0:0.08,i===0?0.18:1.18),z:clamp(z,-0.85,0.85)}; rec.bend=0; applyFlowerSpriteState(rec); syncMalchaeHandles(); },get scoreEl(){return $('scoreTotal').textContent;},get activeOrderStep(){return activeOrderStep;},get baseGuideVisible(){return baseGroup?baseGroup.visible:null;},get malchaeHandleVisible(){return !!(malchaeHandleGroup&&malchaeHandleGroup.visible);}};
   }
   start();
   </script>
