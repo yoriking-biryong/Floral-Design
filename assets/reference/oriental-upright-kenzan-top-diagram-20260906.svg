@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-labelledby="title desc">
+  <title id="title">직립형 침봉 위에서 본 위치</title>
+  <desc id="desc">화기와 침봉을 위에서 내려다본 도해. 1주지는 12시 원, 2주지는 8시 네모, 3주지는 5시 세모로 표시하고 2주지와 3주지는 조금 벌려 안쪽 공간을 만든다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#fffdfa}
+      .bowl{fill:#f4f7f0;stroke:#45614d;stroke-width:8}
+      .water{fill:#dfeee7;stroke:#90b8a4;stroke-width:2}
+      .axis{stroke:#91a395;stroke-width:3;stroke-linecap:round;stroke-dasharray:10 12}
+      .guide{fill:none;stroke:#d6b48f;stroke-width:4;stroke-linecap:round}
+      .kenzan{fill:#354e42;stroke:#20382e;stroke-width:4}
+      .pin{fill:#7d9387}
+      .mark{fill:#fff;stroke:#e05252;stroke-width:7}
+      .mark2{stroke:#3f83cc}
+      .mark3{stroke:#e0a72f}
+      .label{font-family:Arial,"Malgun Gothic",sans-serif;font-size:27px;font-weight:800;fill:#263d31}
+      .small{font-size:22px;font-weight:700;fill:#5d6b61}
+      .note{font-size:24px;font-weight:800;fill:#ef6a55}
+    </style>
+  </defs>
+  <rect class="bg" width="720" height="520" rx="30"/>
+  <circle class="water" cx="360" cy="250" r="190"/>
+  <circle class="bowl" cx="360" cy="250" r="205"/>
+  <line class="axis" x1="360" y1="42" x2="360" y2="458"/>
+  <line class="axis" x1="152" y1="250" x2="568" y2="250"/>
+  <line class="axis" x1="215" y1="105" x2="505" y2="395"/>
+  <line class="axis" x1="505" y1="105" x2="215" y2="395"/>
+  <rect class="kenzan" x="322" y="212" width="76" height="76" rx="12"/>
+  <g opacity=".6">
+    <circle class="pin" cx="338" cy="228" r="4"/><circle class="pin" cx="360" cy="228" r="4"/><circle class="pin" cx="382" cy="228" r="4"/>
+    <circle class="pin" cx="338" cy="250" r="4"/><circle class="pin" cx="360" cy="250" r="4"/><circle class="pin" cx="382" cy="250" r="4"/>
+    <circle class="pin" cx="338" cy="272" r="4"/><circle class="pin" cx="360" cy="272" r="4"/><circle class="pin" cx="382" cy="272" r="4"/>
+  </g>
+  <path class="guide" d="M360 250 C347 198 348 153 360 106"/>
+  <path class="guide" d="M360 250 C303 277 253 324 205 383"/>
+  <path class="guide" d="M360 250 C404 300 436 355 460 414"/>
+  <path class="guide" d="M205 383 C277 430 378 449 460 414"/>
+  <circle class="mark" cx="360" cy="105" r="25"/>
+  <rect class="mark mark2" x="177" y="355" width="54" height="54" rx="8" transform="rotate(-14 204 382)"/>
+  <path class="mark mark3" d="M460 382 L494 440 L425 440 Z"/>
+  <text class="label" x="392" y="94">1주지</text>
+  <text class="small" x="390" y="124">12시</text>
+  <text class="label" x="86" y="392">2주지</text>
+  <text class="small" x="95" y="423">8시</text>
+  <text class="label" x="500" y="413">3주지</text>
+  <text class="small" x="505" y="444">5시</text>
+  <text class="note" x="206" y="486">2주지와 3주지는 조금 벌려 안쪽 공간 만들기</text>
+</svg>
