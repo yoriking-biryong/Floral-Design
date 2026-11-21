@@ -2704,6 +2704,142 @@
       task.stepPhotos[step]=mergeLegacyPhotoList(task.stepPhotos[step],items);
     });
   });
+  /* 2026-11-21 제공 동양형 필기: 기존 필기를 보존한 채 공통 원칙과 문장별 참고 이미지를 앞에 추가 */
+  const ORIENTAL_NOTE_PHOTOS_20261121={
+    mumTriangle:{src:refAsset('oriental-note-mum-triangle-20261121.png'),label:'소국과 주지 꽃의 삼각형 높이 흐름'},
+    snowball:{src:refAsset('oriental-note-snowball-boundary-20261121.png'),label:'주지 스노우볼·삼각형 안에 꽃 담기'},
+    inwardSide:{src:refAsset('oriental-note-inward-wrap-side-20261121.png'),label:'측면에서 본 안쪽으로 감싸는 꽃 곡선'},
+    focalCenter:{src:refAsset('oriental-note-focal-shadow-centerline-20261121.png'),label:'1·2주지 연결선 중앙의 포컬·쉐도우'},
+    inwardFlowers:{src:refAsset('oriental-note-inward-wrap-flowers-20261121.png'),label:'아래에서 올라와 가운데로 감싸는 꽃 흐름'},
+    concaveTrim:{src:refAsset('oriental-note-concave-leaf-trim-20261121.png'),label:'볼록한 쪽 잎을 덜어 오목한 곡선 강조'}
+  };
+  const ORIENTAL_CORE_NOTE_20261121=`[핵심:
+*선적으로 쓰기,* 줄기를 잘 *돌려서* V자가 되지 않게, 밖에서 안을 감싸안은 형태를 만들 것, 평평 금지, 뿌리 가리기, 주지로 여백을 지정한 후 안으로 넣지 않기(오목한 쪽은 건들면 안됨), 주지는 ( ) 오목하게 사용, 종지는 뒤이거나 밑에 깔리기, 1주지의 끝과 끝 *연결 선의 각도*가 뒤로 5도 정도 기울어야 함, 같은 선상에 같은 V 각도 X 옆으로 틀거나 뒤로 보내 *다른 각도로 입체적으로* 만들기("계단식 금지, 같은 옆라인 금지"), *주지 절단면은 앞, 나를 바라봐야 함*, 주지 간 키에 높낮이 주어 같지 않게 하기, 장미들은 *세트끼리 붙이기*, 포컬(화기 외경 지름이 최대)의 위치는 *화기 중앙, 1/3 아래*, *장미들은 나무 안에 = 스노우볼 안에 담겨야 함*, 포컬과 쉐도우 장미는 *1,2주지를 연결한 직선의 중앙*에 함께 잡아(쉐도우가 살짝 앞) 꽂고 앞으로 쓰러트리기, 가운데 오는 주지 장미는 *0도(수직)*]`;
+  const ORIENTAL_COMMON_NOTES_20261121=[
+    `줄기를 침봉에 꽂은 뒤 아랫부분 줄기를 손가락으로 꾹 눌러 줍니다. 침봉에 꽂거나 뺄 때는 가위로 반대쪽을 누르며 작업합니다.`,
+    `동양형은 ( )처럼 줄기들이 가운데로 팔을 감싸안은 형태여야 합니다. ( )로 감싸는 것은 되지만 ＼ /처럼 바깥을 바로 바라보면 안 됩니다.`,
+    `선적으로 되어 있는 주지를 옆으로 돌리면 면적으로 보이게 쓸 수 있습니다. 면구성이 평평하면 안 되며 동양은 무조건 *선적으로* 씁니다. *3주지도 앞쪽으로 돌리면 앞쪽과 안쪽으로 감싸집니다.*`,
+    `*뿌리가 보이지 않게 비틀고*, 주지끼리 서로 대화하듯 마주보게 합니다. 주지들은 침봉 외곽이 아닌 안쪽에 꽂고 배밀이 형태가 되지 않게 합니다.`,
+    `*주지로 여백을 지정한 뒤 종지와 꽃을 그 안에 넣어 여백을 가리지 않습니다.* 종지는 바깥이나 아예 주지 뒤로 보내며, 주지보다 뒤이거나 밑에 깔려야 합니다. 장미도 동일하고 보조장미는 주지장미 뒤로 보냅니다.`,
+    `무성하지 않게 만들고, 주지의 흉터를 가리고 싶다면 종지를 1/4 길이로 짧게 잘라 앞에 꽂아 가립니다. 주지 자체의 무게가 있다면 종지를 생략해도 됩니다.`,
+    `주지는 ( )처럼 깨끗하고 오목하게 사용합니다. 같은 선상·같은 라인·같은 V 각도는 금지하며, 옆으로 틀거나 하나를 뒤로 보내 *서로 다른 각도의 입체감*을 만듭니다. "계단식 금지, 같은 옆라인 금지"입니다.`,
+    `주지 간 키와 길이에 높낮이를 주어 모두 다르게 합니다. 나무 잎끼리 부딪히면 한쪽 잎은 터 주고, 잎 뒷면이 보여도 괜찮습니다.`,
+    `*주지의 사선 절단면은 앞, 즉 나를 바라봐야 하며* 사선 처리는 위를 보도록 합니다.`,
+    `재료를 더 쌓을 때는 볼록한 쪽으로 계속 넣어 →(((( 흐름을 만들고, 반대편 오목한 쪽은 건드리지 않아 여백을 지킵니다.`,
+    `장미는 *1주지 세트·2주지 세트·포컬+쉐도우 세트끼리 붙입니다.* 다른 쪽 장미들이 떨어져 있다면 가운데 장미들은 붙어 있어도 괜찮습니다.`,
+    `포컬 장미는 *화기 중앙, 전체 높이 1/3 아래*이면서 침봉 앞쪽 1/3 지점에 둡니다. 포컬 길이는 *화기 외경 지름이 최대*이므로 그 길이에서 1cm씩 잘라 맞춥니다.`,
+    {text:`*장미들은 나무 안에 = 주지들이 만든 스노우볼 안에 담겨야 합니다.* 침봉에 꽂히는 줄기 하단부터 맨 위 꽃 머리까지 주지들을 연결한 삼각형 안에 두고, 셀렘은 그 삼각형 바깥에 꽂습니다.`,photos:[ORIENTAL_NOTE_PHOTOS_20261121.snowball]},
+    {text:`포컬과 쉐도우 장미는 얼굴 하나 차이로 붙여 *1·2주지를 연결한 직선의 중앙 안쪽*에 함께 잡아 꽂습니다. 앞으로 쓰러트리되 쉐도우 줄기만 포컬보다 살짝 앞에 나오게 잡습니다.`,photos:[ORIENTAL_NOTE_PHOTOS_20261121.focalCenter]},
+    {text:`포컬과 쉐도우는 아래에서 올라와 가운데를 향해 *안쪽으로 감싸지듯 (( 형태*로 꽂습니다.`,photos:[ORIENTAL_NOTE_PHOTOS_20261121.inwardSide,ORIENTAL_NOTE_PHOTOS_20261121.inwardFlowers]},
+    `*다른 꽃들은 포컬보다 앞으로 튀어나오면 안 됩니다.* 쉐도우는 줄기만 포컬보다 살짝 앞에 나오는 것이며 꽃줄기는 X자로 꽂지 않습니다.`,
+    `3주지 장미는 쉐도우 장미보다 *아래*에 둡니다. *중앙이지만 3주지 느낌*으로 놓아 시선이 포컬로 퉁 튕긴 뒤 왼쪽, 다시 오른쪽으로 이동하게 합니다.`,
+    {text:`소국은 주지에 따라 키가 커지되 주지보다 낮게 두고, 소국과 주지 꽃 얼굴을 모아 보면 △ *삼각형* 형태를 이루게 합니다.`,photos:[ORIENTAL_NOTE_PHOTOS_20261121.mumTriangle]},
+    `꽃은 마디를 피해 꽂고 1주지 장미에는 작은 꽃을 올립니다. 3주지는 눕혀 사용합니다.`,
+    `직립형 1주지 = 경사형 2주지는 나무만 뒤로 가고 가운데 오는 주지장미가 *0도(수직)*로 섭니다. 나머지는 그 뒤로 갈 수 없으므로, 보조장미를 넣을 자리가 없으면 *주지장미를 앞으로 숙이고 당겨* 그 뒤의 짧은 보조장미가 0도가 되게 꽂습니다.`,
+    `계단식이 생기면 중간 소재 하나를 빼서 왼쪽이나 뒤로 보내 흐름을 깨고, 줄기를 일렬·수직으로 세우지 말고 *방사형으로 꽂습니다.*`,
+    `주지 위치 공통: 직립형 1주지는 (화기 폭+높이)의 1.5~2배이며 0~15˚ 뒤로 기울입니다. 주지만 보지 말고 주지 끝과 끝을 활처럼 연결했을 때 *활시위의 각도*가 뒤로 약 5˚ 기울어야 합니다. 직립형 1주지 위치는 12시에서 1시 쪽이고, 같은 가지를 경사형 1주지로 쓸 때는 왼쪽 8시 쪽입니다.`,
+    `2주지는 1주지의 2/3 길이로 왼쪽 45˚, 직립형에서는 8시 쪽이며 경사형 2주지로 쓸 때는 12시에서 1시 쪽입니다. 3주지는 2주지의 2/3 길이로 오른쪽 75˚, 조금 바깥의 5시 위치에서 화기에 닿을 듯 말 듯하되 닿지 않게 눕힙니다.`,
+    `3주지 안쪽 아래에 *아주 작고 짧고 얕은 종지*를 넣으면 깊이감이 생기고 침봉도 가릴 수 있습니다.`,
+    {text:`소재가 풍성하다면 볼록한 쪽의 잎을 뜯어 오목한 곡선을 더 강조합니다.`,photos:[ORIENTAL_NOTE_PHOTOS_20261121.concaveTrim]}
+  ];
+  const ORIENTAL_UPRIGHT_NOTES_20261121=[
+    `[직립형] 1주지는 12시에 꽂고 1시 방향으로 눕힙니다. V자가 되지 않게 옆으로 틀고 엉덩이를 오른쪽으로 눌러 안정적으로 만듭니다.`,
+    `[직립형] 2주지는 왼쪽 45˚로 기울이더라도 살짝 위쪽으로 세워 주는 것이 좋습니다.`
+  ];
+  const ORIENTAL_SLANT_NOTES_20261121=[
+    `[경사형] 1·2주지를 앞에서 보았을 때 비대칭 삼각형이어야 합니다. 1주지는 왼쪽 45˚로 기울이고 *9시에 꽂아 8시 30분 방향으로 눕힙니다.*`,
+    `[경사형] 1주지의 배밀이 형태가 눈에 보이면 안 됩니다.`
+  ];
+  const ORIENTAL_QUICK_NOTES_20261121=[
+    `주지를 *선적으로* 돌려 쓰고, ( )처럼 밖에서 안으로 감싸되 평평한 V자·배밀이 형태를 피하기`,
+    `주지로 만든 오목한 여백은 비우고 종지·꽃·보조장미는 뒤나 밑으로 보내기`,
+    `주지 절단면은 앞을 보게 하고 같은 선상·같은 높이·계단식·같은 옆라인을 피하기`,
+    `장미는 세트끼리 붙이고 꽃 머리까지 모두 주지 스노우볼·삼각형 안에 담기`,
+    `포컬은 화기 중앙·앞쪽 1/3·전체 높이 1/3 아래, 쉐도우와 함께 1·2주지 연결선 중앙 안쪽에 꽂기`
+  ];
+  const ORIENTAL_CHECKS_20261121=[
+    `주지가 *선적*이고 평평한 면이나 바깥을 향한 V자가 아닌가?`,
+    `주지가 밖에서 안을 감싸는 ( ) 오목한 형태이며 배밀이가 없는가?`,
+    `주지로 정한 여백의 오목한 쪽에 종지나 꽃을 넣지 않았는가?`,
+    `주지 절단면이 앞·나를 바라보고 활시위 연결선이 뒤로 약 5˚ 기울었는가?`,
+    `같은 선상·같은 V 각도·계단식·같은 옆라인을 피하고 높이와 깊이를 다르게 했는가?`,
+    `장미가 세트끼리 붙고 줄기 하단부터 꽃 머리까지 스노우볼·주지 삼각형 안에 있는가?`,
+    `포컬이 화기 중앙·앞쪽 1/3·전체 높이 1/3 아래인가?`,
+    `포컬과 쉐도우가 1·2주지 연결선 중앙 안쪽에서 (( 형태이며 쉐도우 줄기만 살짝 앞에 있는가?`,
+    `다른 꽃이 포컬보다 앞으로 튀어나오지 않고 꽃줄기가 X자로 교차하지 않는가?`,
+    `소국과 주지 꽃 얼굴이 주지보다 낮은 △ 삼각형 흐름을 이루는가?`
+  ];
+  function prependUniqueNoteItems(existing,additions){
+    const base=Array.isArray(existing)?existing.slice():[];
+    const seen=new Set(base.map(plainEditableText));
+    const fresh=(additions||[]).filter(item=>{ const text=plainEditableText(item); if(!text||seen.has(text)) return false; seen.add(text); return true; });
+    return [...fresh,...base];
+  }
+  function applyOrientalNotes20261121(task,variantNotes){
+    if(!task) return;
+    const fullOrder=[...ORIENTAL_COMMON_NOTES_20261121,...variantNotes];
+    const shiftedStepPhotos={};
+    Object.entries(task.stepPhotos||{}).forEach(([step,photos])=>{ shiftedStepPhotos[Number(step)+fullOrder.length]=photos; });
+    task.stepPhotos=shiftedStepPhotos;
+    task.fullNote=ORIENTAL_CORE_NOTE_20261121;
+    task.fullOrder=prependUniqueNoteItems(task.fullOrder,fullOrder);
+    task.order=prependUniqueNoteItems(task.order,ORIENTAL_QUICK_NOTES_20261121);
+    task.checks=prependUniqueNoteItems(task.checks,ORIENTAL_CHECKS_20261121);
+    task.notesUpdate20261121={fullNote:ORIENTAL_CORE_NOTE_20261121,fullOrder,order:ORIENTAL_QUICK_NOTES_20261121,checks:ORIENTAL_CHECKS_20261121};
+  }
+  applyOrientalNotes20261121(TASKS.find(item=>item.key==='oriental'),ORIENTAL_UPRIGHT_NOTES_20261121);
+  applyOrientalNotes20261121(TASKS.find(item=>item.key==='orientalSlant'),ORIENTAL_SLANT_NOTES_20261121);
+  /* 2026-11-21 신종 셀렘 마감 필기: 두 동양형의 기존 순서 뒤에 추가 */
+  const ORIENTAL_SELLOUM_PHOTOS_20261121={
+    p1:{src:refAsset('oriental-selloum-note-01-20261121.png'),label:'신종 셀렘 사전 길이 손질'},
+    p2:{src:refAsset('oriental-selloum-note-02-20261121.png'),label:'빈 침봉에 신종 셀렘 꽂기'},
+    p3:{src:refAsset('oriental-selloum-note-03-20261121.png'),label:'주지 다리를 셀렘으로 가리는 과정'},
+    p4:{src:refAsset('oriental-selloum-note-04-20261121.png'),label:'신종 셀렘 다리 가림 높이'},
+    p5:{src:refAsset('oriental-selloum-note-05-20261121.png'),label:'가운데가 비면 안쪽으로 넣는 셀렘'},
+    p6:{src:refAsset('oriental-selloum-note-06-20261121.png'),label:'물을 보이게 남기며 침봉 가리기'},
+    p7:{src:refAsset('oriental-selloum-note-07-20261121.png'),label:'남은 침봉을 나무로 방사형 마감'},
+    p8:{src:refAsset('oriental-selloum-note-08-20261121.png'),label:'셀렘을 방사형으로 꽂은 모습'},
+    p9:{src:refAsset('oriental-selloum-note-09-20261121.png'),label:'방사로 넣은 뒤 머리 각도 꺾기'},
+    p10:{src:refAsset('oriental-selloum-note-10-20261121.png'),label:'셀렘이 화기에 붙지 않는 높이'},
+    p11:{src:refAsset('oriental-selloum-note-11-20261121.png'),label:'화기에서 살짝 띄운 셀렘 줄기'}
+  };
+  const ORIENTAL_SELLOUM_NOTES_20261121=[
+    {text:`신종 셀렘으로 주지들의 다리를 모두 가립니다. 같은 높이로 자르지 말고 저마다 *높이를 다르게* 차이가 나게 살짝 길게 미리 자른 뒤 빈 침봉에 찔러 다리를 가립니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p1,ORIENTAL_SELLOUM_PHOTOS_20261121.p2,ORIENTAL_SELLOUM_PHOTOS_20261121.p3,ORIENTAL_SELLOUM_PHOTOS_20261121.p4]},
+    `신종 셀렘이 꽂힌 자리에서 메롱하듯 튀어나오지 않게 합니다.`,
+    {text:`가운데 가림이 고민이라면 신종 셀렘이 안으로 들어가게 꽂아도 됩니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p5]},
+    {text:`신종 셀렘도 중심에서 뻗는 방사형을 지켜 꽂습니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p8]},
+    {text:`셀렘으로 가리고도 남은 침봉은 나무 소재로 가리되, 나무 역시 방사형을 지켜 꽂습니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p7]},
+    {text:`나무 소재는 방사형으로 넣은 뒤 머리의 각도를 꺾어 필요한 빈 공간을 가릴 수 있습니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p9]},
+    `소재를 주지 삼각형 밖으로 벗어나게 꽂으면 잎과 꽃이 더 눕게 되므로 삼각형 안쪽의 흐름을 지킵니다.`,
+    {text:`신종 셀렘은 화기에 붙지 않게 합니다. 너무 낮으면 잎이 화기에 붙으므로 살짝 띄우되 주지 다리와 침봉은 가려지는 높이로 맞춥니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p10,ORIENTAL_SELLOUM_PHOTOS_20261121.p11]},
+    {text:`수반의 물은 보이게 남기면서 침봉은 백 처리하듯 전체를 가립니다. 물을 전부 덮지 말고 침봉과 주지 다리만 보이지 않게 마무리합니다.`,photos:[ORIENTAL_SELLOUM_PHOTOS_20261121.p6]}
+  ];
+  const ORIENTAL_SELLOUM_QUICK_20261121=[
+    `신종 셀렘은 저마다 *높이를 다르게* 길게 미리 잘라 빈 침봉에 방사형으로 꽂고 주지 다리를 모두 가리기`,
+    `셀렘은 화기에서 살짝 띄우고 물은 보이게 남기되, 침봉은 나무 소재까지 사용해 백 처리하듯 모두 가리기`
+  ];
+  const ORIENTAL_SELLOUM_CHECKS_20261121=[
+    `신종 셀렘이 같은 높이가 아니라 저마다 높이 차이를 두고 주지 다리를 모두 가리는가?`,
+    `신종 셀렘과 나무 소재가 중심 방사형을 지키며 침봉 전체를 가리는가?`,
+    `신종 셀렘이 화기에 붙지 않고 살짝 떠 있으면서도 침봉과 다리는 가리는가?`,
+    `수반의 물은 보이지만 침봉은 백 처리하듯 보이지 않는가?`,
+    `셀렘과 나무 소재가 주지 삼각형 밖으로 벗어나 과하게 눕지 않는가?`
+  ];
+  function appendUniqueNoteItems(existing,additions){
+    const base=Array.isArray(existing)?existing.slice():[];
+    const seen=new Set(base.map(plainEditableText));
+    (additions||[]).forEach(item=>{ const text=plainEditableText(item); if(text&&!seen.has(text)){ seen.add(text); base.push(item); } });
+    return base;
+  }
+  function applyOrientalSelloumNotes20261121(task){
+    if(!task) return;
+    task.fullOrder=appendUniqueNoteItems(task.fullOrder,ORIENTAL_SELLOUM_NOTES_20261121);
+    task.order=appendUniqueNoteItems(task.order,ORIENTAL_SELLOUM_QUICK_20261121);
+    task.checks=appendUniqueNoteItems(task.checks,ORIENTAL_SELLOUM_CHECKS_20261121);
+    task.selloumNotesUpdate20261121={fullOrder:ORIENTAL_SELLOUM_NOTES_20261121,order:ORIENTAL_SELLOUM_QUICK_20261121,checks:ORIENTAL_SELLOUM_CHECKS_20261121};
+  }
+  applyOrientalSelloumNotes20261121(TASKS.find(item=>item.key==='oriental'));
+  applyOrientalSelloumNotes20261121(TASKS.find(item=>item.key==='orientalSlant'));
   const TASK_SEQUENCE=[
     'corsage','bouquetDome','bouquetCone',
     'dome','horiz','lshape','invT','vertical','tri','fan',
@@ -2831,7 +2967,7 @@
   function fullOrderItemHTML(item,stepNo=0){
     const isObject=!!item&&typeof item==='object';
     const hint=isObject&&item.hint?(Array.isArray(item.hint)?item.hint:[item.hint]):[];
-    const photos=normalizePhotoList(((curTask&&curTask.stepPhotos)||{})[stepNo]);
+    const photos=mergeLegacyPhotoList(isObject&&item.photos?item.photos:[],normalizePhotoList(((curTask&&curTask.stepPhotos)||{})[stepNo]));
     const text=orderRichHTML(isObject?(item.text||'설명 보기'):item);
     if(!hint.length&&!photos.length) return text;
     const hintHTML=hint.map(h=>`<p>${orderRichHTML(h)}</p>`).join('');
@@ -2965,6 +3101,37 @@
     const edits=readContentEdits(task);
     if(Object.prototype.hasOwnProperty.call(edits,field)) return edits[field];
     return defaultEditableField(field,task);
+  }
+  function migrateOrientalNotes20261121Once(task){
+    const update=task&&task.notesUpdate20261121;
+    if(!update) return;
+    const migrationKey='hwa3_oriental_notes_20261121_'+task.key;
+    if(LS.get(migrationKey)==='1') return;
+    const edits=readContentEdits(task); let changed=false;
+    if(Object.prototype.hasOwnProperty.call(edits,'fullNote')&&!String(edits.fullNote||'').includes('활시위의 각도')){
+      edits.fullNote=[update.fullNote,String(edits.fullNote||'').trim()].filter(Boolean).join('\n\n'); changed=true;
+    }
+    ['order','fullOrder','checks'].forEach(field=>{
+      if(!Object.prototype.hasOwnProperty.call(edits,field)||!Array.isArray(edits[field])) return;
+      const merged=prependUniqueNoteItems(edits[field],update[field]);
+      if(merged.length!==edits[field].length){ edits[field]=merged; changed=true; }
+    });
+    if(changed) writeContentEdits(edits,task);
+    LS.set(migrationKey,'1');
+  }
+  function migrateOrientalSelloumNotes20261121Once(task){
+    const update=task&&task.selloumNotesUpdate20261121;
+    if(!update) return;
+    const migrationKey='hwa3_oriental_selloum_notes_20261121_'+task.key;
+    if(LS.get(migrationKey)==='1') return;
+    const edits=readContentEdits(task); let changed=false;
+    ['order','fullOrder','checks'].forEach(field=>{
+      if(!Object.prototype.hasOwnProperty.call(edits,field)||!Array.isArray(edits[field])) return;
+      const merged=appendUniqueNoteItems(edits[field],update[field]);
+      if(merged.length!==edits[field].length){ edits[field]=merged; changed=true; }
+    });
+    if(changed) writeContentEdits(edits,task);
+    LS.set(migrationKey,'1');
   }
   function editableOrderGuideSteps(task=curTask){
     const edits=readContentEdits(task), items=editableField('order',task)||[];
@@ -5866,7 +6033,7 @@
 
   /* ===================== 시작 ===================== */
   function start(){
-    TASKS.forEach(migrateSavedGreenMarkupOnce); migrateSharedGreenMarkupOnce();
+    TASKS.forEach(migrateOrientalNotes20261121Once); TASKS.forEach(migrateOrientalSelloumNotes20261121Once); TASKS.forEach(migrateSavedGreenMarkupOnce); migrateSharedGreenMarkupOnce();
     // 필기·사진 전용 모드에서는 사진 패널을 고정해 둡니다.
     syncContentEditButton(); renderTasks(); renderOrder(); renderLegend(); renderMats(); renderExamSchedule();
     // 3D 소재 썸네일은 필기·사진 전용 모드에서 불러오지 않습니다.
